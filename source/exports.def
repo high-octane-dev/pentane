@@ -1,0 +1,4 @@
+LIBRARY Pentane
+EXPORTS
+	Pentane_LogUTF8
+	Pentane_IsPluginLoaded

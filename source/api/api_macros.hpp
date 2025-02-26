@@ -1,0 +1,4 @@
+#define API_PLUGIN_INFORMATION "Pentane_PluginInformation"
+#define API_PLUGIN_DEPENDENCY_COUNT "Pentane_PluginDependencyCount"
+#define API_PLUGIN_DEPENDENCIES "Pentane_PluginDependencies"
+#define API_PLUGIN_ENTRY_POINT "Pentane_Main"
