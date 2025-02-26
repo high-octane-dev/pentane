@@ -9,6 +9,7 @@
 #include "logger.hpp"
 #include "plugin_loader.hpp"
 #include "target.hpp"
+#include "sunset/sunset.hpp"
 
 auto set_current_directory_to_module_location() -> std::filesystem::path {
     wchar_t game_directory[1024];
@@ -46,6 +47,15 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
             tvg::fs::init();
         }
         else if constexpr (GAME_TARGET == PentaneTarget::Cars2TheVideoGame) {
+            // Removes a `FreeConsole` call from the original game, allowing the console logger to function correctly.
+            sunset::write_nop(reinterpret_cast<void*>(0x007b599f), 6);
+
+            tvg2::fs::init();
+        }
+        else if constexpr (GAME_TARGET == PentaneTarget::Cars2TheVideoGameArcade) {
+            // Removes a `FreeConsole` call from the original game, allowing the console logger to function correctly.
+            sunset::write_nop(reinterpret_cast<void*>(0x008249cf), 6);
+
             tvg2::fs::init();
         }
     }

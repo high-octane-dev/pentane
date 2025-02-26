@@ -51,8 +51,8 @@ auto mount_plugin_and_get_main(const std::wstring& path_string) -> void(__stdcal
 //  3. Do not export a `Pentane_Main` function.
 //  4. Are not the newest version amongst all their duplicates (plugins with the same UUID).
 auto process_candidate(util::SortedHashMap<PentaneUUID, ProcessedPlugin, PentaneUUIDHasher>& processed_plugins, const std::wstring& path_string, const std::string& base_file_name) -> void {
-    // Temporarily load the plugin, but only as data so we can grab its `PluginInformation` and verify the version.
-    HMODULE h_module = LoadLibraryExW(path_string.data(), nullptr, DONT_RESOLVE_DLL_REFERENCES);
+    // Temporarily load the plugin so we can grab its `PluginInformation` and verify the version.
+    HMODULE h_module = LoadLibraryExW(path_string.data(), nullptr, 0);
     
     if (h_module == nullptr) {
         LOG_LOCALIZED_STRING(MODULE_REJECTED, base_file_name);
