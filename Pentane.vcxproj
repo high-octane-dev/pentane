@@ -51,6 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="source\exports.def" />
+    <None Include="source\games\mn\config_impl.inl" />
+    <None Include="source\games\tvg2\config_impl.inl" />
+    <None Include="source\games\tvg\config_impl.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

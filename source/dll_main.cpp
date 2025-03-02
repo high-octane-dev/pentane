@@ -32,32 +32,33 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
             logger::log(message);
         }
         plugin_loader::load_all(install_dir / "Pentane\\Plugins");
-        if constexpr (GAME_TARGET == PentaneTarget::CarsMaterNationalChampionship) {
-            if (install_dir.native().contains(L".")) {
-                logger::log("[DllMain] Cars Mater-National is known to have issues when ran from a directory that contains a period. Please consider renaming your install directory!");
-            }
-            mn::fs::init(config::mn::save_redirection_enabled(),
-                install_dir,
-                install_dir / "Pentane\\SaveData",
-                install_dir / config::mn::data_directory_name(),
-                install_dir / "Pentane\\Mods",
-                config::mods_enabled());
+#if defined(PENTANE_GAME_TARGET_MN)
+        // MN-Specific initialization.
+        if (install_dir.native().contains(L".")) {
+            logger::log("[DllMain] Cars Mater-National is known to have issues when ran from a directory that contains a period. Please consider renaming your install directory!");
         }
-        else if constexpr (GAME_TARGET == PentaneTarget::CarsTheVideoGame) {
-            tvg::fs::init();
-        }
-        else if constexpr (GAME_TARGET == PentaneTarget::Cars2TheVideoGame) {
-            // Removes a `FreeConsole` call from the original game, allowing the console logger to function correctly.
-            sunset::write_nop(reinterpret_cast<void*>(0x007b599f), 6);
+        mn::fs::init(config::mn::save_redirection_enabled(),
+            install_dir,
+            install_dir / "Pentane\\SaveData",
+            install_dir / config::mn::data_directory_name(),
+            install_dir / "Pentane\\Mods",
+            config::mods_enabled());
+#elif defined(PENTANE_GAME_TARGET_TVG)
+        // TVG-Specific initialization.
+        tvg::fs::init();
+#elif defined(PENTANE_GAME_TARGET_2TVG)
+        // TVG2-Specific initialization.
+        // Removes a `FreeConsole` call from the original game, allowing the console logger to function correctly.
+        sunset::write_nop(reinterpret_cast<void*>(0x007b599f), 6);
 
-            tvg2::fs::init();
-        }
-        else if constexpr (GAME_TARGET == PentaneTarget::Cars2TheVideoGameArcade) {
-            // Removes a `FreeConsole` call from the original game, allowing the console logger to function correctly.
-            sunset::write_nop(reinterpret_cast<void*>(0x008249cf), 6);
+        tvg2::fs::init();
+#elif defined(PENTANE_GAME_TARGET_2TVGA)
+        // TVG2A-Specific initialization.
+        // Removes a `FreeConsole` call from the original game, allowing the console logger to function correctly.
+        sunset::write_nop(reinterpret_cast<void*>(0x008249cf), 6);
 
-            tvg2::fs::init();
-        }
+        tvg2::fs::init();
+#endif
     }
     return TRUE;
 }

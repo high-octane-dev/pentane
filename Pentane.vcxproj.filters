@@ -71,6 +71,9 @@
     <ClCompile Include="source\bink\bink.cpp">
       <Filter>Code\Core\Bink</Filter>
     </ClCompile>
+    <ClCompile Include="source\games\tvg2\tvg2_file_system.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\api\api_macros.hpp">
@@ -118,10 +121,20 @@
     <ClInclude Include="source\version.hpp">
       <Filter>Code\Core</Filter>
     </ClInclude>
+    <ClInclude Include="source\games\tvg2\tvg2_file_system.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="source\exports.def">
       <Filter>Code</Filter>
+    </None>
+    <None Include="source\games\tvg2\config_impl.inl">
+      <Filter>Code\Core\Games\2-The-Video-Game</Filter>
+    </None>
+    <None Include="source\games\mn\config_impl.inl">
+      <Filter>Code\Core\Games\Mater-National</Filter>
+    </None>
+    <None Include="source\games\tvg\config_impl.inl">
+      <Filter>Code\Core\Games\The-Video-Game</Filter>
     </None>
   </ItemGroup>
 </Project>
