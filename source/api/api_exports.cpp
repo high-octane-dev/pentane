@@ -3,6 +3,7 @@
 #include "../logger.hpp"
 #include "../plugin.hpp"
 #include "../plugin_loader.hpp"
+#include "../config.hpp"
 
 struct PentaneCStringView {
 	const char* const data;
@@ -25,4 +26,9 @@ extern "C" void Pentane_LogUTF8(PentaneCStringView* c_str) {
 #pragma comment(linker, "/EXPORT:Pentane_IsPluginLoaded=_Pentane_IsPluginLoaded")
 extern "C" int Pentane_IsPluginLoaded(PentaneUUID* uuid) {
 	return plugin_loader::is_loaded(uuid) ? 1 : 0;
+}
+
+#pragma comment(linker, "/EXPORT:Pentane_GetUserLanguage=_Pentane_GetUserLanguage")
+extern "C" int Pentane_GetUserLanguage() {
+	return static_cast<int>(config::language());
 }

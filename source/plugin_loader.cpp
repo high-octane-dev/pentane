@@ -193,10 +193,8 @@ auto plugin_loader::load_all(const std::filesystem::path& plugin_dir) -> void {
         LOADED_PLUGIN_UUIDS.insert(plugin.uuid);
     }
 
-    // In this final pass, we reject all modules that do not have all their dependencies present.
     for (const auto& plugin : plugins_to_load) {
-        std::string a = plugin.name;
-        LOG_LOCALIZED_STRING(PLUGIN_LOAD_SUCCESS, plugin.name, plugin.version.major, plugin.version.minor, plugin.version.patch, plugin.author);
         plugin.main_function();
+        LOG_LOCALIZED_STRING(PLUGIN_LOAD_SUCCESS, plugin.name, plugin.version.major, plugin.version.minor, plugin.version.patch, plugin.author);
     }
 }

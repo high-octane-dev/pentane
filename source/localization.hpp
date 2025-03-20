@@ -64,7 +64,7 @@ inline std::array<std::string, PentaneLanguage::Max> PLUGIN_LOAD_SUCCESS {
 	"[pentane::plugin_loader::load_plugins] Módulo cargado satisfactoriamente: {}, Ver. {}.{}.{}, Por {}",
 	"[pentane::plugin_loader::load_plugins] Module chargé avec succès: {}, Ver. {}.{}.{}, Par {}",
 	"[pentane::plugin_loader::load_plugins] Modul erfolgreich geladet : {}, Ver. {}.{}.{}, Bei {}",
-	"[pentane::plugin_loader::load_plugins] Pomyślnie załadowano moduł: {}, Wer. {}.{}.{}, Według {}",
+	"[pentane::plugin_loader::load_plugins] Pomyślnie załadowano moduł: {}, Wer. {}.{}.{}, Zrobione przez {}",
 	"[pentane::plugin_loader::load_plugins] Модуль успешно загружен: {}, Вер. {}.{}.{}, От {}.",
 	"[pentane::plugin_loader::load_plugins] DLL 首尾よくロード：「{}」、バージョン： {}.{}.{}、開発者:「{}」",
 	"[pentane::plugin_loader::load_plugins] DLL 성공적으로 로드: {}, 버전: {}.{}.{}, 개발자: {}",
