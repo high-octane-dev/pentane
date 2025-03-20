@@ -57,12 +57,14 @@ class GameConfig;
 std::unique_ptr<GameConfig> CONFIG;
 std::mutex CONFIG_LOCK;
 
-#if defined(PENTANE_GAME_TARGET_MN)
+#if defined(PENTANE_GAME_TARGET_TVG)
+#include "games/tvg/config_impl.inl"
+#elif defined(PENTANE_GAME_TARGET_MN)
 #include "games/mn/config_impl.inl"
 #elif defined(PENTANE_GAME_TARGET_2TVG) || defined(PENTANE_GAME_TARGET_2TVGA)
-#include "games/tvg2/config_impl.inl"
-#elif defined(PENTANE_GAME_TARGET_TVG)
-#include "games/tvg/config_impl.inl"
+#include "games/2tvg/config_impl.inl"
+#elif defined(PENTANE_GAME_TARGET_3DTW)
+#include "games/3dtw/config_impl.inl"
 #endif
 
 auto GlobalConfig::read(const toml::table& tbl, std::vector<std::string>& errors) -> bool {

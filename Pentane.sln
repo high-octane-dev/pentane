@@ -3,26 +3,40 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35506.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pentane", "Pentane.vcxproj", "{6C900E97-E072-43B9-80C3-8F54BE034F4E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pentane-MN", "Pentane-MN.vcxproj", "{6C900E97-E072-43B9-80C3-8F54BE034F4E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pentane-TVG", "Pentane-TVG.vcxproj", "{BC5195F1-370C-4D2F-9AB7-2A6BA1D5289F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pentane-2TVG", "Pentane-2TVG.vcxproj", "{625657A0-8668-4DAF-B5F2-7AF07ADA2617}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pentane-3DTW", "Pentane-3DTW.vcxproj", "{78A935FC-4792-4EC9-87E6-B664DABF1437}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug-2TheVideoGame|x86 = Debug-2TheVideoGame|x86
-		Debug-MaterNational|x86 = Debug-MaterNational|x86
-		Release-2TheVideoGame|x86 = Release-2TheVideoGame|x86
-		Release-MaterNational|x86 = Release-MaterNational|x86
+		Debug|Default = Debug|Default
+		Release|Default = Release|Default
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6C900E97-E072-43B9-80C3-8F54BE034F4E}.Debug-2TheVideoGame|x86.ActiveCfg = Release-2TheVideoGame|Win32
-		{6C900E97-E072-43B9-80C3-8F54BE034F4E}.Debug-2TheVideoGame|x86.Build.0 = Release-2TheVideoGame|Win32
-		{6C900E97-E072-43B9-80C3-8F54BE034F4E}.Debug-MaterNational|x86.ActiveCfg = Debug-MaterNational|Win32
-		{6C900E97-E072-43B9-80C3-8F54BE034F4E}.Debug-MaterNational|x86.Build.0 = Debug-MaterNational|Win32
-		{6C900E97-E072-43B9-80C3-8F54BE034F4E}.Release-2TheVideoGame|x86.ActiveCfg = Release-2TheVideoGame|Win32
-		{6C900E97-E072-43B9-80C3-8F54BE034F4E}.Release-2TheVideoGame|x86.Build.0 = Release-2TheVideoGame|Win32
-		{6C900E97-E072-43B9-80C3-8F54BE034F4E}.Release-MaterNational|x86.ActiveCfg = Release-MaterNational|Win32
-		{6C900E97-E072-43B9-80C3-8F54BE034F4E}.Release-MaterNational|x86.Build.0 = Release-MaterNational|Win32
+		{6C900E97-E072-43B9-80C3-8F54BE034F4E}.Debug|Default.ActiveCfg = Debug|Win32
+		{6C900E97-E072-43B9-80C3-8F54BE034F4E}.Debug|Default.Build.0 = Debug|Win32
+		{6C900E97-E072-43B9-80C3-8F54BE034F4E}.Release|Default.ActiveCfg = Release|Win32
+		{6C900E97-E072-43B9-80C3-8F54BE034F4E}.Release|Default.Build.0 = Release|Win32
+		{BC5195F1-370C-4D2F-9AB7-2A6BA1D5289F}.Debug|Default.ActiveCfg = Debug|Win32
+		{BC5195F1-370C-4D2F-9AB7-2A6BA1D5289F}.Debug|Default.Build.0 = Debug|Win32
+		{BC5195F1-370C-4D2F-9AB7-2A6BA1D5289F}.Release|Default.ActiveCfg = Release|Win32
+		{BC5195F1-370C-4D2F-9AB7-2A6BA1D5289F}.Release|Default.Build.0 = Release|Win32
+		{625657A0-8668-4DAF-B5F2-7AF07ADA2617}.Debug|Default.ActiveCfg = Debug|Win32
+		{625657A0-8668-4DAF-B5F2-7AF07ADA2617}.Debug|Default.Build.0 = Debug|Win32
+		{625657A0-8668-4DAF-B5F2-7AF07ADA2617}.Release|Default.ActiveCfg = Release|Win32
+		{625657A0-8668-4DAF-B5F2-7AF07ADA2617}.Release|Default.Build.0 = Release|Win32
+		{78A935FC-4792-4EC9-87E6-B664DABF1437}.Debug|Default.ActiveCfg = Debug|x64
+		{78A935FC-4792-4EC9-87E6-B664DABF1437}.Debug|Default.Build.0 = Debug|x64
+		{78A935FC-4792-4EC9-87E6-B664DABF1437}.Release|Default.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DFA0F1D3-B3C5-480A-BC46-23C37C7242B7}
 	EndGlobalSection
 EndGlobal

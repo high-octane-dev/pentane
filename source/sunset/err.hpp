@@ -1,10 +1,31 @@
-#pragma once
+/*
+    MIT License
 
+    Copyright (c) 2020-2022 Basit Ayantunde
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+*/
+
+#pragma once
 #include <iostream>
 #include <format>
 
-// Use custom Result/Option implementations if STX is not present.
-#ifndef STX_VERSION
 template<class E>
 class Err {
 private:
@@ -47,7 +68,6 @@ private:
 public:
     constexpr Result(Err<E> error) : error_value(error.consume()), is_ok(false), inner() {};
     constexpr Result(Ok<T>&& object) : inner(std::move(object.consume())), is_ok(true), error_value() {};
-
 
     constexpr T unwrap() {
         if (is_ok) {
@@ -103,8 +123,3 @@ public:
         }
     }
 };
-#else
-template <typename T, typename Error>
-using Result = stx::Result<T, Error>;
-using stx::Option, stx::None, stx::Some;
-#endif

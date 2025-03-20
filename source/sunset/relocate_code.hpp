@@ -53,10 +53,15 @@ namespace std
 namespace sunset {
 	namespace detail {
 
+		constexpr std::size_t MINIMUM_OVERWRITE = 5;
+
 		inline Result<std::vector<std::uint8_t>, CodeRelocError> relocate_code(std::uintptr_t source, std::size_t source_size, std::uintptr_t dest) {
 			ZydisDecoder decoder{};
+#ifdef _M_X64
+			ZydisDecoderInit(&decoder, ZYDIS_MACHINE_MODE_LONG_64, ZYDIS_STACK_WIDTH_64);
+#else
 			ZydisDecoderInit(&decoder, ZYDIS_MACHINE_MODE_LONG_COMPAT_32, ZYDIS_STACK_WIDTH_32);
-			
+#endif
 			ZydisDecodedInstruction instruction{};
 			ZydisDecodedOperand operands[ZYDIS_MAX_OPERAND_COUNT]{};
 
@@ -73,21 +78,33 @@ namespace sunset {
 					if (elem.type == ZYDIS_OPERAND_TYPE_IMMEDIATE) {
 						if (elem.imm.is_relative) {
 							ZyanU64 absolute_address = 0;
+							// A hacky solution to get the size of the original instruction. We use this to fix the new IP-relative address.
+							std::uintptr_t absolute_address_minus_instruction_size = source + source_offset + elem.imm.value.s;
 							if (!ZYAN_SUCCESS(ZydisCalcAbsoluteAddress(&instruction, &elem, static_cast<ZyanU64>(source + source_offset), &absolute_address))) {
 								return Err(CodeRelocError::FailedAbsoluteAddressCalc);
 							}
-							elem.imm.value.u = absolute_address;
-							elem.imm.is_relative = false;
+							std::size_t estimated_instruction_size = static_cast<std::ptrdiff_t>(absolute_address) - absolute_address_minus_instruction_size;
+							// Here, we calculate a new relative address from the absolute address Zydis gives us, and the absolute estimated original instruction size.
+							std::intptr_t relative_address = static_cast<std::ptrdiff_t>(absolute_address) - (dest + dest_offset) - estimated_instruction_size;
+							elem.imm.value.s = relative_address;
 						}
 					}
 					if (elem.type == ZYDIS_OPERAND_TYPE_MEMORY) {
+#ifdef _M_X64
+						if (elem.mem.base == ZYDIS_REGISTER_RIP) {
+#else
 						if (elem.mem.base == ZYDIS_REGISTER_EIP) {
+#endif
 							ZyanU64 absolute_address = 0;
+							// A hacky solution to get the size of the original instruction. We use this to fix the new IP-relative address.
+							std::uintptr_t absolute_address_minus_instruction_size = source + source_offset + elem.mem.disp.value;
 							if (!ZYAN_SUCCESS(ZydisCalcAbsoluteAddress(&instruction, &elem, static_cast<ZyanU64>(source + source_offset), &absolute_address))) {
 								return Err(CodeRelocError::FailedAbsoluteAddressCalc);
 							}
-							elem.mem.base = ZYDIS_REGISTER_NONE;
-							elem.mem.disp.value = absolute_address;
+							std::size_t estimated_instruction_size = static_cast<std::ptrdiff_t>(absolute_address) - absolute_address_minus_instruction_size;
+							// Here, we calculate a new relative address from the absolute address Zydis gives us, and the absolute estimated original instruction size.
+							std::intptr_t relative_address = static_cast<std::ptrdiff_t>(absolute_address) - (dest + dest_offset) - 5;
+							elem.mem.disp.value = relative_address;
 						}
 					}
 				}
@@ -104,7 +121,7 @@ namespace sunset {
 
 				// Encode the instruction into the output vector.
 				ZyanUSize encoded_size = ZYDIS_MAX_INSTRUCTION_LENGTH;
-				if (!ZYAN_SUCCESS(ZydisEncoderEncodeInstructionAbsolute(&encoder_request, output.data() + dest_offset, &encoded_size, static_cast<ZyanU64>(dest + dest_offset)))) {
+				if (!ZYAN_SUCCESS(ZydisEncoderEncodeInstruction(&encoder_request, output.data() + dest_offset, &encoded_size))) {
 					return Err(CodeRelocError::FailedEncodeInstr);
 				}
 
@@ -120,8 +137,11 @@ namespace sunset {
 		
 		inline std::size_t get_instruction_len(std::uintptr_t ptr) {
 			ZydisDecoder decoder{};
+#ifdef _M_X64
+			ZydisDecoderInit(&decoder, ZYDIS_MACHINE_MODE_LONG_64, ZYDIS_STACK_WIDTH_64);
+#else
 			ZydisDecoderInit(&decoder, ZYDIS_MACHINE_MODE_LONG_COMPAT_32, ZYDIS_STACK_WIDTH_32);
-
+#endif	
 			ZydisDecodedInstruction instruction{};
 			ZydisDecodedOperand operands[ZYDIS_MAX_OPERAND_COUNT]{};
 			if (!ZYAN_SUCCESS(ZydisDecoderDecodeFull(&decoder, reinterpret_cast<const void*>(ptr), ZYDIS_MAX_INSTRUCTION_LENGTH, &instruction, operands))) {
@@ -132,8 +152,11 @@ namespace sunset {
 
 		inline std::pair<std::size_t, std::size_t> find_suitable_backup_size(std::uintptr_t base) {
 			ZydisDecoder decoder{};
+#ifdef _M_X64
+			ZydisDecoderInit(&decoder, ZYDIS_MACHINE_MODE_LONG_64, ZYDIS_STACK_WIDTH_64);
+#else
 			ZydisDecoderInit(&decoder, ZYDIS_MACHINE_MODE_LONG_COMPAT_32, ZYDIS_STACK_WIDTH_32);
-
+#endif	
 			ZydisDecodedInstruction instruction{};
 			ZydisDecodedOperand operands[ZYDIS_MAX_OPERAND_COUNT]{};
 
@@ -141,7 +164,7 @@ namespace sunset {
 			std::size_t padded = 0;
 
 			while (ZYAN_SUCCESS(ZydisDecoderDecodeFull(&decoder, reinterpret_cast<const void*>(base + offset), ZYDIS_MAX_INSTRUCTION_LENGTH, &instruction, operands))) {
-				if (offset >= 5) {
+				if (offset >= MINIMUM_OVERWRITE) {
 					break;
 				}
 				offset += instruction.length;

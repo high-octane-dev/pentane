@@ -6,11 +6,11 @@
 
 #include <Shlobj.h>
 
-#include "mn_file_system.hpp"
+#include "file_system.hpp"
 #include "../../sunset/sunset.hpp"
 #include "../../config.hpp"
 #include "../../logger.hpp"
-#include "..\..\localization.hpp"
+#include "../../localization.hpp"
 
 auto __fsopen = (void* (__cdecl*)(const char*, const char*, int))(0x0063FBFB);
 auto BASS_SampleLoad = (std::uint32_t(__stdcall*)(std::int32_t, const char*, std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t))(nullptr);
@@ -66,22 +66,19 @@ auto LoadedFilesystem::collect_files(const std::vector<std::string>& mods_enable
 	return true;
 }
 
-auto LoadedFilesystem::data_relative_path(const std::filesystem::path& base, const std::filesystem::path& absolute_path) const -> std::string
-{
+auto LoadedFilesystem::data_relative_path(const std::filesystem::path& base, const std::filesystem::path& absolute_path) const -> std::string {
 	std::string relative_file_path = absolute_path.lexically_relative(base).string();
 	std::transform(relative_file_path.begin(), relative_file_path.end(), relative_file_path.begin(), [](std::uint8_t c) { return std::tolower(c); });
 	return relative_file_path;
 }
 
-auto LoadedFilesystem::data_relative_path(const std::filesystem::path& absolute_path) const -> std::string
-{
+auto LoadedFilesystem::data_relative_path(const std::filesystem::path& absolute_path) const -> std::string {
 	std::string relative_file_path = absolute_path.lexically_relative(base_data_directory).string();
 	std::transform(relative_file_path.begin(), relative_file_path.end(), relative_file_path.begin(), [](std::uint8_t c) { return std::tolower(c); });
 	return relative_file_path;
 }
 
-auto LoadedFilesystem::is_data_file(const std::filesystem::path& absolute_path) const -> bool
-{
+auto LoadedFilesystem::is_data_file(const std::filesystem::path& absolute_path) const -> bool {
 	auto base_iter = base_data_directory.begin();
 	auto path_iter = absolute_path.begin();
 
@@ -138,7 +135,7 @@ struct BINK* __stdcall BinkOpenHook(char* file, std::uint32_t flags) {
 			const std::filesystem::path& output_file = patch_file.value().first;
 			const std::string& mod_name = patch_file.value().second;
 			std::string output_file_path = patch_file.value().first.string();
-			LOG_LOCALIZED_STRING(BINK_LOADING_FILE, relative_path, mod_name);
+			LOG_LOCALIZED_STRING(MN_BINK_LOADING_FILE, relative_path, mod_name);
 			return BinkOpen(output_file_path.c_str(), flags);
 		}
 	}
@@ -221,7 +218,7 @@ auto mn::fs::init(bool enable_save_redirection,
 
 	// Update the data directory string format used by MN's WinMain.
 	std::memcpy(BASE_DATA_DIRECTORY_NAME_C_FMT, base_data_directory_name_format.data(), base_data_directory_name_format.size());
-	sunset::write_push(reinterpret_cast<void*>(0x00619929), reinterpret_cast<uintptr_t>(&BASE_DATA_DIRECTORY_NAME_C_FMT));
+	sunset::inst::push_u32(reinterpret_cast<void*>(0x00619929), reinterpret_cast<uintptr_t>(&BASE_DATA_DIRECTORY_NAME_C_FMT));
 
 	if (save_redirection_directory.string().length() >= 256) {
 		std::string save_redirection_string = save_redirection_directory.string();

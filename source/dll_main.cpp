@@ -1,11 +1,14 @@
 #include <iostream>
 #include <Windows.h>
 #include <pathcch.h>
+
+#if !defined(PENTANE_GAME_TARGET_3DTW)
 #include "bink/bink.hpp"
+#endif
 #include "config.hpp"
-#include "games/mn/mn_file_system.hpp"
-#include "games/tvg/tvg_file_system.hpp"
-#include "games/tvg2/tvg2_file_system.hpp"
+#include "games/mn/file_system.hpp"
+#include "games/tvg/file_system.hpp"
+#include "games/2tvg/file_system.hpp"
 #include "logger.hpp"
 #include "plugin_loader.hpp"
 #include "target.hpp"
@@ -22,7 +25,10 @@ auto set_current_directory_to_module_location() -> std::filesystem::path {
 
 BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
     if (reason == DLL_PROCESS_ATTACH) {
+        // In Cars 3: Driven to Win, we're being loaded by `kernelx.dll` in the WinDurango runtime, and as such, don't need to hijack another module.
+#if !defined(PENTANE_GAME_TARGET_3DTW)
         bink::replace_funcs();
+#endif
         std::filesystem::path install_dir = set_current_directory_to_module_location();
         
         std::vector<std::string> config_initialization_errors{};
@@ -45,17 +51,20 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
             config::mods_enabled());
 #elif defined(PENTANE_GAME_TARGET_TVG)
         // TVG-Specific initialization.
-        tvg::fs::init();
+        tvg::fs::init(install_dir,
+            install_dir / "Data",
+            install_dir / "Pentane\\Mods",
+            config::mods_enabled());
 #elif defined(PENTANE_GAME_TARGET_2TVG)
         // TVG2-Specific initialization.
         // Removes a `FreeConsole` call from the original game, allowing the console logger to function correctly.
-        sunset::write_nop(reinterpret_cast<void*>(0x007b599f), 6);
+        sunset::inst::nop(reinterpret_cast<void*>(0x007b599f), 6);
 
         tvg2::fs::init();
 #elif defined(PENTANE_GAME_TARGET_2TVGA)
         // TVG2A-Specific initialization.
         // Removes a `FreeConsole` call from the original game, allowing the console logger to function correctly.
-        sunset::write_nop(reinterpret_cast<void*>(0x008249cf), 6);
+        sunset::inst::nop(reinterpret_cast<void*>(0x008249cf), 6);
 
         tvg2::fs::init();
 #endif

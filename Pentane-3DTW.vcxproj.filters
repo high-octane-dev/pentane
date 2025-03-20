@@ -15,9 +15,6 @@
     <Filter Include="Code\Core\Util">
       <UniqueIdentifier>{20b519a0-8ff6-4c91-afc2-c2369940cc75}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Code\Core\Bink">
-      <UniqueIdentifier>{f114e696-5c6d-4215-b041-ae1ec4367875}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Code\Core\Localization">
       <UniqueIdentifier>{cd58ae77-f640-4f56-be26-6fd34cb3a714}</UniqueIdentifier>
     </Filter>
@@ -27,34 +24,19 @@
     <Filter Include="Code\Core\Games">
       <UniqueIdentifier>{eaf6cbf8-5f9d-4c76-824b-262866225972}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Code\Core\Games\Mater-National">
-      <UniqueIdentifier>{528ddceb-f17d-46b9-8009-3a53acd060dd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Code\Core\Games\The-Video-Game">
-      <UniqueIdentifier>{392d4877-48c3-492f-8563-456ac672f16c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Code\Core\Games\2-The-Video-Game">
-      <UniqueIdentifier>{9d5707f7-273b-4302-8857-87d9174cf4d3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Code\Core\API">
       <UniqueIdentifier>{934fae74-9343-4271-a3b3-aaeeac4c0933}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Core\Games\Cars 3: Driven to Win">
+      <UniqueIdentifier>{72b531df-23b2-4215-874d-8022aaec5151}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\api\api_exports.cpp">
       <Filter>Code\Core\API</Filter>
     </ClCompile>
-    <ClCompile Include="source\localization.cpp">
-      <Filter>Code\Core\Localization</Filter>
-    </ClCompile>
-    <ClCompile Include="source\games\tvg\tvg_file_system.cpp">
-      <Filter>Code\Core\Games\The-Video-Game</Filter>
-    </ClCompile>
     <ClCompile Include="source\sunset\sunset.cpp">
       <Filter>Code\Sunset</Filter>
-    </ClCompile>
-    <ClCompile Include="source\games\mn\mn_file_system.cpp">
-      <Filter>Code\Core\Games\Mater-National</Filter>
     </ClCompile>
     <ClCompile Include="source\config.cpp">
       <Filter>Code\Core</Filter>
@@ -68,11 +50,8 @@
     <ClCompile Include="source\dll_main.cpp">
       <Filter>Code\Core</Filter>
     </ClCompile>
-    <ClCompile Include="source\bink\bink.cpp">
-      <Filter>Code\Core\Bink</Filter>
-    </ClCompile>
-    <ClCompile Include="source\games\tvg2\tvg2_file_system.cpp">
-      <Filter>Code</Filter>
+    <ClCompile Include="source\games\3dtw\file_system.cpp">
+      <Filter>Code\Core\Games\Cars 3: Driven to Win</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -82,9 +61,6 @@
     <ClInclude Include="source\localization.hpp">
       <Filter>Code\Core\Localization</Filter>
     </ClInclude>
-    <ClInclude Include="source\games\tvg\tvg_file_system.hpp">
-      <Filter>Code\Core\Games\The-Video-Game</Filter>
-    </ClInclude>
     <ClInclude Include="source\sunset\err.hpp">
       <Filter>Code\Sunset</Filter>
     </ClInclude>
@@ -93,9 +69,6 @@
     </ClInclude>
     <ClInclude Include="source\sunset\sunset.hpp">
       <Filter>Code\Sunset</Filter>
-    </ClInclude>
-    <ClInclude Include="source\games\mn\mn_file_system.hpp">
-      <Filter>Code\Core\Games\Mater-National</Filter>
     </ClInclude>
     <ClInclude Include="source\config.hpp">
       <Filter>Code\Core</Filter>
@@ -115,26 +88,19 @@
     <ClInclude Include="source\target.hpp">
       <Filter>Code\Core</Filter>
     </ClInclude>
-    <ClInclude Include="source\bink\bink.hpp">
-      <Filter>Code\Core\Bink</Filter>
-    </ClInclude>
     <ClInclude Include="source\version.hpp">
       <Filter>Code\Core</Filter>
     </ClInclude>
-    <ClInclude Include="source\games\tvg2\tvg2_file_system.hpp" />
+    <ClInclude Include="source\games\3dtw\file_system.hpp">
+      <Filter>Code\Core\Games\Cars 3: Driven to Win</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="source\exports.def">
       <Filter>Code</Filter>
     </None>
-    <None Include="source\games\tvg2\config_impl.inl">
-      <Filter>Code\Core\Games\2-The-Video-Game</Filter>
-    </None>
-    <None Include="source\games\mn\config_impl.inl">
-      <Filter>Code\Core\Games\Mater-National</Filter>
-    </None>
-    <None Include="source\games\tvg\config_impl.inl">
-      <Filter>Code\Core\Games\The-Video-Game</Filter>
+    <None Include="source\games\3dtw\config_impl.inl">
+      <Filter>Code\Core\Games\Cars 3: Driven to Win</Filter>
     </None>
   </ItemGroup>
 </Project>

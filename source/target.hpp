@@ -5,6 +5,7 @@ enum class PentaneTarget {
 	CarsMaterNationalChampionship = 2,
 	Cars2TheVideoGame = 3,
 	Cars2TheVideoGameArcade = 4,
+	Cars3DrivenToWin = 5,
 };
 
 #if defined(PENTANE_GAME_TARGET_TVG)
@@ -15,6 +16,8 @@ constexpr PentaneTarget GAME_TARGET{ PentaneTarget::CarsMaterNationalChampionshi
 constexpr PentaneTarget GAME_TARGET{ PentaneTarget::Cars2TheVideoGame };
 #elif defined(PENTANE_GAME_TARGET_2TVGA)
 constexpr PentaneTarget GAME_TARGET{ PentaneTarget::Cars2TheVideoGameArcade };
+#elif defined(PENTANE_GAME_TARGET_3DTW)
+constexpr PentaneTarget GAME_TARGET{ PentaneTarget::Cars3DrivenToWin };
 #else
 #error "Please define a game target!"
 #endif

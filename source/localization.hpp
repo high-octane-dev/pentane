@@ -216,7 +216,7 @@ inline std::array<std::string, PentaneLanguage::Max> MOD_REJECTED_DOES_NOT_EXIST
 };
 
 inline std::array<std::string, PentaneLanguage::Max> FOPEN_LOADING_FILE {
-	"[pentane::mn::fs::fopen] Loading file: {}",
+	"[pentane::mn::fs::fopen] Loading file: {} from mod: {}",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
 	"Unlocalized String: GERMAN",
@@ -227,8 +227,8 @@ inline std::array<std::string, PentaneLanguage::Max> FOPEN_LOADING_FILE {
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> BINK_LOADING_FILE{
-	"[pentane::mn::fs::BinkOpen] Loading .BIK file: {}",
+inline std::array<std::string, PentaneLanguage::Max> MN_BINK_LOADING_FILE{
+	"[pentane::mn::fs::BinkOpen] Loading .BIK file: {} from mod: {}",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
 	"Unlocalized String: GERMAN",
@@ -240,7 +240,7 @@ inline std::array<std::string, PentaneLanguage::Max> BINK_LOADING_FILE{
 };
 
 inline std::array<std::string, PentaneLanguage::Max> STREAM_LOADING_FILE{
-	"[pentane::mn::fs::BASS_StreamCreateFile] Loading stream file: {}",
+	"[pentane::mn::fs::BASS_StreamCreateFile] Loading stream file: {} from mod: {}",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
 	"Unlocalized String: GERMAN",
@@ -252,7 +252,7 @@ inline std::array<std::string, PentaneLanguage::Max> STREAM_LOADING_FILE{
 };
 
 inline std::array<std::string, PentaneLanguage::Max> SAMPLE_LOADING_FILE{
-	"[pentane::mn::fs::BASS_SampleLoad] Loading stream file: {}",
+	"[pentane::mn::fs::BASS_SampleLoad] Loading stream file: {} from mod: {}",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
 	"Unlocalized String: GERMAN",
@@ -289,6 +289,42 @@ inline std::array<std::string, PentaneLanguage::Max> DATA_DIR_TOO_LARGE {
 
 inline std::array<std::string, PentaneLanguage::Max> SAVE_DIR_TOO_LARGE {
 	"[pentane::mn::fs::init] Save redirection path: {} is too large, reverting to standard save data location!",
+	"Unlocalized String: SPANISH",
+	"Unlocalized String: FRENCH",
+	"Unlocalized String: GERMAN",
+	"Unlocalized String: POLISH",
+	"Unlocalized String: RUSSIAN",
+	"Unlocalized String: JAPANESE",
+	"Unlocalized String: KOREAN",
+	"Unlocalized String: HINDI",
+};
+
+inline std::array<std::string, PentaneLanguage::Max> PAKSYSTEM_LOADING_MODDED_FILE{
+	"[pentane::tvg::fs::PakSystem::LoadFileByPath] Loading file: {} from mod: {}",
+	"Unlocalized String: SPANISH",
+	"Unlocalized String: FRENCH",
+	"Unlocalized String: GERMAN",
+	"Unlocalized String: POLISH",
+	"Unlocalized String: RUSSIAN",
+	"Unlocalized String: JAPANESE",
+	"Unlocalized String: KOREAN",
+	"Unlocalized String: HINDI",
+};
+
+inline std::array<std::string, PentaneLanguage::Max> PAKSYSTEM_LOADING_BASE_FILE{
+	"[pentane::tvg::fs::PakSystem::LoadFileByPath] Loading file: {}",
+	"Unlocalized String: SPANISH",
+	"Unlocalized String: FRENCH",
+	"Unlocalized String: GERMAN",
+	"Unlocalized String: POLISH",
+	"Unlocalized String: RUSSIAN",
+	"Unlocalized String: JAPANESE",
+	"Unlocalized String: KOREAN",
+	"Unlocalized String: HINDI",
+};
+
+inline std::array<std::string, PentaneLanguage::Max> TVG_BINK_LOADING_FILE{
+	"[pentane::tvg::fs::BinkOpen] Loading .BIK file: {} from mod: {}",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
 	"Unlocalized String: GERMAN",
@@ -444,7 +480,7 @@ inline std::array<std::string, PentaneLanguage::Max> GLOBAL_CONFIG_PLUGINS_MISSI
 };
 
 inline std::array<std::string, PentaneLanguage::Max> MATER_NATIONAL_CONFIG_MISSING_ENABLE_SAVE_REDIRECTION {
-	"[MaterNationalConfig::read] `game-config` in `config.toml` is missing `enable_save_redirection`! Saves will be loaded from the Documents folder.",
+	"[GameConfig::read] `game-config` in `config.toml` is missing `enable_save_redirection`! Saves will be loaded from the Documents folder.",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
 	"Unlocalized String: GERMAN",
@@ -456,7 +492,7 @@ inline std::array<std::string, PentaneLanguage::Max> MATER_NATIONAL_CONFIG_MISSI
 };
 
 inline std::array<std::string, PentaneLanguage::Max> MATER_NATIONAL_CONFIG_MISSING_DATA_DIRECTORY {
-	"[MaterNationalConfig::read] `game-config` in `config.toml` is missing `data_directory_name`! All game assets will be read from `DataPC`.",
+	"[GameConfig::read] `game-config` in `config.toml` is missing `data_directory_name`! All game assets will be read from `DataPC`.",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
 	"Unlocalized String: GERMAN",
@@ -468,7 +504,7 @@ inline std::array<std::string, PentaneLanguage::Max> MATER_NATIONAL_CONFIG_MISSI
 };
 
 inline std::array<std::string, PentaneLanguage::Max> MATER_NATIONAL_CONFIG_MISSING {
-	"[MaterNationalConfig::read] `config.toml` is missing the `game-config` section! Saves will be loaded from the `Documents` folder, and game assets will be read from `DataPC`.",
+	"[GameConfig::read] `config.toml` is missing the `game-config` section! Saves will be loaded from the `Documents` folder, and game assets will be read from `DataPC`.",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
 	"Unlocalized String: GERMAN",
