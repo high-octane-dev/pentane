@@ -17,11 +17,6 @@ inline bool operator==(const PentaneUUID& lhs, const PentaneUUID& rhs) {
 	return memcmp(lhs.data, rhs.data, 16) == 0;
 }
 
-struct PluginDependency {
-	PentaneUUID dependency_uuid;
-	SemVer pinned_version;
-};
-
 struct PluginInformation {
 	char name[256];
 	char author[256];

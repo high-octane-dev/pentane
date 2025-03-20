@@ -156,12 +156,12 @@ inline std::array<std::string, PentaneLanguage::Max> MODULE_REJECTED {
 };
 
 inline std::array<std::string, PentaneLanguage::Max> MODULE_REJECTED_NOT_FOUND {
-	"[pentane::plugin_loader::load_plugins] Rejected module: {} as it was not found in `LocalStorage\\Plugins`!",
-	"[pentane::plugin_loader::load_plugins] ¡Módulo rechazado: {} porque no se encontró en `LocalStorage\\Plugins`!",
+	"[pentane::plugin_loader::load_plugins] Rejected module: {} as it was not found in `Pentane\\Plugins`!",
+	"[pentane::plugin_loader::load_plugins] ¡Módulo rechazado: {} porque no se encontró en `Pentane\\Plugins`!",
 	"Unlocalized String: FRENCH",
-	"[pentane::plugin_loader::load_plugins] Modul Abgelehnt: {} da es nicht gefunden wurde in LocalStorage\\Plugins!",
-	"[pentane::plugin_loader::load_plugins] Odrzucono moduł: {} ponieważ nie został on znaleziony w LocalStorage\\Plugins!",
-	"[pentane::plugin_loader::load_plugins] Отклонен модуль: {} так как он не был найден в LocalStorage\\Plugins!",
+	"[pentane::plugin_loader::load_plugins] Modul Abgelehnt: {} da es nicht gefunden wurde in Pentane\\Plugins!",
+	"[pentane::plugin_loader::load_plugins] Odrzucono moduł: {} ponieważ nie został on znaleziony w Pentane\\Plugins!",
+	"[pentane::plugin_loader::load_plugins] Отклонен модуль: {} так как он не был найден в Pentane\\Plugins!",
 	"Unlocalized String: JAPANESE",
 	"Unlocalized String: KOREAN",
 	"Unlocalized String: HINDI",

@@ -22,6 +22,7 @@ void* BINK_WAIT;
 
 // Used by TVG, present in MN's binkw32.
 void* BINK_GO_TO;
+void* BINK_COPY_TO_BUFFER;
 
 // Used by 2TVG, present in MN's binkw32.
 void* BINK_GET_FRAME_BUFFERS_INFO;
@@ -54,6 +55,7 @@ void bink::replace_funcs() {
 		BINK_WAIT = GetProcAddress(H_BINKW32, "_BinkWait@4");
 
 		BINK_GO_TO = GetProcAddress(H_BINKW32, "_BinkGoto@12");
+		BINK_COPY_TO_BUFFER = GetProcAddress(H_BINKW32, "_BinkCopyToBuffer@28");
 
 		BINK_GET_FRAME_BUFFERS_INFO = GetProcAddress(H_BINKW32, "_BinkGetFrameBuffersInfo@8");
 		BINK_GET_SUMMARY = GetProcAddress(H_BINKW32, "_BinkGetSummary@8");
@@ -140,6 +142,10 @@ extern "C" __declspec(dllexport) __declspec(naked) std::int32_t __stdcall BinkWa
 
 extern "C" __declspec(dllexport) __declspec(naked) void __stdcall BinkGoto(BINK* bink, std::uint32_t frame, std::int32_t flags) {
 	__asm jmp BINK_GO_TO;
+}
+
+extern "C" __declspec(dllexport) __declspec(naked) std::int32_t __stdcall BinkCopyToBuffer(BINK* bink, void* buffer, std::int32_t pitch, std::int32_t height, std::uint32_t x, std::uint32_t y, std::uint32_t flags) {
+	__asm jmp BINK_COPY_TO_BUFFER;
 }
 
 extern "C" __declspec(dllexport) __declspec(naked) void __stdcall BinkGetFrameBuffersInfo(BINK* bink, void* frame_buffers) {

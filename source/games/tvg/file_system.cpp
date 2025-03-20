@@ -175,8 +175,6 @@ DefineReplacementHook(LoadFileByPath) {
         // Otherwise, fall back to loading from the `Data` directory.
         else if (std::filesystem::is_regular_file(path)) {
             LOG_LOCALIZED_STRING(PAKSYSTEM_LOADING_BASE_FILE, relative_path);
-
-            logger::log_format("[PakSystem::LoadFileByPath] {}", path);
             file->pak_file_pointer = tvg_fopen(path, "rb");
 
             // Here, we allocate a new dummy FileInfo to ensure that the game can access its "offset" which we set to zero as, of course, modded files not inside a Pak don't need one.
