@@ -45,7 +45,7 @@ auto LoadedFilesystem::collect_files(const std::vector<std::string>& mods_enable
 		if (std::filesystem::is_directory(mod_folder)) {
 			for (const auto& entry : std::filesystem::recursive_directory_iterator(mod_folder)) {
 				std::wstring fname = entry.path().filename().native();
-				if (!MOD_FILES_BLACKLIST.contains(fname)) {
+				if (!MOD_FILES_BLACKLIST.contains(fname) && entry.is_regular_file()) {
 					// Get the `DataPC`-relative file path, and force it to be lowercase.
 					std::string relative_file_path = data_relative_path(mods_directory / mod_name, entry.path());
 					if (file_path_to_index.contains(relative_file_path)) {

@@ -74,16 +74,18 @@ auto LoadedFilesystem::collect_files(const std::vector<std::string>& mods_enable
         std::filesystem::path mod_folder = mods_directory / mod_name;
         if (std::filesystem::is_directory(mod_folder)) {
             for (const auto& entry : std::filesystem::recursive_directory_iterator(mod_folder)) {
-                std::wstring fname = entry.path().filename().native();
-                // Get the `DataPC`-relative file path, and force it to be lowercase.
-                std::string relative_file_path = entry.path().lexically_relative(mod_folder).string();
-                if (file_path_to_index.contains(relative_file_path)) {
-                    LOG_LOCALIZED_STRING(FILE_IN_MOD_OVERWRITES_EXISTING, relative_file_path, mod_name, mod_names[file_path_to_index.at(relative_file_path)]);
+                if (entry.is_regular_file()) {
+                    std::wstring fname = entry.path().filename().native();
+                    // Get the `DataPC`-relative file path, and force it to be lowercase.
+                    std::string relative_file_path = entry.path().lexically_relative(mod_folder).string();
+                    if (file_path_to_index.contains(relative_file_path)) {
+                        LOG_LOCALIZED_STRING(FILE_IN_MOD_OVERWRITES_EXISTING, relative_file_path, mod_name, mod_names[file_path_to_index.at(relative_file_path)]);
+                    }
+                    else {
+                        LOG_LOCALIZED_STRING(COLLECTED_FILE, relative_file_path, mod_name);
+                    }
+                    file_path_to_index.insert_or_assign(relative_file_path, mod_names.size());
                 }
-                else {
-                    LOG_LOCALIZED_STRING(COLLECTED_FILE, relative_file_path, mod_name);
-                }
-                file_path_to_index.insert_or_assign(relative_file_path, mod_names.size());
             }
             mod_names.push_back(mod_name);
         }
