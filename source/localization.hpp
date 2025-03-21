@@ -144,12 +144,12 @@ inline std::array<std::string, PentaneLanguage::Max> MODULE_REJECTED_MISSING_DEP
 };
 
 inline std::array<std::string, PentaneLanguage::Max> MODULE_REJECTED {
-	"[pentane::plugin_loader::load_plugins] Rejected module: {}!",
-	"[pentane::plugin_loader::load_plugins] ¡Módulo rechazado: {}!",
-	"[pentane::plugin_loader::load_plugins] Module rejeté : {} !",
-	"[pentane::plugin_loader::load_plugins] Modul Abgelehnt: {}!",
-	"[pentane::plugin_loader::load_plugins] Odrzucono moduł: {}!",
-	"[pentane::plugin_loader::load_plugins] Отклонен модуль: {}!",
+	"[pentane::plugin_loader::load_plugins] Rejected module: {} [GetLastError: {}]!",
+	"[pentane::plugin_loader::load_plugins] ¡Módulo rechazado: {} [GetLastError: {}]!",
+	"[pentane::plugin_loader::load_plugins] Module rejeté : {} [GetLastError: {}]!",
+	"[pentane::plugin_loader::load_plugins] Modul Abgelehnt: {} [GetLastError: {}]!",
+	"[pentane::plugin_loader::load_plugins] Odrzucono moduł: {} [GetLastError: {}]!",
+	"[pentane::plugin_loader::load_plugins] Отклонен модуль: {} [GetLastError: {}]!",
 	"Unlocalized String: JAPANESE",
 	"Unlocalized String: KOREAN",
 	"Unlocalized String: HINDI",
