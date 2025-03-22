@@ -28,7 +28,9 @@ extern "C" int Pentane_IsPluginLoaded(PentaneUUID* uuid) {
 	return plugin_loader::is_loaded(uuid) ? 1 : 0;
 }
 
-#pragma comment(linker, "/EXPORT:Pentane_GetUserLanguage=_Pentane_GetUserLanguage")
-extern "C" int Pentane_GetUserLanguage() {
-	return static_cast<int>(config::language());
+// FIXME: Is this the best way to do this?
+#pragma comment(linker, "/EXPORT:Pentane_GetUserLanguage_ISO6391=_Pentane_GetUserLanguage_ISO6391")
+extern "C" unsigned short Pentane_GetUserLanguage_ISO6391() {
+	const auto& code = LANGUAGE_CODE[config::language()];
+	return static_cast<unsigned short>(std::bit_cast<unsigned char>(code[0])) << 8 | static_cast<unsigned short>(std::bit_cast<unsigned char>(code[1]));
 }
