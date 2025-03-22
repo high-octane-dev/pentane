@@ -62,7 +62,7 @@ struct LoadedFilesystem {
     std::vector<std::string> mod_names;
 
     auto collect_files(const std::vector<std::string>& mods_enabled) -> bool;
-    auto lookup(const std::string& relative_path) const->std::optional<std::pair<std::filesystem::path, std::string>>;
+    auto lookup(std::string relative_path) const->std::optional<std::pair<std::filesystem::path, std::string>>;
     auto save_dir() const->std::filesystem::path;
 };
 
@@ -78,6 +78,7 @@ auto LoadedFilesystem::collect_files(const std::vector<std::string>& mods_enable
                     std::wstring fname = entry.path().filename().native();
                     // Get the `DataPC`-relative file path, and force it to be lowercase.
                     std::string relative_file_path = entry.path().lexically_relative(mod_folder).string();
+                    std::transform(relative_file_path.begin(), relative_file_path.end(), relative_file_path.begin(), [](std::uint8_t c) { return std::tolower(c); });
                     if (file_path_to_index.contains(relative_file_path)) {
                         LOG_LOCALIZED_STRING(FILE_IN_MOD_OVERWRITES_EXISTING, relative_file_path, mod_name, mod_names[file_path_to_index.at(relative_file_path)]);
                     }
@@ -96,7 +97,8 @@ auto LoadedFilesystem::collect_files(const std::vector<std::string>& mods_enable
     return true;
 }
 
-auto LoadedFilesystem::lookup(const std::string& relative_path) const -> std::optional<std::pair<std::filesystem::path, std::string>> {
+auto LoadedFilesystem::lookup(std::string relative_path) const -> std::optional<std::pair<std::filesystem::path, std::string>> {
+    std::transform(relative_path.begin(), relative_path.end(), relative_path.begin(), [](std::uint8_t c) { return std::tolower(c); });
     if (file_path_to_index.contains(relative_path)) {
         const std::string& mod_name = mod_names[file_path_to_index.at(relative_path)];
         return std::make_pair(mods_directory / mod_name / relative_path, mod_name);
@@ -118,7 +120,7 @@ struct BINK* __stdcall BinkOpenHook(char* file, std::uint32_t flags) {
         const std::filesystem::path& output_file = patch_file.value().first;
         const std::string& mod_name = patch_file.value().second;
         std::string output_file_path = patch_file.value().first.string();
-        LOG_LOCALIZED_STRING(TVG_BINK_LOADING_FILE, relative_path, mod_name);
+        LOG_LOCALIZED_STRING(BINK_LOADING_MODDED_FILE, relative_path, mod_name);
         return tvg_BinkOpen(output_file_path.c_str(), flags);
     }
     return tvg_BinkOpen(file, flags);
@@ -143,7 +145,7 @@ DefineReplacementHook(FreeLoadedFile) {
     }
 };
 
-DefineReplacementHook(LoadFileByPath) {
+DefineReplacementHook(PakOpenFile) {
     static LoadedFile* __fastcall callback(PakSystem * _this, std::uintptr_t edx, const char* path, std::uint32_t _unk) {
         auto* file = reinterpret_cast<LoadedFile*>(tvg_operator_new(sizeof(LoadedFile)));
         file->pak_file_pointer = nullptr;
@@ -159,7 +161,7 @@ DefineReplacementHook(LoadFileByPath) {
             const std::filesystem::path& output_file = patch_file.value().first;
             const std::string& mod_name = patch_file.value().second;
             std::string output_file_path = patch_file.value().first.string();
-            LOG_LOCALIZED_STRING(PAKSYSTEM_LOADING_MODDED_FILE, relative_path, mod_name);
+            LOG_LOCALIZED_STRING(TVG_PAK_LOADING_MODDED_FILE, relative_path, mod_name);
             file->pak_file_pointer = tvg_fopen(output_file_path.data(), "rb");
 
             // Here, we allocate a new dummy FileInfo to ensure that the game can access its "offset" which we set to zero as, of course, modded files not inside a Pak don't need one.
@@ -176,7 +178,7 @@ DefineReplacementHook(LoadFileByPath) {
         }
         // Otherwise, fall back to loading from the `Data` directory.
         else if (std::filesystem::is_regular_file(path)) {
-            LOG_LOCALIZED_STRING(PAKSYSTEM_LOADING_BASE_FILE, relative_path);
+            LOG_LOCALIZED_STRING(TVG_PAK_LOADING_BASE_FILE, relative_path);
             file->pak_file_pointer = tvg_fopen(path, "rb");
 
             // Here, we allocate a new dummy FileInfo to ensure that the game can access its "offset" which we set to zero as, of course, modded files not inside a Pak don't need one.
@@ -206,7 +208,7 @@ auto tvg::fs::init(const std::filesystem::path& install_directory,
 {
     tvg_BinkOpen = reinterpret_cast<struct BINK* (__stdcall*)(const char*, std::uint32_t)>(GetProcAddress(GetModuleHandleA("binkw32.dll"), "_BinkOpen@8"));
     if (tvg_BinkOpen == nullptr) {
-        LOG_LOCALIZED_STRING(FS_FAILED_INIT);
+        LOG_LOCALIZED_STRING(MN_FS_FAILED_INIT);
     }
 	LOADED_FS.mods_directory = mods_directory;
 
@@ -218,7 +220,7 @@ auto tvg::fs::init(const std::filesystem::path& install_directory,
 
     MountPakFile::install_at_ptr(0x00687a60);
     FreeLoadedFile::install_at_ptr(0x00687ef0);
-    LoadFileByPath::install_at_ptr(0x00687d90);
+    PakOpenFile::install_at_ptr(0x00687d90);
 
     sunset::utils::set_permission(reinterpret_cast<void*>(0x007112c4), 4, sunset::utils::Perm::ReadWrite);
     *reinterpret_cast<void**>(0x007112c4) = BinkOpenHook;
