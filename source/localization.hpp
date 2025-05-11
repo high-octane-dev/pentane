@@ -22,6 +22,16 @@ enum PentaneLanguage {
 	Max
 };
 
+constexpr std::uint16_t GET_LANGUAGE_CODE_EN = 'e' << 8 | 'n';
+constexpr std::uint16_t GET_LANGUAGE_CODE_ES = 'e' << 8 | 's';
+constexpr std::uint16_t GET_LANGUAGE_CODE_FR = 'f' << 8 | 'r';
+constexpr std::uint16_t GET_LANGUAGE_CODE_DE = 'd' << 8 | 'e';
+constexpr std::uint16_t GET_LANGUAGE_CODE_PL = 'p' << 8 | 'l';
+constexpr std::uint16_t GET_LANGUAGE_CODE_RU = 'r' << 8 | 'u';
+constexpr std::uint16_t GET_LANGUAGE_CODE_JA = 'j' << 8 | 'a';
+constexpr std::uint16_t GET_LANGUAGE_CODE_KO = 'k' << 8 | 'o';
+constexpr std::uint16_t GET_LANGUAGE_CODE_HI = 'h' << 8 | 'i';
+
 // 2-letter latin codes for each language, as per ISO 639-1.
 inline std::array<std::string, PentaneLanguage::Max> LANGUAGE_CODE {
 	"en", "es", "fr", "de", "pl", "ru", "ja", "ko", "hi"
