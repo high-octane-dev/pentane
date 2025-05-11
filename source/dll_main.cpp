@@ -1,6 +1,7 @@
 #include <iostream>
 #include <Windows.h>
 #include <pathcch.h>
+#include <shlwapi.h>
 
 #if !defined(PENTANE_GAME_TARGET_3DTW)
 #include "bink/bink.hpp"
@@ -22,6 +23,18 @@ auto set_current_directory_to_module_location() -> std::filesystem::path {
     SetCurrentDirectoryW(game_directory);
     return game_directory;
 }
+
+#if defined(PENTANE_GAME_TARGET_2TVG) or defined(PENTANE_GAME_TARGET_2TVGA)
+auto is_arcade() -> bool {
+    wchar_t exe_name[1024];
+    GetModuleFileNameW(nullptr, exe_name, 1024);
+    PathStripPathW(exe_name);
+    if (std::wstring_view(exe_name).contains(L"daemon")) {
+        return true;
+    }
+    return false;
+}
+#endif
 
 BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
     if (reason == DLL_PROCESS_ATTACH) {
@@ -55,17 +68,19 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
             install_dir / "Data",
             install_dir / "Pentane\\Mods",
             config::mods_enabled());
+
 #elif defined(PENTANE_GAME_TARGET_2TVG)
-        // TVG2-Specific initialization.
-        // Removes a `FreeConsole` call from the original game, allowing the console logger to function correctly.
-        sunset::inst::nop(reinterpret_cast<void*>(0x007b599f), 6);
-
-        tvg2::fs::init();
-#elif defined(PENTANE_GAME_TARGET_2TVGA)
-        // TVG2A-Specific initialization.
-        // Removes a `FreeConsole` call from the original game, allowing the console logger to function correctly.
-        sunset::inst::nop(reinterpret_cast<void*>(0x008249cf), 6);
-
+        auto arcade = is_arcade();
+        if (arcade) {
+            // TVG2A-Specific initialization.
+            // Removes a `FreeConsole` call from the original game, allowing the console logger to function correctly.
+            sunset::inst::nop(reinterpret_cast<void*>(0x008249cf), 6);
+        }
+        else {
+            // TVG2-Specific initialization.
+            // Removes a `FreeConsole` call from the original game, allowing the console logger to function correctly.
+            sunset::inst::nop(reinterpret_cast<void*>(0x007b599f), 6);
+        }
         tvg2::fs::init();
 #endif
     }
