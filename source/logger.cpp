@@ -52,7 +52,7 @@ public:
         return true;
     }
 
-    void log(const std::string& str) {
+    void log(const std::string_view& str) {
         if (console_file != nullptr) {
             std::cout << str << std::endl;
         }
@@ -79,7 +79,7 @@ bool logger::init(const std::filesystem::path& file_path, bool create_console, b
     return created_console && create_console || created_file && log_to_file;
 }
 
-void logger::log(const std::string& str) {
+void logger::log(const std::string_view& str) {
     std::scoped_lock<std::mutex> lock(LOGGER_LOCK);
     LOGGER->log(str);
 }

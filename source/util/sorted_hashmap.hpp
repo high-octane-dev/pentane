@@ -55,7 +55,7 @@ namespace util {
 			try {
 				return elements.at(key_to_element_index.at(key));
 			}
-			catch (std::out_of_range& e) {
+			catch (std::out_of_range&) {
 				return std::nullopt;
 			}
 		}
@@ -71,7 +71,7 @@ namespace util {
 			try {
 				return elements.at(index);
 			}
-			catch (std::out_of_range& e) {
+			catch (std::out_of_range&) {
 				return std::nullopt;
 			}
 		}
@@ -93,7 +93,7 @@ namespace util {
 			try {
 				return key_to_element_index.at(key);
 			}
-			catch (std::out_of_range& e) {
+			catch (std::out_of_range&) {
 				return std::nullopt;
 			}
 		}

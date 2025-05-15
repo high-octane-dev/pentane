@@ -103,6 +103,9 @@
     <ClInclude Include="source\version.hpp">
       <Filter>Code\Core</Filter>
     </ClInclude>
+    <ClInclude Include="source\util\mutex.hpp">
+      <Filter>Code\Core\Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="source\exports.def">

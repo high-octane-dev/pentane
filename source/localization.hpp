@@ -2,7 +2,7 @@
 #include <string>
 #include <array>
 
-#define LOG_LOCALIZED_STRING(LABEL, ...) { std::string value = std::vformat(LABEL[config::language()], std::make_format_args(__VA_ARGS__)); logger::log(value); }
+// #define LOG_LOCALIZED_STRING(LABEL, ...) { std::string value = std::vformat(LABEL[config::language()], std::make_format_args(__VA_ARGS__)); logger::log(value); }
 
 enum PentaneLanguage {
 	// NA
@@ -33,31 +33,31 @@ constexpr std::uint16_t GET_LANGUAGE_CODE_KO = 'k' << 8 | 'o';
 constexpr std::uint16_t GET_LANGUAGE_CODE_HI = 'h' << 8 | 'i';
 
 // 2-letter latin codes for each language, as per ISO 639-1.
-inline std::array<std::string, PentaneLanguage::Max> LANGUAGE_CODE {
+inline std::array<std::string_view, PentaneLanguage::Max> LANGUAGE_CODE {
 	"en", "es", "fr", "de", "pl", "ru", "ja", "ko", "hi"
 };
 
 // 3-letter latin codes for each language, as per ISO 639-2.
-inline std::array<std::string, PentaneLanguage::Max> LANGUAGE_CODE_3 {
+inline std::array<std::string_view, PentaneLanguage::Max> LANGUAGE_CODE_3 {
 	"eng", "spa", "fra", "deu", "pol", "rus", "jpn", "kor", "hin"
 };
 
 // Each language's name in itself.
-inline std::array<std::string, PentaneLanguage::Max> LANGUAGE_NAME {
+inline std::array<std::string_view, PentaneLanguage::Max> LANGUAGE_NAME {
 	"English", "Español", "Français", "Deutsch", "Polski", "Русский", "日本語", "한국어", "हिन्दी"
 };
 
 // Each language's name, but with all latin/cyrillic characters in their lowercase form.
-inline std::array<std::string, PentaneLanguage::Max> LANGUAGE_NAME_LOWER {
+inline std::array<std::string_view, PentaneLanguage::Max> LANGUAGE_NAME_LOWER {
 	"english", "español", "français", "deutsch", "polski", "русский", "日本語", "한국어", "हिन्दी"
 };
 
 // Each language's name in English.
-inline std::array<std::string, PentaneLanguage::Max> LANGUAGE_EN {
+inline std::array<std::string_view, PentaneLanguage::Max> LANGUAGE_EN {
 	"English", "Spanish", "French", "German", "Polish", "Russian", "Japanese", "Korean", "Hindi"
 };
 
-inline std::array<std::string, PentaneLanguage::Max> PENTANE_CONSOLE {
+inline std::array<std::string_view, PentaneLanguage::Max> PENTANE_CONSOLE {
 	"Pentane Console",
 	"Consola Pentane",
 	"Console Pentane",
@@ -69,7 +69,7 @@ inline std::array<std::string, PentaneLanguage::Max> PENTANE_CONSOLE {
 	"पेंटेन कंसोल"
 };
 
-inline std::array<std::string, PentaneLanguage::Max> PLUGIN_LOAD_SUCCESS {
+inline std::array<std::string_view, PentaneLanguage::Max> PLUGIN_LOAD_SUCCESS {
 	"[plugin_loader::load_plugins] Successfully loaded module: {}, Ver. {}.{}.{}, By {}",
 	"[plugin_loader::load_plugins] Módulo cargado satisfactoriamente: {}, Ver. {}.{}.{}, Por {}",
 	"[plugin_loader::load_plugins] Module chargé avec succès: {}, Ver. {}.{}.{}, Par {}",
@@ -81,7 +81,7 @@ inline std::array<std::string, PentaneLanguage::Max> PLUGIN_LOAD_SUCCESS {
 	"[plugin_loader::load_plugins] मॉड्यूल सफलतापूर्वक लोड किया गया: {}, Ver. {}.{}.{}, By {}"
 };
 
-inline std::array<std::string, PentaneLanguage::Max> MODULE_REJECTED_OLDER_DUPLICATE {
+inline std::array<std::string_view, PentaneLanguage::Max> MODULE_REJECTED_OLDER_DUPLICATE {
 	"[plugin_loader::load_plugins] Rejected module: {}, Ver. {}.{}.{}, as a newer version was already processed!",
 	"[plugin_loader::load_plugins] ¡Módulo rechazado: {}, Ver. {}.{}.{}, porque se procesó una versión más nueva!",
 	"Unlocalized String: FRENCH",
@@ -93,7 +93,7 @@ inline std::array<std::string, PentaneLanguage::Max> MODULE_REJECTED_OLDER_DUPLI
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> MODULE_REJECTED_MISSING_MAIN {
+inline std::array<std::string_view, PentaneLanguage::Max> MODULE_REJECTED_MISSING_MAIN {
 	"[plugin_loader::load_plugins] Rejected module: {}, Ver. {}.{}.{}, as its `Pentane_Main` export was missing!",
 	"[plugin_loader::load_plugins] ¡Módulo rechazado: {}, Ver. {}.{}.{}, porque faltaba su exportación `Pentane_Main`!",
 	"Unlocalized String: FRENCH",
@@ -105,7 +105,7 @@ inline std::array<std::string, PentaneLanguage::Max> MODULE_REJECTED_MISSING_MAI
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> MODULE_REJECTED_PENTANE_OOD {
+inline std::array<std::string_view, PentaneLanguage::Max> MODULE_REJECTED_PENTANE_OOD {
 	"[plugin_loader::load_plugins] Rejected module: {}, Ver. {}.{}.{}, as it requires a newer version of Pentane!",
 	"[plugin_loader::load_plugins] ¡Módulo rechazado: {}, Ver. {}.{}.{}, porque necesitó una versión más nueva de Pentane!",
 	"Unlocalized String: FRENCH",
@@ -117,7 +117,7 @@ inline std::array<std::string, PentaneLanguage::Max> MODULE_REJECTED_PENTANE_OOD
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> MODULE_REJECTED_MISSING_INFO_STRUCT_EXPORT {
+inline std::array<std::string_view, PentaneLanguage::Max> MODULE_REJECTED_MISSING_INFO_STRUCT_EXPORT {
 	"[plugin_loader::load_plugins] Rejected module: {} as its `Pentane_PluginInformation` export was missing!",
 	"[plugin_loader::load_plugins] ¡Módulo rechazado: {} porque faltaba su exportación `Pentane_PluginInformation`!",
 	"Unlocalized String: FRENCH",
@@ -129,7 +129,7 @@ inline std::array<std::string, PentaneLanguage::Max> MODULE_REJECTED_MISSING_INF
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> MODULE_REJECTED_MISSING_DEPENDENCY_COUNT_EXPORT {
+inline std::array<std::string_view, PentaneLanguage::Max> MODULE_REJECTED_MISSING_DEPENDENCY_COUNT_EXPORT {
 	"[plugin_loader::load_plugins] Rejected module: {} as its `Pentane_PluginDependencyCount` export was missing!",
 	"[plugin_loader::load_plugins] ¡Módulo rechazado: {} porque faltaba su exportación `Pentane_PluginDependencyCount`!",
 	"Unlocalized String: FRENCH",
@@ -141,7 +141,7 @@ inline std::array<std::string, PentaneLanguage::Max> MODULE_REJECTED_MISSING_DEP
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> MODULE_REJECTED_MISSING_DEPENDENCIES_EXPORT {
+inline std::array<std::string_view, PentaneLanguage::Max> MODULE_REJECTED_MISSING_DEPENDENCIES_EXPORT {
 	"[plugin_loader::load_plugins] Rejected module: {} as its `Pentane_PluginDependencies` export was missing!",
 	"[plugin_loader::load_plugins] ¡Módulo rechazado: {} porque faltaba su exportación `Pentane_PluginDependencies`!",
 	"Unlocalized String: FRENCH",
@@ -153,19 +153,19 @@ inline std::array<std::string, PentaneLanguage::Max> MODULE_REJECTED_MISSING_DEP
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> MODULE_REJECTED {
-	"[plugin_loader::load_plugins] Rejected module: {} [GetLastError: {}]!",
-	"[plugin_loader::load_plugins] ¡Módulo rechazado: {} [GetLastError: {}]!",
-	"[plugin_loader::load_plugins] Module rejeté : {} [GetLastError: {}]!",
-	"[plugin_loader::load_plugins] Modul Abgelehnt: {} [GetLastError: {}]!",
-	"[plugin_loader::load_plugins] Odrzucono moduł: {} [GetLastError: {}]!",
-	"[plugin_loader::load_plugins] Отклонен модуль: {} [GetLastError: {}]!",
+inline std::array<std::string_view, PentaneLanguage::Max> MODULE_REJECTED {
+	"[plugin_loader::load_plugins] Rejected module: {} {}!",
+	"[plugin_loader::load_plugins] ¡Módulo rechazado: {} {}!",
+	"[plugin_loader::load_plugins] Module rejeté : {} {}!",
+	"[plugin_loader::load_plugins] Modul Abgelehnt: {} {}!",
+	"[plugin_loader::load_plugins] Odrzucono moduł: {} {}!",
+	"[plugin_loader::load_plugins] Отклонен модуль: {} {}!",
 	"Unlocalized String: JAPANESE",
 	"Unlocalized String: KOREAN",
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> MODULE_REJECTED_NOT_FOUND {
+inline std::array<std::string_view, PentaneLanguage::Max> MODULE_REJECTED_NOT_FOUND {
 	"[plugin_loader::load_plugins] Rejected module: {} as it was not found in `Pentane\\Plugins`!",
 	"[plugin_loader::load_plugins] ¡Módulo rechazado: {} porque no se encontró en `Pentane\\Plugins`!",
 	"Unlocalized String: FRENCH",
@@ -177,7 +177,7 @@ inline std::array<std::string, PentaneLanguage::Max> MODULE_REJECTED_NOT_FOUND {
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> MODULE_REJECTED_MISSING_DEPENDENCY {
+inline std::array<std::string_view, PentaneLanguage::Max> MODULE_REJECTED_MISSING_DEPENDENCY {
 	"[plugin_loader::load_plugins] Rejected module: {} as one or more of its dependencies are missing!",
 	"[plugin_loader::load_plugins] ¡Módulo rechazado: {} porque faltaban una o más de sus dependencias!",
 	"Unlocalized String: FRENCH",
@@ -189,7 +189,7 @@ inline std::array<std::string, PentaneLanguage::Max> MODULE_REJECTED_MISSING_DEP
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> FILE_IN_MOD_OVERWRITES_EXISTING {
+inline std::array<std::string_view, PentaneLanguage::Max> FILE_IN_MOD_OVERWRITES_EXISTING {
 	"[fs::collect_files] File: {} in mod: {} overwrites existing mod file in: {}",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -201,7 +201,7 @@ inline std::array<std::string, PentaneLanguage::Max> FILE_IN_MOD_OVERWRITES_EXIS
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> COLLECTED_FILE {
+inline std::array<std::string_view, PentaneLanguage::Max> COLLECTED_FILE {
 	"[fs::collect_files] Found file: {} in mod: {}",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -213,7 +213,7 @@ inline std::array<std::string, PentaneLanguage::Max> COLLECTED_FILE {
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> MOD_REJECTED_DOES_NOT_EXIST {
+inline std::array<std::string_view, PentaneLanguage::Max> MOD_REJECTED_DOES_NOT_EXIST {
 	"[fs::collect_files] Mod: {} was rejected as it does not exist!",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -225,7 +225,7 @@ inline std::array<std::string, PentaneLanguage::Max> MOD_REJECTED_DOES_NOT_EXIST
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> MN_FOPEN_LOADING_MODDED_FILE {
+inline std::array<std::string_view, PentaneLanguage::Max> MN_FOPEN_LOADING_MODDED_FILE {
 	"[fs::fopen] Loading file: {} from mod: {}",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -237,7 +237,7 @@ inline std::array<std::string, PentaneLanguage::Max> MN_FOPEN_LOADING_MODDED_FIL
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> BINK_LOADING_MODDED_FILE{
+inline std::array<std::string_view, PentaneLanguage::Max> BINK_LOADING_MODDED_FILE{
 	"[fs::BinkOpen] Loading .BIK file: {} from mod: {}",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -249,7 +249,7 @@ inline std::array<std::string, PentaneLanguage::Max> BINK_LOADING_MODDED_FILE{
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> MN_STREAM_LOADING_FILE{
+inline std::array<std::string_view, PentaneLanguage::Max> MN_STREAM_LOADING_FILE{
 	"[fs::BASS_StreamCreateFile] Loading stream file: {} from mod: {}",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -261,7 +261,7 @@ inline std::array<std::string, PentaneLanguage::Max> MN_STREAM_LOADING_FILE{
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> MN_SAMPLE_LOADING_FILE{
+inline std::array<std::string_view, PentaneLanguage::Max> MN_SAMPLE_LOADING_FILE{
 	"[fs::BASS_SampleLoad] Loading stream file: {} from mod: {}",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -273,7 +273,7 @@ inline std::array<std::string, PentaneLanguage::Max> MN_SAMPLE_LOADING_FILE{
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> MN_FS_FAILED_INIT {
+inline std::array<std::string_view, PentaneLanguage::Max> MN_FS_FAILED_INIT {
 	"[fs::init] Failed to initialize filesystem as either BASS or BinkW32 was not loaded.",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -285,7 +285,7 @@ inline std::array<std::string, PentaneLanguage::Max> MN_FS_FAILED_INIT {
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> MN_DATA_DIR_TOO_LARGE {
+inline std::array<std::string_view, PentaneLanguage::Max> MN_DATA_DIR_TOO_LARGE {
 	"[fs::init] Data directory path: {} is too large, reverting to `DataPC`!",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -297,7 +297,7 @@ inline std::array<std::string, PentaneLanguage::Max> MN_DATA_DIR_TOO_LARGE {
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> MN_SAVE_DIR_TOO_LARGE {
+inline std::array<std::string_view, PentaneLanguage::Max> MN_SAVE_DIR_TOO_LARGE {
 	"[fs::init] Save redirection path: {} is too large, reverting to standard save data location!",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -309,7 +309,7 @@ inline std::array<std::string, PentaneLanguage::Max> MN_SAVE_DIR_TOO_LARGE {
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> TVG_PAK_LOADING_MODDED_FILE {
+inline std::array<std::string_view, PentaneLanguage::Max> TVG_PAK_LOADING_MODDED_FILE {
 	"[fs::PAK::OpenFile] Loading file: {} from mod: {}",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -321,7 +321,7 @@ inline std::array<std::string, PentaneLanguage::Max> TVG_PAK_LOADING_MODDED_FILE
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> TVG_PAK_LOADING_BASE_FILE{
+inline std::array<std::string_view, PentaneLanguage::Max> TVG_PAK_LOADING_BASE_FILE{
 	"[fs::PAK::OpenFile] Loading file: {}",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -333,7 +333,7 @@ inline std::array<std::string, PentaneLanguage::Max> TVG_PAK_LOADING_BASE_FILE{
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> CONFIG_PARSE_FAIL {
+inline std::array<std::string_view, PentaneLanguage::Max> CONFIG_PARSE_FAIL {
 	"[GameConfig::read] Failed to parse `config.toml`! No plugins or mods will be loaded, all further information logged will be in English, saves will be loaded from the `Documents` folder, and game assets will be read from `DataPC`.",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -345,7 +345,7 @@ inline std::array<std::string, PentaneLanguage::Max> CONFIG_PARSE_FAIL {
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> GLOBAL_CONFIG_MISSING_CONFIG {
+inline std::array<std::string_view, PentaneLanguage::Max> GLOBAL_CONFIG_MISSING_CONFIG {
 	"[GlobalConfig::read] `config.toml` is missing the `config` section! No plugins or mods will be loaded, and the log will be in English.",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -357,7 +357,7 @@ inline std::array<std::string, PentaneLanguage::Max> GLOBAL_CONFIG_MISSING_CONFI
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> GLOBAL_CONFIG_MISSING_MODS {
+inline std::array<std::string_view, PentaneLanguage::Max> GLOBAL_CONFIG_MISSING_MODS {
 	"[GlobalConfig::read] `config.toml` is missing the `mods` section! No mods will be loaded.",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -369,7 +369,7 @@ inline std::array<std::string, PentaneLanguage::Max> GLOBAL_CONFIG_MISSING_MODS 
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> GLOBAL_CONFIG_MISSING_PLUGINS {
+inline std::array<std::string_view, PentaneLanguage::Max> GLOBAL_CONFIG_MISSING_PLUGINS {
 	"[GlobalConfig::read] `config.toml` is missing the `plugins` section! No mods will be loaded.",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -381,7 +381,7 @@ inline std::array<std::string, PentaneLanguage::Max> GLOBAL_CONFIG_MISSING_PLUGI
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> GLOBAL_CONFIG_CONFIG_MISSING_LANG {
+inline std::array<std::string_view, PentaneLanguage::Max> GLOBAL_CONFIG_CONFIG_MISSING_LANG {
 	"[GlobalConfig::read] `config` in `config.toml` is missing `language`! All further information logged will be in English.",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -393,7 +393,7 @@ inline std::array<std::string, PentaneLanguage::Max> GLOBAL_CONFIG_CONFIG_MISSIN
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> GLOBAL_CONFIG_CONFIG_UNRECOGNIZED_LANG {
+inline std::array<std::string_view, PentaneLanguage::Max> GLOBAL_CONFIG_CONFIG_UNRECOGNIZED_LANG {
 	"[GlobalConfig::read] Failed to recognize language set in `config`! All further information logged will be in English.",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -405,7 +405,7 @@ inline std::array<std::string, PentaneLanguage::Max> GLOBAL_CONFIG_CONFIG_UNRECO
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_MODS {
+inline std::array<std::string_view, PentaneLanguage::Max> GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_MODS {
 	"[GlobalConfig::read] `config` in `config.toml` is missing `enable_mods`! No mods will be loaded.",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -417,7 +417,7 @@ inline std::array<std::string, PentaneLanguage::Max> GLOBAL_CONFIG_CONFIG_MISSIN
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_PLUGINS {
+inline std::array<std::string_view, PentaneLanguage::Max> GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_PLUGINS {
 	"[GlobalConfig::read] `config` in `config.toml` is missing `enable_plugins`! No plugins will be loaded.",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -429,7 +429,7 @@ inline std::array<std::string, PentaneLanguage::Max> GLOBAL_CONFIG_CONFIG_MISSIN
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_CONSOLE_LOGGING {
+inline std::array<std::string_view, PentaneLanguage::Max> GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_CONSOLE_LOGGING {
 	"[GlobalConfig::read] `config` in `config.toml` is missing `enable_console_logging`! Pentane will create a console window.",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -441,7 +441,7 @@ inline std::array<std::string, PentaneLanguage::Max> GLOBAL_CONFIG_CONFIG_MISSIN
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_FILE_LOGGING {
+inline std::array<std::string_view, PentaneLanguage::Max> GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_FILE_LOGGING {
 	"[GlobalConfig::read] `config` in `config.toml` is missing `enable_console_window`! Pentane will create a console window.",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -453,7 +453,7 @@ inline std::array<std::string, PentaneLanguage::Max> GLOBAL_CONFIG_CONFIG_MISSIN
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> GLOBAL_CONFIG_MODS_MISSING_ENABLED_MODS {
+inline std::array<std::string_view, PentaneLanguage::Max> GLOBAL_CONFIG_MODS_MISSING_ENABLED_MODS {
 	"[GlobalConfig::read] `mods` in `config.toml` is missing `enabled_mods`! No mods will be loaded.",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -465,7 +465,7 @@ inline std::array<std::string, PentaneLanguage::Max> GLOBAL_CONFIG_MODS_MISSING_
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> GLOBAL_CONFIG_PLUGINS_MISSING_ENABLED_PLUGINS {
+inline std::array<std::string_view, PentaneLanguage::Max> GLOBAL_CONFIG_PLUGINS_MISSING_ENABLED_PLUGINS {
 	"[GlobalConfig::read] `plugins` in `config.toml` is missing `enabled_plugins`! No plugins will be loaded.",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -477,7 +477,7 @@ inline std::array<std::string, PentaneLanguage::Max> GLOBAL_CONFIG_PLUGINS_MISSI
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> MATER_NATIONAL_CONFIG_MISSING_ENABLE_SAVE_REDIRECTION {
+inline std::array<std::string_view, PentaneLanguage::Max> MATER_NATIONAL_CONFIG_MISSING_ENABLE_SAVE_REDIRECTION {
 	"[GameConfig::read] `game-config` in `config.toml` is missing `enable_save_redirection`! Saves will be loaded from the Documents folder.",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -489,7 +489,7 @@ inline std::array<std::string, PentaneLanguage::Max> MATER_NATIONAL_CONFIG_MISSI
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> MATER_NATIONAL_CONFIG_MISSING_DATA_DIRECTORY {
+inline std::array<std::string_view, PentaneLanguage::Max> MATER_NATIONAL_CONFIG_MISSING_DATA_DIRECTORY {
 	"[GameConfig::read] `game-config` in `config.toml` is missing `data_directory_name`! All game assets will be read from `DataPC`.",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",
@@ -501,7 +501,7 @@ inline std::array<std::string, PentaneLanguage::Max> MATER_NATIONAL_CONFIG_MISSI
 	"Unlocalized String: HINDI",
 };
 
-inline std::array<std::string, PentaneLanguage::Max> MATER_NATIONAL_CONFIG_MISSING {
+inline std::array<std::string_view, PentaneLanguage::Max> MATER_NATIONAL_CONFIG_MISSING {
 	"[GameConfig::read] `config.toml` is missing the `game-config` section! Saves will be loaded from the `Documents` folder, and game assets will be read from `DataPC`.",
 	"Unlocalized String: SPANISH",
 	"Unlocalized String: FRENCH",

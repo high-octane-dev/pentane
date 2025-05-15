@@ -5,7 +5,7 @@
 #include "localization.hpp"
 
 namespace config {
-	bool init_global(const std::filesystem::path& file_path, std::vector<std::string>& errors);
+	bool init_global(const std::filesystem::path& file_path, std::vector<std::string_view>& errors);
 	PentaneLanguage language();
 	bool console_logging_enabled();
 	bool file_logging_enabled();

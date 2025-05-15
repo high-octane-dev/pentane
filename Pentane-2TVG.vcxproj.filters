@@ -103,6 +103,9 @@
     <ClInclude Include="source\games\2tvg\file_system.hpp">
       <Filter>Code\Core\Games\Cars 2: The Video Game</Filter>
     </ClInclude>
+    <ClInclude Include="source\util\mutex.hpp">
+      <Filter>Code\Core\Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="source\exports.def">

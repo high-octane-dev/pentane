@@ -7,6 +7,7 @@
 #include <Shlobj.h>
 
 #include "file_system.hpp"
+#include "../../util/mutex.hpp"
 #include "../../sunset/sunset.hpp"
 #include "../../config.hpp"
 #include "../../logger.hpp"
@@ -35,8 +36,7 @@ struct LoadedFilesystem {
 
 // config.ini and language.ini are forbidden from being modified via the filesystem.
 std::unordered_set<std::wstring> MOD_FILES_BLACKLIST{ L"config.ini", L"language.ini" };
-LoadedFilesystem LOADED_FS{};
-std::mutex LOADED_FS_LOCK{};
+util::Mutex<LoadedFilesystem> LOADED_FS{};
 static char BASE_DATA_DIRECTORY_NAME_C_FMT[1024] = "%s\\DataPC\\";
 
 auto LoadedFilesystem::collect_files(const std::vector<std::string>& mods_enabled) -> bool {
@@ -108,12 +108,12 @@ auto LoadedFilesystem::save_dir() const -> std::filesystem::path {
 
 DefineReplacementHook(fopenHook) {
 	static void* __cdecl callback(char* _Filename, char* _Mode) {
-		std::scoped_lock<std::mutex> lock(LOADED_FS_LOCK);
+		const auto& loaded_fs = *LOADED_FS.lock();
 		std::filesystem::path absolute_file_path = _Filename;
-		if (LOADED_FS.is_data_file(absolute_file_path)) {
+		if (loaded_fs.is_data_file(absolute_file_path)) {
 			// Get the `DataPC`-relative path.
-			std::string relative_path = LOADED_FS.data_relative_path(absolute_file_path);
-			if (auto patch_file = LOADED_FS.lookup(relative_path); patch_file.has_value()) {
+			std::string relative_path = loaded_fs.data_relative_path(absolute_file_path);
+			if (auto patch_file = loaded_fs.lookup(relative_path); patch_file.has_value()) {
 				const std::filesystem::path& output_file = patch_file.value().first;
 				const std::string& mod_name = patch_file.value().second;
 				std::string output_file_path = patch_file.value().first.string();
@@ -126,12 +126,12 @@ DefineReplacementHook(fopenHook) {
 };
 
 struct BINK* __stdcall BinkOpenHook(char* file, std::uint32_t flags) {
-	std::scoped_lock<std::mutex> lock(LOADED_FS_LOCK);
+	const auto& loaded_fs = *LOADED_FS.lock();
 	std::filesystem::path absolute_file_path = file;
-	if (LOADED_FS.is_data_file(absolute_file_path)) {
+	if (loaded_fs.is_data_file(absolute_file_path)) {
 		// Get the `DataPC`-relative path.
-		std::string relative_path = LOADED_FS.data_relative_path(absolute_file_path);
-		if (auto patch_file = LOADED_FS.lookup(relative_path); patch_file.has_value()) {
+		std::string relative_path = loaded_fs.data_relative_path(absolute_file_path);
+		if (auto patch_file = loaded_fs.lookup(relative_path); patch_file.has_value()) {
 			const std::filesystem::path& output_file = patch_file.value().first;
 			const std::string& mod_name = patch_file.value().second;
 			std::string output_file_path = patch_file.value().first.string();
@@ -143,12 +143,12 @@ struct BINK* __stdcall BinkOpenHook(char* file, std::uint32_t flags) {
 }
 
 std::uint32_t __stdcall BASS_StreamCreateFileHook(std::int32_t mem, char* file, std::uint32_t offset, std::uint32_t length, std::uint32_t flags) {
-	std::scoped_lock<std::mutex> lock(LOADED_FS_LOCK);
+	const auto& loaded_fs = *LOADED_FS.lock();
 	std::filesystem::path absolute_file_path = file;
-	if (LOADED_FS.is_data_file(absolute_file_path)) {
+	if (loaded_fs.is_data_file(absolute_file_path)) {
 		// Get the `DataPC`-relative path.
-		std::string relative_path = LOADED_FS.data_relative_path(absolute_file_path);
-		if (auto patch_file = LOADED_FS.lookup(relative_path); patch_file.has_value()) {
+		std::string relative_path = loaded_fs.data_relative_path(absolute_file_path);
+		if (auto patch_file = loaded_fs.lookup(relative_path); patch_file.has_value()) {
 			const std::filesystem::path& output_file = patch_file.value().first;
 			const std::string& mod_name = patch_file.value().second;
 			std::string output_file_path = patch_file.value().first.string();
@@ -160,12 +160,12 @@ std::uint32_t __stdcall BASS_StreamCreateFileHook(std::int32_t mem, char* file, 
 }
 
 std::uint32_t __stdcall BASS_SampleLoadHook(std::int32_t mem, char* file, std::uint32_t offset, std::uint32_t length, std::uint32_t max, std::uint32_t flags) {
-	std::scoped_lock<std::mutex> lock(LOADED_FS_LOCK);
+	const auto& loaded_fs = *LOADED_FS.lock();
 	std::filesystem::path absolute_file_path = file;
-	if (LOADED_FS.is_data_file(absolute_file_path)) {
+	if (loaded_fs.is_data_file(absolute_file_path)) {
 		// Get the `DataPC`-relative path.
-		std::string relative_path = LOADED_FS.data_relative_path(absolute_file_path);
-		if (auto patch_file = LOADED_FS.lookup(relative_path); patch_file.has_value()) {
+		std::string relative_path = loaded_fs.data_relative_path(absolute_file_path);
+		if (auto patch_file = loaded_fs.lookup(relative_path); patch_file.has_value()) {
 			const std::filesystem::path& output_file = patch_file.value().first;
 			const std::string& mod_name = patch_file.value().second;
 			std::string output_file_path = patch_file.value().first.string();
@@ -178,8 +178,8 @@ std::uint32_t __stdcall BASS_SampleLoadHook(std::int32_t mem, char* file, std::u
 
 DefineReplacementHook(TRCEngineGetSaveDir) {
 	static void __fastcall callback(char* _this) {
-		std::scoped_lock<std::mutex> lock(LOADED_FS_LOCK);
-		std::filesystem::path dir = LOADED_FS.save_dir();
+		const auto& loaded_fs = *LOADED_FS.lock();
+		std::filesystem::path dir = loaded_fs.save_dir();
 		if (!std::filesystem::is_directory(dir)) {
 			std::filesystem::create_directories(dir);
 		}
@@ -189,7 +189,6 @@ DefineReplacementHook(TRCEngineGetSaveDir) {
 	}
 };
 
-// After fs::init, every access LOADED_FS must be protected via LOADED_FS_LOCK.
 auto mn::fs::init(bool enable_save_redirection,
 	const std::filesystem::path& install_directory,
 	const std::filesystem::path& save_redirection_directory,
@@ -204,15 +203,16 @@ auto mn::fs::init(bool enable_save_redirection,
 	if (BinkOpen == nullptr || BASS_SampleLoad == nullptr || BASS_StreamCreateFile == nullptr) {
 		LOG_LOCALIZED_STRING(MN_FS_FAILED_INIT);
 	}
+	auto& loaded_fs = *LOADED_FS.lock_mut();
 
-	LOADED_FS.base_data_directory = base_data_directory;
-	LOADED_FS.save_file_redirection_enabled = enable_save_redirection && save_redirection_directory.string().length() < 256;
-	LOADED_FS.mods_directory = mods_directory;
+	loaded_fs.base_data_directory = base_data_directory;
+	loaded_fs.save_file_redirection_enabled = enable_save_redirection && save_redirection_directory.string().length() < 256;
+	loaded_fs.mods_directory = mods_directory;
 
 	std::string base_data_directory_name = base_data_directory.lexically_relative(base_data_directory.parent_path()).string();
 	std::string base_data_directory_name_format = std::format("%s\\{}\\", base_data_directory_name);
 	if (base_data_directory_name_format.size() >= sizeof(BASE_DATA_DIRECTORY_NAME_C_FMT)) {
-		LOADED_FS.base_data_directory = install_directory / L"DataPC";
+		loaded_fs.base_data_directory = install_directory / L"DataPC";
 		LOG_LOCALIZED_STRING(MN_DATA_DIR_TOO_LARGE, base_data_directory_name);
 	}
 
@@ -226,15 +226,15 @@ auto mn::fs::init(bool enable_save_redirection,
 	}
 
 	if (!mods_enabled.empty()) {
-		LOADED_FS.collect_files(mods_enabled);
+		loaded_fs.collect_files(mods_enabled);
 	}
-	if (LOADED_FS.save_file_redirection_enabled) {
-		LOADED_FS.save_redirection_directory = save_redirection_directory;
+	if (loaded_fs.save_file_redirection_enabled) {
+		loaded_fs.save_redirection_directory = save_redirection_directory;
 	}
 	else {
 		wchar_t documents[1024];
 		SHGetFolderPathW(0, CSIDL_MYDOCUMENTS, 0, 0, documents);
-		LOADED_FS.save_redirection_directory = std::filesystem::path(documents) / L"\\THQ\\Cars2\\";
+		loaded_fs.save_redirection_directory = std::filesystem::path(documents) / L"\\THQ\\Cars2\\";
 	}
 
 	TRCEngineGetSaveDir::install_at_ptr(0x00425280);

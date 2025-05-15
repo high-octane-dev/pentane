@@ -4,14 +4,14 @@ private:
 	bool enable_save_redirection = false;
 	std::string data_directory_name = "DataPC";
 public:
-	auto read(const toml::table& tbl, std::vector<std::string>& errors) -> bool;
-	auto init(const std::filesystem::path& file_path, std::vector<std::string>& errors) -> bool;
+	auto read(const toml::table& tbl, std::vector<std::string_view>& errors) -> bool;
+	auto init(const std::filesystem::path& file_path, std::vector<std::string_view>& errors) -> bool;
 	auto save_redirection_enabled() const -> bool;
 	auto data_directory() const->std::string;
 };
 
 
-auto GameConfig::read(const toml::table& tbl, std::vector<std::string>& errors) -> bool {
+auto GameConfig::read(const toml::table& tbl, std::vector<std::string_view>& errors) -> bool {
 	GlobalConfig::read(tbl, errors);
 	if (tbl.contains("game-config")) {
 		const auto& game_config_node = tbl["game-config"];
@@ -37,7 +37,7 @@ auto GameConfig::read(const toml::table& tbl, std::vector<std::string>& errors) 
 	return true;
 }
 
-auto GameConfig::init(const std::filesystem::path& file_path, std::vector<std::string>& errors) -> bool
+auto GameConfig::init(const std::filesystem::path& file_path, std::vector<std::string_view>& errors) -> bool
 {
 	toml::table tbl{};
 	try {
@@ -60,11 +60,11 @@ auto GameConfig::data_directory() const -> std::string {
 }
 
 bool config::mn::save_redirection_enabled() {
-	std::scoped_lock<std::mutex> lock(CONFIG_LOCK);
-	return CONFIG->save_redirection_enabled();
+	auto& config = *CONFIG.lock();
+	return config->save_redirection_enabled();
 }
 
 std::string config::mn::data_directory_name() {
-	std::scoped_lock<std::mutex> lock(CONFIG_LOCK);
-	return CONFIG->data_directory();
+	auto& config = *CONFIG.lock();
+	return config->data_directory();
 }

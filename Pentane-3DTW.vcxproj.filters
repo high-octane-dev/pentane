@@ -94,6 +94,9 @@
     <ClInclude Include="source\games\3dtw\file_system.hpp">
       <Filter>Code\Core\Games\Cars 3: Driven to Win</Filter>
     </ClInclude>
+    <ClInclude Include="source\util\mutex.hpp">
+      <Filter>Code\Core\Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="source\exports.def">

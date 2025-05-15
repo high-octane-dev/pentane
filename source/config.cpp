@@ -6,6 +6,7 @@
 #include "target.hpp"
 
 #include "config.hpp"
+#include "util/mutex.hpp"
 
 bool ichar_equals(char a, char b) {
 	return std::tolower(static_cast<unsigned char>(a)) == std::tolower(static_cast<unsigned char>(b));
@@ -34,7 +35,7 @@ private:
 	std::vector<std::string> enabled_mods;
 	std::vector<std::string> enabled_plugins;
 public:
-	auto read(const toml::table& tbl, std::vector<std::string>& errors) -> bool;
+	auto read(const toml::table& tbl, std::vector<std::string_view>& errors) -> bool;
 	auto get_language() const -> PentaneLanguage;
 	auto console_logging_enabled() const -> bool;
 	auto file_logging_enabled() const -> bool;
@@ -54,8 +55,7 @@ public:
 
 class GameConfig;
 
-std::unique_ptr<GameConfig> CONFIG;
-std::mutex CONFIG_LOCK;
+util::Mutex<std::unique_ptr<GameConfig>> CONFIG;
 
 #if defined(PENTANE_GAME_TARGET_TVG)
 #include "games/tvg/config_impl.inl"
@@ -67,14 +67,14 @@ std::mutex CONFIG_LOCK;
 #include "games/3dtw/config_impl.inl"
 #endif
 
-auto GlobalConfig::read(const toml::table& tbl, std::vector<std::string>& errors) -> bool {
+auto GlobalConfig::read(const toml::table& tbl, std::vector<std::string_view>& errors) -> bool {
 	// We'll use the system language for the first error message, since we can't know the user-selected language at that point.
 	// We'll only use the system language to print CONFIG_PARSE_FAIL, GLOBAL_CONFIG_CONFIG_MISSING_LANG, or GLOBAL_CONFIG_MISSING_CONFIG; if either `config` is missing or `language` is missing in `config.toml`.
 	PentaneLanguage system_language = get_system_language();
 	if (tbl.contains("config")) {
 		const auto& config_node = tbl["config"];
 
-		std::string language_string = LANGUAGE_NAME[PentaneLanguage::English];
+		std::string language_string{ LANGUAGE_NAME[PentaneLanguage::English] };
 		bool should_load_mods = false;
 		bool should_load_plugins = false;
 
@@ -207,36 +207,33 @@ auto GlobalConfig::get_enabled_plugins() const -> std::vector<std::string> {
 }
 
 
-bool config::init_global(const std::filesystem::path& file_path, std::vector<std::string>& errors)
-{
-	std::scoped_lock<std::mutex> lock(CONFIG_LOCK);
-	CONFIG = std::make_unique<GameConfig>();
-	return CONFIG->init(file_path, errors);
+bool config::init_global(const std::filesystem::path& file_path, std::vector<std::string_view>& errors) {
+	auto& config = *CONFIG.lock_mut();
+	config = std::make_unique<GameConfig>();
+	return config->init(file_path, errors);
 }
 
 PentaneLanguage config::language() {
-	std::scoped_lock<std::mutex> lock(CONFIG_LOCK);
-	return CONFIG->get_language();
+	auto& config = *CONFIG.lock();
+	return config->get_language();
 }
 
-bool config::console_logging_enabled()
-{
-	std::scoped_lock<std::mutex> lock(CONFIG_LOCK);
-	return CONFIG->console_logging_enabled();
+bool config::console_logging_enabled() {
+	auto& config = *CONFIG.lock();
+	return config->console_logging_enabled();
 }
 
-bool config::file_logging_enabled()
-{
-	std::scoped_lock<std::mutex> lock(CONFIG_LOCK);
-	return CONFIG->file_logging_enabled();
+bool config::file_logging_enabled() {
+	auto& config = *CONFIG.lock();
+	return config->file_logging_enabled();
 }
 
 std::vector<std::string> config::mods_enabled() {
-	std::scoped_lock<std::mutex> lock(CONFIG_LOCK);
-	return CONFIG->get_enabled_mods();
+	auto& config = *CONFIG.lock();
+	return config->get_enabled_mods();
 }
 
 std::vector<std::string> config::plugins_enabled() {
-	std::scoped_lock<std::mutex> lock(CONFIG_LOCK);
-	return CONFIG->get_enabled_plugins();
+	auto& config = *CONFIG.lock();
+	return config->get_enabled_plugins();
 }

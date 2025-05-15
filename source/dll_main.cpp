@@ -36,6 +36,60 @@ auto is_arcade() -> bool {
 }
 #endif
 
+DefineReplacementHook(HandleLog) {
+    static void __fastcall callback(void* _this, std::uintptr_t edx, char* message) {
+        if (message != nullptr) {
+            std::string_view string = message;
+            while (string.ends_with('\n')) {
+                string.remove_suffix(1);
+            }
+            logger::log_format("[CommandConsole::Echo] {}", string);
+        }
+    }
+};
+
+std::atomic<bool> visited = false;
+DefineReplacementHook(CarsFrontEnd_SetScreen) {
+    static void __fastcall callback(void* _this, uintptr_t edx, int unk, char* unk_name, unsigned char unk2) {
+        if (unk_name != nullptr) {
+            logger::log_format("[CarsFrontEnd::SetScreen] {}, {}, {}", unk, unk_name, unk2);
+        }
+        /*
+        if (!visited.load()) {
+            original(_this, edx, 3, nullptr, 1);
+        }
+        
+        else {
+            original(_this, edx, unk, unk_name, unk2);
+        }
+        */
+        original(_this, edx, unk, unk_name, unk2);
+
+    }
+};
+
+DefineInlineHook(TestReturn0) {
+    static void _cdecl callback(sunset::InlineCtx & ctx) {
+        ctx.eax.unsigned_integer = 0;
+    }
+};
+
+DefineInlineHook(Tester) {
+    static void _cdecl callback(sunset::InlineCtx & ctx) {
+        *(void**)(ctx.edx.unsigned_integer + 4) = *(void**)(ctx.ebp.unsigned_integer + -0x44);
+    }
+};
+
+void __stdcall RedirectToLogger(const char* message) {
+    if (message != nullptr) {
+        std::string_view string = message;
+        while (string.ends_with('\n')) {
+            string.remove_suffix(1);
+        }
+        logger::log_format("[OutputDebugStringA] {}", string);
+    }
+}
+
 BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
     if (reason == DLL_PROCESS_ATTACH) {
         // In Cars 3: Driven to Win, we're being loaded by `kernelx.dll` in the WinDurango runtime, and as such, don't need to hijack another module.
@@ -44,7 +98,7 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
 #endif
         std::filesystem::path install_dir = set_current_directory_to_module_location();
         
-        std::vector<std::string> config_initialization_errors{};
+        std::vector<std::string_view> config_initialization_errors{};
         config::init_global(install_dir / "Pentane\\config.toml", config_initialization_errors);
         logger::init(install_dir / "pentane.log", config::console_logging_enabled(), config::file_logging_enabled());
         for (const auto& message : config_initialization_errors) {
@@ -75,6 +129,17 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
             // TVG2A-Specific initialization.
             // Removes a `FreeConsole` call from the original game, allowing the console logger to function correctly.
             sunset::inst::nop(reinterpret_cast<void*>(0x008249cf), 6);
+            CarsFrontEnd_SetScreen::install_at_ptr(0x004c1440);
+            TestReturn0::install_at_ptr(0x004bb220);
+            sunset::utils::set_permission((void*)(0x004bb93d), 4, sunset::utils::Perm::ExecuteReadWrite);
+            *(unsigned char*)(0x004bb93d) = 0x75;
+            // Tester::install_at_ptr(0x00e99ae4);
+            // Redirects OutputDebugStringA to the logger.
+            sunset::utils::set_permission(reinterpret_cast<void*>(0x0159113c), sizeof(void*), sunset::utils::Perm::ReadWrite);
+            *reinterpret_cast<void**>(0x0159113c) = RedirectToLogger;
+            
+            // Redirects the CommandConsole to the logger.
+            HandleLog::install_at_ptr(0x00ba4bf0);
         }
         else {
             // TVG2-Specific initialization.

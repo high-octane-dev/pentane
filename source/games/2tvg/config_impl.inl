@@ -3,16 +3,16 @@
 #if defined(PENTANE_GAME_TARGET_2TVG)
 class GameConfig : public GlobalConfig {
 public:
-	auto read(const toml::table& tbl, std::vector<std::string>& errors) -> bool;
-	auto init(const std::filesystem::path& file_path, std::vector<std::string>& errors) -> bool;
+	auto read(const toml::table& tbl, std::vector<std::string_view>& errors) -> bool;
+	auto init(const std::filesystem::path& file_path, std::vector<std::string_view>& errors) -> bool;
 };
 
-auto GameConfig::read(const toml::table& tbl, std::vector<std::string>& errors) -> bool {
+auto GameConfig::read(const toml::table& tbl, std::vector<std::string_view>& errors) -> bool {
 	GlobalConfig::read(tbl, errors);
 	return true;
 }
 
-auto GameConfig::init(const std::filesystem::path& file_path, std::vector<std::string>& errors) -> bool
+auto GameConfig::init(const std::filesystem::path& file_path, std::vector<std::string_view>& errors) -> bool
 {
 	toml::table tbl{};
 	try {
@@ -39,7 +39,7 @@ auto GameConfig::read(const toml::table& tbl, std::vector<std::string>& errors) 
 	return true;
 }
 
-auto GameConfig::init(const std::filesystem::path& file_path, std::vector<std::string>& errors) -> bool
+auto GameConfig::init(const std::filesystem::path& file_path, std::vector<std::string_view>& errors) -> bool
 {
 	toml::table tbl{};
 	try {

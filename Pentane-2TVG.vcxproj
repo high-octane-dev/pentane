@@ -107,6 +107,7 @@
     <ClInclude Include="source\games\2tvg\file_system.hpp" />
     <ClInclude Include="source\localization.hpp" />
     <ClInclude Include="source\logger.hpp" />
+    <ClInclude Include="source\util\mutex.hpp" />
     <ClInclude Include="source\version.hpp" />
     <ClInclude Include="source\plugin.hpp" />
     <ClInclude Include="source\plugin_loader.hpp" />

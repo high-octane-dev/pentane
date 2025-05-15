@@ -55,7 +55,7 @@ auto process_candidate(util::SortedHashMap<PentaneUUID, ProcessedPlugin, Pentane
     HMODULE h_module = LoadLibraryExW(path_string.data(), nullptr, 0);
     
     if (h_module == nullptr) {
-        DWORD err = GetLastError();
+        std::string err = std::format("[GetLastError: {}]", GetLastError());
         LOG_LOCALIZED_STRING(MODULE_REJECTED, base_file_name, err);
         return;
     }
