@@ -10,6 +10,7 @@
 #include "localization.hpp"
 #include "logger.hpp"
 #include "util/sorted_hashmap.hpp"
+#include "util/mutex.hpp"
 #include "version.hpp"
 
 struct ProcessedPlugin {
@@ -21,13 +22,12 @@ struct ProcessedPlugin {
     PentaneMainFunc main_function;
 };
 
-std::unordered_set<PentaneUUID, PentaneUUIDHasher> LOADED_PLUGIN_UUIDS{};
-std::mutex LOADED_PLUGIN_UUIDS_LOCK{};
+util::Mutex<std::unordered_set<PentaneUUID, PentaneUUIDHasher>> LOADED_PLUGIN_UUIDS{};
 
 auto plugin_loader::is_loaded(PentaneUUID* uuid) -> bool {
-    std::scoped_lock<std::mutex> lock(LOADED_PLUGIN_UUIDS_LOCK);
     if (uuid != nullptr) {
-        return LOADED_PLUGIN_UUIDS.contains(*uuid);
+        const auto guard = LOADED_PLUGIN_UUIDS.lock();
+        return guard->contains(*uuid);
     }
     return false;
 }
@@ -191,7 +191,8 @@ auto plugin_loader::load_all(const std::filesystem::path& plugin_dir) -> void {
 
     // Here, we copy all the valid plugins' UUIDs into the LOADED_PLUGIN_UUIDS *before* we call any main functions, so the set is ready to be used by that time. 
     for (const auto& plugin : plugins_to_load) {
-        LOADED_PLUGIN_UUIDS.insert(plugin.uuid);
+        auto guard = LOADED_PLUGIN_UUIDS.lock_mut();
+        guard->insert(plugin.uuid);
     }
 
     for (const auto& plugin : plugins_to_load) {

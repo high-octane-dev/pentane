@@ -208,32 +208,32 @@ auto GlobalConfig::get_enabled_plugins() const -> std::vector<std::string> {
 
 
 bool config::init_global(const std::filesystem::path& file_path, std::vector<std::string_view>& errors) {
-	auto& config = *CONFIG.lock_mut();
-	config = std::make_unique<GameConfig>();
-	return config->init(file_path, errors);
+	auto guard = CONFIG.lock_mut();
+	*guard = std::make_unique<GameConfig>();
+	return (*guard)->init(file_path, errors);
 }
 
 PentaneLanguage config::language() {
-	auto& config = *CONFIG.lock();
-	return config->get_language();
+	const auto guard = CONFIG.lock();
+	return (*guard)->get_language();
 }
 
 bool config::console_logging_enabled() {
-	auto& config = *CONFIG.lock();
-	return config->console_logging_enabled();
+	const auto guard = CONFIG.lock();
+	return (*guard)->console_logging_enabled();
 }
 
 bool config::file_logging_enabled() {
-	auto& config = *CONFIG.lock();
-	return config->file_logging_enabled();
+	const auto guard = CONFIG.lock();
+	return (*guard)->file_logging_enabled();
 }
 
 std::vector<std::string> config::mods_enabled() {
-	auto& config = *CONFIG.lock();
-	return config->get_enabled_mods();
+	const auto guard = CONFIG.lock();
+	return (*guard)->get_enabled_mods();
 }
 
 std::vector<std::string> config::plugins_enabled() {
-	auto& config = *CONFIG.lock();
-	return config->get_enabled_plugins();
+	const auto guard = CONFIG.lock();
+	return (*guard)->get_enabled_plugins();
 }

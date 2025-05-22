@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pentane-2TVG", "Pentane-2TV
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pentane-3DTW", "Pentane-3DTW.vcxproj", "{78A935FC-4792-4EC9-87E6-B664DABF1437}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pentane-2TVGA", "Pentane-2TVGA.vcxproj", "{591CF8A2-6A01-4AA8-A800-3954FF7FE146}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Default = Debug|Default
@@ -32,6 +34,10 @@ Global
 		{78A935FC-4792-4EC9-87E6-B664DABF1437}.Debug|Default.ActiveCfg = Debug|x64
 		{78A935FC-4792-4EC9-87E6-B664DABF1437}.Debug|Default.Build.0 = Debug|x64
 		{78A935FC-4792-4EC9-87E6-B664DABF1437}.Release|Default.ActiveCfg = Release|x64
+		{591CF8A2-6A01-4AA8-A800-3954FF7FE146}.Debug|Default.ActiveCfg = Debug|Win32
+		{591CF8A2-6A01-4AA8-A800-3954FF7FE146}.Debug|Default.Build.0 = Debug|Win32
+		{591CF8A2-6A01-4AA8-A800-3954FF7FE146}.Release|Default.ActiveCfg = Release|Win32
+		{591CF8A2-6A01-4AA8-A800-3954FF7FE146}.Release|Default.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

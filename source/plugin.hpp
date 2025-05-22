@@ -1,8 +1,34 @@
 #pragma once
 #include "version.hpp"
 
+constexpr uint8_t hex_char_to_byte(char c) {
+	return (c >= '0' && c <= '9') ? (c - '0') : (c >= 'a' && c <= 'f') ? (c - 'a' + 10) : (c >= 'A' && c <= 'F') ? (c - 'A' + 10) : throw std::invalid_argument("Invalid Character");
+}
+
 struct PentaneUUID {
 	std::uint8_t data[16];
+	static constexpr PentaneUUID from_str(const std::string_view input) {
+		PentaneUUID uuid{};
+		std::size_t idx = 0;
+		for (std::size_t i = 0; input[i] != '\0';) {
+			if (input[i] == '-') {
+				i++;
+				continue;
+			}
+			if (input[i + 1] == '\0') {
+				throw std::invalid_argument("Incomplete hex nibble in UUID");
+			}
+			uuid.data[idx++] = (hex_char_to_byte(input[i]) << 4) | hex_char_to_byte(input[i + 1]);
+			i += 2;
+			if (idx > 16) {
+				throw std::invalid_argument("UUID string too long");
+			}
+		}
+		if (idx != 16) {
+			throw std::invalid_argument("UUID string too short");
+		}
+		return uuid;
+	}
 };
 
 inline bool operator<(const PentaneUUID& lhs, const PentaneUUID& rhs) {

@@ -7,6 +7,7 @@
 #include "logger.hpp"
 #include "localization.hpp"
 #include "config.hpp"
+#include "util/mutex.hpp"
 
 class Logger {
 private:
@@ -62,24 +63,23 @@ public:
     }
 };
 
-std::unique_ptr<Logger> LOGGER{};
-std::mutex LOGGER_LOCK{};
+util::Mutex<std::unique_ptr<Logger>> LOGGER{};
 
 bool logger::init(const std::filesystem::path& file_path, bool create_console, bool log_to_file) {
-    std::scoped_lock<std::mutex> lock(LOGGER_LOCK);
-    LOGGER = std::make_unique<Logger>();
+    auto guard = LOGGER.lock_mut();
+    *guard = std::make_unique<Logger>();
     bool created_console = false;
     bool created_file = false;
     if (create_console) {
-        created_console = LOGGER->init_console_logging();
+        created_console = (*guard)->init_console_logging();
     }
     if (log_to_file) {
-        created_file = LOGGER->init_file_logging(file_path);
+        created_file = (*guard)->init_file_logging(file_path);
     }
     return created_console && create_console || created_file && log_to_file;
 }
 
 void logger::log(const std::string_view& str) {
-    std::scoped_lock<std::mutex> lock(LOGGER_LOCK);
-    LOGGER->log(str);
+    auto guard = LOGGER.lock_mut();
+    (*guard)->log(str);
 }

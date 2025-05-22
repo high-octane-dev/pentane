@@ -6,6 +6,7 @@
 #if !defined(PENTANE_GAME_TARGET_3DTW)
 #include "bink/bink.hpp"
 #endif
+
 #include "config.hpp"
 #include "games/mn/file_system.hpp"
 #include "games/tvg/file_system.hpp"
@@ -16,138 +17,91 @@
 #include "sunset/sunset.hpp"
 
 auto set_current_directory_to_module_location() -> std::filesystem::path {
-    wchar_t game_directory[1024];
-    GetModuleFileNameW(nullptr, game_directory, 1024);
-    PathCchRemoveFileSpec(game_directory, 1024);
-    CharLowerW(game_directory);
-    SetCurrentDirectoryW(game_directory);
-    return game_directory;
+	wchar_t game_directory[1024];
+	GetModuleFileNameW(nullptr, game_directory, 1024);
+	PathCchRemoveFileSpec(game_directory, 1024);
+	CharLowerW(game_directory);
+	SetCurrentDirectoryW(game_directory);
+	return game_directory;
 }
-
-#if defined(PENTANE_GAME_TARGET_2TVG) or defined(PENTANE_GAME_TARGET_2TVGA)
-auto is_arcade() -> bool {
-    wchar_t exe_name[1024];
-    GetModuleFileNameW(nullptr, exe_name, 1024);
-    PathStripPathW(exe_name);
-    if (std::wstring_view(exe_name).contains(L"daemon")) {
-        return true;
-    }
-    return false;
-}
-#endif
-
-DefineReplacementHook(HandleLog) {
-    static void __fastcall callback(void* _this, std::uintptr_t edx, char* message) {
-        if (message != nullptr) {
-            std::string_view string = message;
-            while (string.ends_with('\n')) {
-                string.remove_suffix(1);
-            }
-            logger::log_format("[CommandConsole::Echo] {}", string);
-        }
-    }
-};
-
-std::atomic<bool> visited = false;
-DefineReplacementHook(CarsFrontEnd_SetScreen) {
-    static void __fastcall callback(void* _this, uintptr_t edx, int unk, char* unk_name, unsigned char unk2) {
-        if (unk_name != nullptr) {
-            logger::log_format("[CarsFrontEnd::SetScreen] {}, {}, {}", unk, unk_name, unk2);
-        }
-        /*
-        if (!visited.load()) {
-            original(_this, edx, 3, nullptr, 1);
-        }
-        
-        else {
-            original(_this, edx, unk, unk_name, unk2);
-        }
-        */
-        original(_this, edx, unk, unk_name, unk2);
-
-    }
-};
-
-DefineInlineHook(TestReturn0) {
-    static void _cdecl callback(sunset::InlineCtx & ctx) {
-        ctx.eax.unsigned_integer = 0;
-    }
-};
-
-DefineInlineHook(Tester) {
-    static void _cdecl callback(sunset::InlineCtx & ctx) {
-        *(void**)(ctx.edx.unsigned_integer + 4) = *(void**)(ctx.ebp.unsigned_integer + -0x44);
-    }
-};
 
 void __stdcall RedirectToLogger(const char* message) {
-    if (message != nullptr) {
-        std::string_view string = message;
-        while (string.ends_with('\n')) {
-            string.remove_suffix(1);
-        }
-        logger::log_format("[OutputDebugStringA] {}", string);
-    }
+	if (message != nullptr) {
+		std::string_view string = message;
+		while (string.ends_with('\n')) {
+			string.remove_suffix(1);
+		}
+		logger::log_format("[OutputDebugStringA] {}", string);
+	}
 }
 
+DefineReplacementHook(HandleLog) {
+	static void __fastcall callback(void* _this, std::uintptr_t edx, char* message) {
+		if (message != nullptr) {
+			std::string_view string = message;
+			while (string.ends_with('\n')) {
+				string.remove_suffix(1);
+			}
+			logger::log_format("[CommandConsole::Echo] {}", string);
+		}
+	}
+};
+
 BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
-    if (reason == DLL_PROCESS_ATTACH) {
-        // In Cars 3: Driven to Win, we're being loaded by `kernelx.dll` in the WinDurango runtime, and as such, don't need to hijack another module.
+	if (reason == DLL_PROCESS_ATTACH) {
+		// In Cars 3: Driven to Win, we're being loaded by `kernelx.dll` in the WinDurango runtime, and as such, don't need to hijack another module.
 #if !defined(PENTANE_GAME_TARGET_3DTW)
-        bink::replace_funcs();
+		bink::replace_funcs();
 #endif
-        std::filesystem::path install_dir = set_current_directory_to_module_location();
-        
-        std::vector<std::string_view> config_initialization_errors{};
-        config::init_global(install_dir / "Pentane\\config.toml", config_initialization_errors);
-        logger::init(install_dir / "pentane.log", config::console_logging_enabled(), config::file_logging_enabled());
-        for (const auto& message : config_initialization_errors) {
-            logger::log(message);
-        }
-        plugin_loader::load_all(install_dir / "Pentane\\Plugins");
+		std::filesystem::path install_dir = set_current_directory_to_module_location();
+
+		std::vector<std::string_view> config_initialization_errors{};
+		config::init_global(install_dir / "Pentane\\config.toml", config_initialization_errors);
+		logger::init(install_dir / "pentane.log", config::console_logging_enabled(), config::file_logging_enabled());
+		for (const auto& message : config_initialization_errors) {
+			logger::log(message);
+		}
+		plugin_loader::load_all(install_dir / "Pentane\\Plugins");
 #if defined(PENTANE_GAME_TARGET_MN)
-        // MN-Specific initialization.
-        if (install_dir.native().contains(L".")) {
-            logger::log("[DllMain] Cars Mater-National is known to have issues when ran from a directory that contains a period. Please consider renaming your install directory!");
-        }
-        mn::fs::init(config::mn::save_redirection_enabled(),
-            install_dir,
-            install_dir / "Pentane\\SaveData",
-            install_dir / config::mn::data_directory_name(),
-            install_dir / "Pentane\\Mods",
-            config::mods_enabled());
+		// MN-Specific initialization.
+		if (install_dir.native().contains(L".")) {
+			logger::log("[DllMain] Cars Mater-National is known to have issues when ran from a directory that contains a period. Please consider renaming your install directory!");
+		}
+		mn::fs::init(config::mn::save_redirection_enabled(),
+			install_dir,
+			install_dir / "Pentane\\SaveData",
+			install_dir / config::mn::data_directory_name(),
+			install_dir / "Pentane\\Mods",
+			config::mods_enabled());
 #elif defined(PENTANE_GAME_TARGET_TVG)
-        // TVG-Specific initialization.
-        tvg::fs::init(install_dir,
-            install_dir / "Data",
-            install_dir / "Pentane\\Mods",
-            config::mods_enabled());
+		// TVG-Specific initialization.
+		tvg::fs::init(install_dir,
+			install_dir / "Data",
+			install_dir / "Pentane\\Mods",
+			config::mods_enabled());
 
 #elif defined(PENTANE_GAME_TARGET_2TVG)
-        auto arcade = is_arcade();
-        if (arcade) {
-            // TVG2A-Specific initialization.
-            // Removes a `FreeConsole` call from the original game, allowing the console logger to function correctly.
-            sunset::inst::nop(reinterpret_cast<void*>(0x008249cf), 6);
-            CarsFrontEnd_SetScreen::install_at_ptr(0x004c1440);
-            TestReturn0::install_at_ptr(0x004bb220);
-            sunset::utils::set_permission((void*)(0x004bb93d), 4, sunset::utils::Perm::ExecuteReadWrite);
-            *(unsigned char*)(0x004bb93d) = 0x75;
-            // Tester::install_at_ptr(0x00e99ae4);
-            // Redirects OutputDebugStringA to the logger.
-            sunset::utils::set_permission(reinterpret_cast<void*>(0x0159113c), sizeof(void*), sunset::utils::Perm::ReadWrite);
-            *reinterpret_cast<void**>(0x0159113c) = RedirectToLogger;
-            
-            // Redirects the CommandConsole to the logger.
-            HandleLog::install_at_ptr(0x00ba4bf0);
-        }
-        else {
-            // TVG2-Specific initialization.
-            // Removes a `FreeConsole` call from the original game, allowing the console logger to function correctly.
-            sunset::inst::nop(reinterpret_cast<void*>(0x007b599f), 6);
-        }
-        tvg2::fs::init();
+		// 2TVG-Specific initialization.
+		// Removes a `FreeConsole` call from the original game, allowing the console logger to function correctly.
+		sunset::inst::nop(reinterpret_cast<void*>(0x007b599f), 6);
+
+		// Initialize the filesystem.
+		tvg2::fs::init();
+#elif defined(PENTANE_GAME_TARGET_2TVGA)
+		// 2TVGA-Specific initialization.
+		// Removes a `FreeConsole` call from the original game, allowing the console logger to function correctly.
+		sunset::inst::nop(reinterpret_cast<void*>(0x008249cf), 6);
+
+		// Redirects OutputDebugStringA to the logger.
+		sunset::utils::set_permission(reinterpret_cast<void*>(0x0159113c), sizeof(void*), sunset::utils::Perm::ReadWrite);
+		*reinterpret_cast<void**>(0x0159113c) = RedirectToLogger;
+
+		// Redirects the CommandConsole to the logger.
+		HandleLog::install_at_ptr(0x00ba4bf0);
+
+		// Initialize the filesystem.
+		tvg2::fs::init();
 #endif
-    }
-    return TRUE;
+	}
+	return TRUE;
 }

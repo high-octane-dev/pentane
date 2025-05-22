@@ -9,6 +9,7 @@
 #include "../../logger.hpp"
 #include "../../localization.hpp"
 #include "../../config.hpp"
+#include "../../util/mutex.hpp"
 
 auto tvg_operator_new = (void* (_cdecl*)(std::size_t))(0x0068b173);
 auto tvg_operator_delete = (void(_cdecl*)(void*))(0x0068ae53);
@@ -66,8 +67,7 @@ struct LoadedFilesystem {
     auto save_dir() const->std::filesystem::path;
 };
 
-LoadedFilesystem LOADED_FS{};
-std::mutex LOADED_FS_LOCK{};
+util::Mutex<LoadedFilesystem> LOADED_FS{};
 
 auto LoadedFilesystem::collect_files(const std::vector<std::string>& mods_enabled) -> bool {
     for (const auto& mod_name : mods_enabled) {
@@ -113,10 +113,10 @@ auto LoadedFilesystem::save_dir() const -> std::filesystem::path {
 }
 
 struct BINK* __stdcall BinkOpenHook(char* file, std::uint32_t flags) {
-    std::scoped_lock<std::mutex> lock(LOADED_FS_LOCK);
+    const auto guard = LOADED_FS.lock();
     std::string relative_path = file;
     relative_path = relative_path.substr(sizeof("Data\\") - 1);
-    if (auto patch_file = LOADED_FS.lookup(relative_path); patch_file.has_value()) {
+    if (auto patch_file = guard->lookup(relative_path); patch_file.has_value()) {
         const std::filesystem::path& output_file = patch_file.value().first;
         const std::string& mod_name = patch_file.value().second;
         std::string output_file_path = patch_file.value().first.string();
@@ -147,6 +147,7 @@ DefineReplacementHook(FreeLoadedFile) {
 
 DefineReplacementHook(PakOpenFile) {
     static LoadedFile* __fastcall callback(PakSystem * _this, std::uintptr_t edx, const char* path, std::uint32_t _unk) {
+        const auto guard = LOADED_FS.lock();
         auto* file = reinterpret_cast<LoadedFile*>(tvg_operator_new(sizeof(LoadedFile)));
         file->pak_file_pointer = nullptr;
         file->file_info = nullptr;
@@ -157,7 +158,7 @@ DefineReplacementHook(PakOpenFile) {
         relative_path = relative_path.substr(sizeof("Data\\") - 1);
 
         // If we have a mod file for the given path, try to load it.
-        if (auto patch_file = LOADED_FS.lookup(relative_path); patch_file.has_value()) {
+        if (auto patch_file = guard->lookup(relative_path); patch_file.has_value()) {
             const std::filesystem::path& output_file = patch_file.value().first;
             const std::string& mod_name = patch_file.value().second;
             std::string output_file_path = patch_file.value().first.string();
@@ -210,12 +211,14 @@ auto tvg::fs::init(const std::filesystem::path& install_directory,
     if (tvg_BinkOpen == nullptr) {
         LOG_LOCALIZED_STRING(MN_FS_FAILED_INIT);
     }
-	LOADED_FS.mods_directory = mods_directory;
+
+    auto guard = LOADED_FS.lock_mut();
+    guard->mods_directory = mods_directory;
 
 	std::string base_data_directory_name = base_data_directory.lexically_relative(base_data_directory.parent_path()).string();
 
 	if (!mods_enabled.empty()) {
-		LOADED_FS.collect_files(mods_enabled);
+        guard->collect_files(mods_enabled);
 	}
 
     MountPakFile::install_at_ptr(0x00687a60);

@@ -30,11 +30,11 @@ auto GameConfig::init(const std::filesystem::path& file_path, std::vector<std::s
 // Arcade Implementation
 class GameConfig : public GlobalConfig {
 public:
-	auto read(const toml::table& tbl, std::vector<std::string>& errors) -> bool;
-	auto init(const std::filesystem::path& file_path, std::vector<std::string>& errors) -> bool;
+	auto read(const toml::table& tbl, std::vector<std::string_view>& errors) -> bool;
+	auto init(const std::filesystem::path& file_path, std::vector<std::string_view>& errors) -> bool;
 };
 
-auto GameConfig::read(const toml::table& tbl, std::vector<std::string>& errors) -> bool {
+auto GameConfig::read(const toml::table& tbl, std::vector<std::string_view>& errors) -> bool {
 	GlobalConfig::read(tbl, errors);
 	return true;
 }

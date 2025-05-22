@@ -60,11 +60,11 @@ auto GameConfig::data_directory() const -> std::string {
 }
 
 bool config::mn::save_redirection_enabled() {
-	auto& config = *CONFIG.lock();
-	return config->save_redirection_enabled();
+	const auto guard = CONFIG.lock();
+	return (*guard)->save_redirection_enabled();
 }
 
 std::string config::mn::data_directory_name() {
-	auto& config = *CONFIG.lock();
-	return config->data_directory();
+	const auto guard = CONFIG.lock();
+	return (*guard)->data_directory();
 }
