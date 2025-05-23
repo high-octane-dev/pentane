@@ -35,6 +35,19 @@ void __stdcall RedirectToLogger(const char* message) {
 	}
 }
 
+void _cdecl RedirectDbgPrint(const char* format,...) {
+	char buffer[1024]{};
+	va_list args;
+	va_start(args, format);
+	vsnprintf(buffer, 1024, format, args);
+	va_end(args);
+	std::string_view string = buffer;
+	while (string.ends_with('\n')) {
+		string.remove_suffix(1);
+	}
+	logger::log_format("[DbgPrint] {}", string);
+}
+
 DefineReplacementHook(HandleLog) {
 	static void __fastcall callback(void* _this, std::uintptr_t edx, char* message) {
 		if (message != nullptr) {
@@ -85,6 +98,9 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
 		// Removes a `FreeConsole` call from the original game, allowing the console logger to function correctly.
 		sunset::inst::nop(reinterpret_cast<void*>(0x007b599f), 6);
 
+		// Redirects DoDbgPrint to the logger.
+		sunset::inst::jmp(reinterpret_cast<void*>(0x005ef280), RedirectDbgPrint);
+		
 		// Initialize the filesystem.
 		tvg2::fs::init();
 #elif defined(PENTANE_GAME_TARGET_2TVGA)
@@ -99,6 +115,9 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
 		// Redirects the CommandConsole to the logger.
 		HandleLog::install_at_ptr(0x00ba4bf0);
 
+		// Redirects DoDbgPrint to the logger.
+		sunset::inst::jmp(reinterpret_cast<void*>(0x00be5120), RedirectDbgPrint);
+		
 		// Initialize the filesystem.
 		tvg2::fs::init();
 #endif
