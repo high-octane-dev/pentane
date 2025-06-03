@@ -34,6 +34,7 @@ Global
 		{78A935FC-4792-4EC9-87E6-B664DABF1437}.Debug|Default.ActiveCfg = Debug|x64
 		{78A935FC-4792-4EC9-87E6-B664DABF1437}.Debug|Default.Build.0 = Debug|x64
 		{78A935FC-4792-4EC9-87E6-B664DABF1437}.Release|Default.ActiveCfg = Release|x64
+		{78A935FC-4792-4EC9-87E6-B664DABF1437}.Release|Default.Build.0 = Release|x64
 		{591CF8A2-6A01-4AA8-A800-3954FF7FE146}.Debug|Default.ActiveCfg = Debug|Win32
 		{591CF8A2-6A01-4AA8-A800-3954FF7FE146}.Debug|Default.Build.0 = Debug|Win32
 		{591CF8A2-6A01-4AA8-A800-3954FF7FE146}.Release|Default.ActiveCfg = Release|Win32
