@@ -69,7 +69,7 @@
       <AdditionalDependencies>Shlwapi.lib;Pathcch.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)\$(Configuration)\$(TargetName).dll" "C:\Projects\OctaneEngine\Cars 2 Arcade\carscade\Pentane.dll" /Y</Command>
+      <Command>xcopy "$(SolutionDir)\$(Configuration)\$(TargetName).dll" "C:\Projects\OctaneEngine\C2A\Pentane.dll" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -93,7 +93,7 @@
       <AdditionalDependencies>Shlwapi.lib;Pathcch.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)\$(Configuration)\$(TargetName).dll" "C:\Projects\OctaneEngine\Cars 2 Arcade\carscade\Pentane.dll" /Y</Command>
+      <Command>xcopy "$(SolutionDir)\$(Configuration)\$(TargetName).dll" "C:\Projects\OctaneEngine\C2A\Pentane.dll" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

@@ -173,13 +173,15 @@ auto collect_and_validate_plugins(const std::filesystem::path& plugin_dir) -> st
         std::vector<std::string> enabled_plugins = config::plugins_enabled();
         // Iterate over the enabled plugins in *reverse* order, so that the lowest priority plugins' main functions are ran first.
         for (const auto& plugin_file_name : enabled_plugins | std::views::reverse) {
-            std::filesystem::path full_path = plugin_dir / plugin_file_name;
-            if (std::filesystem::is_regular_file(full_path)) {
-                std::wstring full_path_string = full_path.native();
-                process_candidate(processed_plugins, full_path_string, plugin_file_name);
-            }
-            else {
-                LOG_LOCALIZED_STRING(MODULE_REJECTED_NOT_FOUND, plugin_file_name);
+            if (!plugin_file_name.empty()) {
+                std::filesystem::path full_path = plugin_dir / plugin_file_name;
+                if (std::filesystem::is_regular_file(full_path)) {
+                    std::wstring full_path_string = full_path.native();
+                    process_candidate(processed_plugins, full_path_string, plugin_file_name);
+                }
+                else {
+                    LOG_LOCALIZED_STRING(MODULE_REJECTED_NOT_FOUND, plugin_file_name);
+                }
             }
         }
     }
