@@ -69,6 +69,30 @@ inline std::array<std::string_view, PentaneLanguage::Max> PENTANE_CONSOLE {
 	"पेंटेन कंसोल"
 };
 
+inline std::array<std::string_view, PentaneLanguage::Max> TARGET_MISMATCH {
+	"[DllMain] Target mismatch detected! Running game is: {}, but this Pentane build targets: {}!",
+	"UNLOCALIZED STRING: SPANISH {} {}",
+	"UNLOCALIZED STRING: FRENCH {} {}",
+	"UNLOCALIZED STRING: GERMAN {} {}",
+	"UNLOCALIZED STRING: POLISH {} {}",
+	"UNLOCALIZED STRING: RUSSIAN {} {}",
+	"UNLOCALIZED STRING: JAPANESE {} {}",
+	"UNLOCALIZED STRING: KOREAN {} {}",
+	"UNLOCALIZED STRING: HINDI {} {}"
+};
+
+inline std::array<std::string_view, PentaneLanguage::Max> FAILED_READ_TIMESTAMP {
+	"[DllMain] Unable to detect the running game! Are you sure you're using a supported version of {}?",
+	"UNLOCALIZED STRING: SPANISH {}",
+	"UNLOCALIZED STRING: FRENCH {}",
+	"UNLOCALIZED STRING: GERMAN {}",
+	"UNLOCALIZED STRING: POLISH {}",
+	"UNLOCALIZED STRING: RUSSIAN {}",
+	"UNLOCALIZED STRING: JAPANESE {}",
+	"UNLOCALIZED STRING: KOREAN {}",
+	"UNLOCALIZED STRING: HINDI {}"
+};
+
 inline std::array<std::string_view, PentaneLanguage::Max> PLUGIN_LOAD_SUCCESS {
 	"[plugin_loader::load_plugins] Successfully loaded module: {}, Ver. {}.{}.{}, By {}",
 	"[plugin_loader::load_plugins] Módulo cargado satisfactoriamente: {}, Ver. {}.{}.{}, Por {}",

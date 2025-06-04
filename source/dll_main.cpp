@@ -25,6 +25,25 @@ auto set_current_directory_to_module_location() -> std::filesystem::path {
 	return game_directory;
 }
 
+auto get_running_game_from_module_timestamp() -> PentaneTarget {
+	const auto nt_header = reinterpret_cast<IMAGE_NT_HEADERS*>(reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)) + reinterpret_cast<IMAGE_DOS_HEADER*>(GetModuleHandleW(nullptr))->e_lfanew);
+	switch (nt_header->FileHeader.TimeDateStamp) {
+	case 0x445A4258:
+		return PentaneTarget::CarsTheVideoGame;
+	case 0x47160288:
+		return PentaneTarget::CarsMaterNationalChampionship;
+	case 0x4DDE6899:
+		return PentaneTarget::Cars2TheVideoGame;
+	case 0x521E2EAF:
+		return PentaneTarget::Cars2TheVideoGameArcade;
+	case 0x58F94AF7:
+		return PentaneTarget::Cars3DrivenToWin;
+	default:
+		return PentaneTarget::Invalid;
+		break;
+	}
+}
+
 void __stdcall RedirectToLogger(const char* message) {
 	if (message != nullptr) {
 		std::string_view string = message;
@@ -71,6 +90,16 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
 		std::vector<std::string_view> config_initialization_errors{};
 		config::init_global(install_dir / "Pentane\\config.toml", config_initialization_errors);
 		logger::init(install_dir / "pentane.log", config::console_logging_enabled(), config::file_logging_enabled());
+		// Check to make sure the GAME_TARGET matches the game that's actually running.
+		auto running_game = get_running_game_from_module_timestamp();
+		if (running_game == PentaneTarget::Invalid) {
+			logger::log_localized(FAILED_READ_TIMESTAMP, GAME_TARGET);
+			std::abort();
+		}
+		else if (running_game != GAME_TARGET) {
+			logger::log_localized(TARGET_MISMATCH, running_game, GAME_TARGET);
+			std::abort();
+		}
 		for (const auto& message : config_initialization_errors) {
 			logger::log(message);
 		}
