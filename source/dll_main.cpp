@@ -124,9 +124,10 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
 
 #elif defined(PENTANE_GAME_TARGET_2TVG)
 		// 2TVG-Specific initialization.
-		// Removes a `FreeConsole` call from the original game, allowing the console logger to function correctly.
-		sunset::inst::nop(reinterpret_cast<void*>(0x007b599f), 6);
-
+		if (config::console_logging_enabled()) {
+			// Removes a `FreeConsole` call from the original game, allowing the console logger to function correctly.
+			sunset::inst::nop(reinterpret_cast<void*>(0x007b599f), 6);
+		}
 		// Redirects DoDbgPrint to the logger.
 		sunset::inst::jmp(reinterpret_cast<void*>(0x005ef280), RedirectDbgPrint);
 		
@@ -134,9 +135,10 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
 		tvg2::fs::init();
 #elif defined(PENTANE_GAME_TARGET_2TVGA)
 		// 2TVGA-Specific initialization.
-		// Removes a `FreeConsole` call from the original game, allowing the console logger to function correctly.
-		sunset::inst::nop(reinterpret_cast<void*>(0x008249cf), 6);
-
+		if (config::console_logging_enabled()) {
+			// Removes a `FreeConsole` call from the original game, allowing the console logger to function correctly.
+			sunset::inst::nop(reinterpret_cast<void*>(0x008249cf), 6);
+		}
 		// Redirects OutputDebugStringA to the logger.
 		sunset::utils::set_permission(reinterpret_cast<void*>(0x0159113c), sizeof(void*), sunset::utils::Perm::ReadWrite);
 		*reinterpret_cast<void**>(0x0159113c) = RedirectToLogger;

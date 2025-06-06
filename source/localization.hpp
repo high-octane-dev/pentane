@@ -2,8 +2,6 @@
 #include <string>
 #include <array>
 
-// #define LOG_LOCALIZED_STRING(LABEL, ...) { std::string value = std::vformat(LABEL[config::language()], std::make_format_args(__VA_ARGS__)); logger::log(value); }
-
 enum PentaneLanguage {
 	// NA
 	English,
