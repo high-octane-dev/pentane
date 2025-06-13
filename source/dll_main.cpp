@@ -148,7 +148,13 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
 
 		// Redirects DoDbgPrint to the logger.
 		sunset::inst::jmp(reinterpret_cast<void*>(0x00be5120), RedirectDbgPrint);
-		
+
+		// Prevents the game from generating HTML log files.
+		sunset::inst::nop(reinterpret_cast<void*>(0x0075fb27), 0x1C);
+		sunset::utils::set_permission(reinterpret_cast<void*>(0x0075fb27), 5, sunset::utils::Perm::ExecuteReadWrite);
+		*reinterpret_cast<std::uint8_t*>(0x0075fb27) = 0xB8;
+		*reinterpret_cast<std::uint32_t*>(0x0075fb28) = 0xFFFFFFFF;
+
 		// Initialize the filesystem.
 		tvg2::fs::init();
 #endif
