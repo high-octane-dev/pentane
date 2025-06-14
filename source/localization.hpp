@@ -34,6 +34,21 @@ using FullyLocalizedString = std::array<std::string_view, PentaneLanguage::Max>;
 using LocalizedString = std::array<std::optional<std::string_view>, PentaneLanguage::Max>;
 
 namespace localization {
+	constexpr inline auto support_status(PentaneLanguage language) -> bool {
+		switch (language) {
+		case English: return true;
+		case Spanish: return false;
+		case French: return false;
+		case German: return false;
+		case Polish: return false;
+		case Russian: return false;
+		case Japanese: return false;
+		case Korean: return false;
+		case Hindi: return false;
+		default:
+			return false;
+		}
+	}
 	inline auto get_with_fallback(const LocalizedString& label, PentaneLanguage language) -> std::string_view {
 		if (auto optional_format_str = label[static_cast<size_t>(language)]; optional_format_str.has_value()) {
 			return optional_format_str.value();
@@ -81,12 +96,27 @@ inline FullyLocalizedString PENTANE_CONSOLE{
 	"पेंटेन कंसोल"
 };
 
+
+// This desperately needs to be fully localized, ironically enough.
+inline LocalizedString INCOMPLETE_LOCALIZATION{
+	// This one's kinda silly and should effectively go unused.
+	"English localization is not fully implemented! You may see some Pentane logger messages in English rather than your selected language.",
+	"¡La localización español no es finalizado!",
+	"La traduction française n’est pas entièrement implémentée! Il est possible que certaines messages de logging de Pentane apparaissent en anglais au lieu de la langue sélectionnée.",
+	std::nullopt,
+	"Polska lokalizacja nie jest w pełni zaimplementowana! Możesz zobaczyć niektóre komunikaty loggera Pentane w języku angielskim zamiast wybranego języka.",
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+};
+
 inline LocalizedString TARGET_MISMATCH{
 	"[DllMain] Target mismatch detected! Running game is: {}, but this Pentane build targets: {}!",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[DllMain] Wykryto niezgodność celu! Uruchomiona gra to: {}, ale ta wersja Pentane jest przeznaczona dla: {}!",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -98,7 +128,7 @@ inline LocalizedString FAILED_READ_TIMESTAMP{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[DllMain] Nie można wykryć uruchomionej gry! Czy na pewno używasz obsługiwanej wersji {}?",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -230,7 +260,7 @@ inline LocalizedString FILE_IN_MOD_OVERWRITES_EXISTING{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[fs::collect_files] Plik: {} w modzie: {} nadpisuje istniejący plik moda w: {}",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -242,7 +272,7 @@ inline LocalizedString COLLECTED_FILE{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[fs::collect_files] Znaleziono plik: {} w modzie: {}",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -254,7 +284,7 @@ inline LocalizedString MOD_REJECTED_DOES_NOT_EXIST{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[fs::collect_files] Mod: {} został odrzucony, ponieważ nie istnieje!",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -266,7 +296,7 @@ inline LocalizedString MN_FOPEN_LOADING_MODDED_FILE{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[fs::fopen] Wczytywanie pliku: {} z moda: {}",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -278,7 +308,7 @@ inline LocalizedString BINK_LOADING_MODDED_FILE{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[fs::BinkOpen] Wczytywanie pliku .BIK: {} z moda: {}",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -290,7 +320,7 @@ inline LocalizedString MN_STREAM_LOADING_FILE{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[fs::BASS_StreamCreateFile] Wczytywanie pliku strumieniowego: {} z moda: {}",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -302,7 +332,7 @@ inline LocalizedString MN_SAMPLE_LOADING_FILE{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[fs::BASS_SampleLoad] Wczytywanie pliku stream: {} z moda: {}",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -314,7 +344,7 @@ inline LocalizedString MN_FS_FAILED_INIT{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[fs::init] Nie udało się zainicjować systemu plików, ponieważ BASS lub BinkW32 nie został załadowany.",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -326,7 +356,7 @@ inline LocalizedString MN_DATA_DIR_TOO_LARGE{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[fs::init] Ścieżka do katalogu danych: {} jest zbyt duża, powrót do `DataPC`!",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -338,7 +368,7 @@ inline LocalizedString MN_SAVE_DIR_TOO_LARGE{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[fs::init] Ścieżka przekierowania zapisu: {} jest zbyt duża, powrót do standardowej lokalizacji zapisu danych!",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -350,7 +380,7 @@ inline LocalizedString TVG_PAK_LOADING_MODDED_FILE{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[fs::PAK::OpenFile] Wczytywanie pliku: {} z moda: {}",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -362,7 +392,7 @@ inline LocalizedString TVG_PAK_LOADING_BASE_FILE{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[fs::PAK::OpenFile] Wczytywanie pliku: {}",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -422,7 +452,7 @@ inline LocalizedString GLOBAL_CONFIG_MISSING_MODS{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[GlobalConfig::read] Plik `config.toml` nie zawiera sekcji `mods` ! Żadne mody nie zostaną załadowane.",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -434,7 +464,7 @@ inline LocalizedString GLOBAL_CONFIG_MISSING_PLUGINS{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[GlobalConfig::read] Plik `config.toml` nie zawiera sekcji `plugins` ! Żadne mody nie zostaną załadowane.",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -482,7 +512,7 @@ inline LocalizedString GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_PLUGINS{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[GlobalConfig::read] Sekcja `config` w pliku `config.toml` nie zawiera `enable_mods` ! Żadne mody nie zostaną załadowane.",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -494,7 +524,7 @@ inline LocalizedString GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_CONSOLE_LOGGING{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[GlobalConfig::read] Sekcja `config` w pliku `config.toml` nie zawiera `enable_console_logging`! Pentane utworzy okno konsoli.",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -506,7 +536,7 @@ inline LocalizedString GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_FILE_LOGGING{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[GlobalConfig::read] Sekcja `config` w pliku `config.toml` nie zawiera `enable_console_window`! Pentane utworzy okno konsoli.",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -518,7 +548,7 @@ inline LocalizedString GLOBAL_CONFIG_MODS_MISSING_ENABLED_MODS{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[GlobalConfig::read] Sekcja mods w pliku config.toml nie zawiera enabled_mods! Żadne mody nie zostaną załadowane.",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -530,7 +560,7 @@ inline LocalizedString GLOBAL_CONFIG_PLUGINS_MISSING_ENABLED_PLUGINS{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[GlobalConfig::read] Sekcja `plugins` w pliku `config.toml` nie zawiera `enabled_plugins`! Żadne wtyczki nie zostaną załadowane.",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -542,7 +572,7 @@ inline LocalizedString MATER_NATIONAL_CONFIG_MISSING_ENABLE_SAVE_REDIRECTION{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[GameConfig::read] sekcja `game-config` w pliku `config.toml` nie zawiera `enable_save_redirection`! Zapisy będą ładowane z folderu Dokumenty.",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -554,7 +584,7 @@ inline LocalizedString MATER_NATIONAL_CONFIG_MISSING_DATA_DIRECTORY{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[GameConfig::read] sekcja `game-config` w pliku `config.toml` nie zawiera `data_directory_name`! Wszystkie zasoby gry będą odczytywane z `DataPC`.",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -566,7 +596,7 @@ inline LocalizedString MATER_NATIONAL_CONFIG_MISSING{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[GameConfig::read] plik `config.toml` nie zawiera sekcji `game-config`! Zapisy będą ładowane z folderu `Documents`, a zasoby gry będą odczytywane z `DataPC`.",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
