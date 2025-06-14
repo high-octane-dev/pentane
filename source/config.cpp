@@ -117,14 +117,17 @@ auto GlobalConfig::read(const toml::table& tbl, std::vector<std::string_view>& e
 		if (!found_language) {
 			errors.push_back(GLOBAL_CONFIG_CONFIG_UNRECOGNIZED_LANG[system_language]);
 		}
-
-		if (!config_node.as_table()->contains("enable_mods")) {
-			errors.push_back(GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_MODS[language]);
+		
+		// Pentane's OE mod loader is not yet implemented.
+		if constexpr (!util::octane()) {
+			if (!config_node.as_table()->contains("enable_mods")) {
+				errors.push_back(GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_MODS[language]);
+			}
+			else {
+				should_load_mods = config_node["enable_mods"].as_boolean()->get();
+			}
 		}
-		else {
-			should_load_mods = config_node["enable_mods"].as_boolean()->get();
-		}
-
+		
 		if (!config_node.as_table()->contains("enable_plugins")) {
 			errors.push_back(GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_PLUGINS[language]);
 		}

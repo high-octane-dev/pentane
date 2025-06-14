@@ -41,3 +41,15 @@ constexpr PentaneTarget GAME_TARGET{ PentaneTarget::Cars3DrivenToWin };
 #else
 #error "Please define a game target!"
 #endif
+
+namespace util {
+    constexpr bool octane() {
+        return GAME_TARGET == PentaneTarget::Cars2TheVideoGame 
+            || GAME_TARGET == PentaneTarget::Cars2TheVideoGameArcade
+            || GAME_TARGET == PentaneTarget::Cars3DrivenToWin;
+    }
+    constexpr bool rhythm_racing() {
+        return GAME_TARGET == PentaneTarget::CarsTheVideoGame
+            || GAME_TARGET == PentaneTarget::CarsMaterNationalChampionship;
+    }
+};
