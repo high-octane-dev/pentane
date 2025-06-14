@@ -48,4 +48,4 @@ constexpr bool operator<=(const SemVer& lhs, const SemVer& rhs) {
     return semver_compare(lhs, rhs) <= 0;
 }
 
-constexpr inline SemVer PENTANE_FRAMEWORK_VERSION = { 0, 2, 0 };
+constexpr inline SemVer PENTANE_FRAMEWORK_VERSION = { 0, 2, 1 };

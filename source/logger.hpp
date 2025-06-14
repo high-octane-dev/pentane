@@ -15,14 +15,24 @@ namespace logger {
 		log(str);
 	}
 
-	template <typename... Args> void log_localized(const std::array<std::string_view, PentaneLanguage::Max>& label, Args&&... args) {
-		auto format_str = label[static_cast<size_t>(config::language())];
-		auto formatted = std::vformat(format_str, std::make_format_args(std::forward<Args>(args)...));
+	template <typename... Args> void log_localized(const FullyLocalizedString& label, Args&&... args) {
+		std::string_view format_str = label[static_cast<size_t>(config::language())];
+		std::string formatted = std::vformat(format_str, std::make_format_args(std::forward<Args>(args)...));
 		log(formatted);
 	}
 
-	inline void log_localized(const std::array<std::string_view, PentaneLanguage::Max>& label) {
+	inline void log_localized(const FullyLocalizedString& label) {
 		log(label[static_cast<size_t>(config::language())]);
+	}
+
+	template <typename... Args> void log_localized(const LocalizedString& label, Args&&... args) {
+		std::string_view format_str = localization::get_with_fallback(label, config::language());
+		std::string formatted = std::vformat(format_str, std::make_format_args(std::forward<Args>(args)...));
+		log(formatted);
+	}
+
+	inline void log_localized(const LocalizedString& label) {
+		log(localization::get_with_fallback(label, config::language()));
 	}
 };
 
