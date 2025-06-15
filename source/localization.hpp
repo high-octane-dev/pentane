@@ -424,11 +424,23 @@ inline LocalizedString MN_CONFIG_PARSE_FAIL{
 };
 
 inline LocalizedString TVG2_CONFIG_PARSE_FAIL{
-	"[GameConfig::read] Failed to parse `config.toml`! No plugins or mods will be loaded, all further information logged will be in English, saves will be loaded from the `Documents` folder, and game assets will be read from `DataPC`.",
+	"[GameConfig::read] Failed to parse `config.toml`! No plugins will be loaded, all further information logged will be in English, and the game will run in exclusive fullscreen mode.",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	"[GameConfig::read] Nie udało się przeanalizować pliku `config.toml`! Nie zostaną załadowane żadne wtyczki ani mody, a wszystkie dalsze informacje będą rejestrowane w języku angielskim.",
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+};
+
+inline LocalizedString TVG2A_CONFIG_PARSE_FAIL{
+	"[GameConfig::read] Failed to parse `config.toml`! No plugins will be loaded, all further information logged will be in English, and the game will run in exclusive fullscreen mode, and the target window dimensions will be 1280x720.",
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -601,4 +613,48 @@ inline LocalizedString MATER_NATIONAL_CONFIG_MISSING{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
+};
+
+inline LocalizedString TVG2_CONFIG_MISSING_ENABLE_WINDOWED_MODE{
+	"[GameConfig::read] `game-config` in `config.toml` is missing `enable_windowed_mode`! The game will create an exclusive fullscreen window.",
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+};
+
+inline LocalizedString TVG2A_CONFIG_MISSING_WINDOW_WIDTH{
+	"[GameConfig::read] `game-config` in `config.toml` is missing `desired_window_width`! The game window will try to match 1280x720.",
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+};
+
+inline LocalizedString TVG2A_CONFIG_MISSING_WINDOW_HEIGHT{
+	"[GameConfig::read] `game-config` in `config.toml` is missing `desired_window_height`! The game window will try to match 1280x720.",
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+};
+
+inline LocalizedString TVG2_CONFIG_MISSING{
+	"[GameConfig::read] `config.toml` is missing the `game-config` section! The game will run in exclusive fullscreen mode.",
+};
+
+inline LocalizedString TVG2A_CONFIG_MISSING{
+	"[GameConfig::read] `config.toml` is missing the `game-config` section! The game will run in exclusive fullscreen mode, and the target window dimensions will be 1280x720",
 };

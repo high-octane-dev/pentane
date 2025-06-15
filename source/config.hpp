@@ -2,6 +2,7 @@
 #include <string>
 #include <filesystem>
 #include <vector>
+#include <utility>
 #include "localization.hpp"
 
 namespace config {
@@ -15,6 +16,15 @@ namespace config {
 	namespace mn {
 		bool save_redirection_enabled();
 		std::string data_directory_name();
+	};
+#elif defined(PENTANE_GAME_TARGET_2TVG)
+	namespace tvg2 {
+		bool windowed_mode_enabled();
+	};
+#elif defined(PENTANE_GAME_TARGET_2TVGA)
+	namespace tvg2 {
+		bool windowed_mode_enabled();
+		std::pair<int, int> window_dimensions();
 	};
 #endif
 };

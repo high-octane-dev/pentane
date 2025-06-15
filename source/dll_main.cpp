@@ -128,6 +128,13 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
 			// Removes a `FreeConsole` call from the original game, allowing the console logger to function correctly.
 			sunset::inst::nop(reinterpret_cast<void*>(0x007b599f), 6);
 		}
+
+		if (config::tvg2::windowed_mode_enabled()) {
+			// Enables windowed mode in Renderer::DriverImpl::DoCreateWindow.
+			sunset::utils::set_permission(reinterpret_cast<void*>(0x007C56A4), 1, sunset::utils::Perm::ExecuteReadWrite);
+			*reinterpret_cast<std::uint8_t*>(0x007C56A4) = 0;
+		}
+
 		// Redirects DoDbgPrint to the logger.
 		sunset::inst::jmp(reinterpret_cast<void*>(0x005ef280), RedirectDbgPrint);
 		
@@ -139,6 +146,20 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
 			// Removes a `FreeConsole` call from the original game, allowing the console logger to function correctly.
 			sunset::inst::nop(reinterpret_cast<void*>(0x008249cf), 6);
 		}
+
+		if (config::tvg2::windowed_mode_enabled()) {
+			// Enables windowed mode in Renderer::DriverConfiguration::DriverConfiguration.
+			sunset::utils::set_permission(reinterpret_cast<void*>(0x0088B77C), 1, sunset::utils::Perm::ExecuteReadWrite);
+			*reinterpret_cast<std::uint8_t*>(0x0088B77C) = 0;
+		}
+
+		// Sets the window dimensions. The game will automatically search for a valid display mode if the supplied resolution is invalid.
+		auto [w, h] = config::tvg2::window_dimensions();
+		sunset::utils::set_permission(reinterpret_cast<void*>(0x00d70b51), 4, sunset::utils::Perm::ExecuteReadWrite);
+		*reinterpret_cast<std::uint32_t*>(0x00d70b51) = static_cast<std::uint32_t>(w);
+		sunset::utils::set_permission(reinterpret_cast<void*>(0x00d70b58), 4, sunset::utils::Perm::ExecuteReadWrite);
+		*reinterpret_cast<std::uint32_t*>(0x00d70b58) = static_cast<std::uint32_t>(h);
+
 		// Redirects OutputDebugStringA to the logger.
 		sunset::utils::set_permission(reinterpret_cast<void*>(0x0159113c), sizeof(void*), sunset::utils::Perm::ReadWrite);
 		*reinterpret_cast<void**>(0x0159113c) = RedirectToLogger;

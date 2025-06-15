@@ -10,7 +10,6 @@ public:
 	auto data_directory() const->std::string;
 };
 
-
 auto GameConfig::read(const toml::table& tbl, std::vector<std::string_view>& errors) -> bool {
 	GlobalConfig::read(tbl, errors);
 	if (tbl.contains("game-config")) {
