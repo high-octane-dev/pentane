@@ -10,7 +10,6 @@ enum class PentaneTarget {
 	Cars3DrivenToWin = 5,
 };
 
-
 template <>
 struct std::formatter<PentaneTarget> : std::formatter<std::string_view> {
     auto format(PentaneTarget target, format_context& ctx) const {
