@@ -14,6 +14,7 @@
     <ClCompile Include="source\api\api_exports.cpp" />
     <ClCompile Include="source\bink\bink.cpp" />
     <ClCompile Include="source\config.cpp" />
+    <ClCompile Include="source\crash.cpp" />
     <ClCompile Include="source\dll_main.cpp" />
     <ClCompile Include="source\games\mn\file_system.cpp" />
     <ClCompile Include="source\logger.cpp" />
@@ -24,6 +25,7 @@
     <ClInclude Include="source\api\api_macros.hpp" />
     <ClInclude Include="source\bink\bink.hpp" />
     <ClInclude Include="source\config.hpp" />
+    <ClInclude Include="source\crash.hpp" />
     <ClInclude Include="source\games\mn\file_system.hpp" />
     <ClInclude Include="source\localization.hpp" />
     <ClInclude Include="source\logger.hpp" />
@@ -99,7 +101,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
-      <AdditionalDependencies>Pathcch.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Dbghelp.lib;Pathcch.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)\$(Configuration)\$(TargetName).dll" "C:\Projects\Cars2\PC\PentaneTesting\Pentane.dll" /Y</Command>
@@ -124,7 +126,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
-      <AdditionalDependencies>Pathcch.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Dbghelp.lib;Pathcch.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)\$(Configuration)\$(TargetName).dll" "C:\Projects\Cars2\PC\PentaneTesting\Pentane.dll" /Y</Command>

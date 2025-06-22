@@ -59,6 +59,9 @@
     <ClCompile Include="source\games\2tvg\file_system.cpp">
       <Filter>Code\Core\Games\Cars 2: The Video Game Arcade</Filter>
     </ClCompile>
+    <ClCompile Include="source\crash.cpp">
+      <Filter>Code\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\api\api_macros.hpp">
@@ -105,6 +108,9 @@
     </ClInclude>
     <ClInclude Include="source\util\mutex.hpp">
       <Filter>Code\Core\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="source\crash.hpp">
+      <Filter>Code\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

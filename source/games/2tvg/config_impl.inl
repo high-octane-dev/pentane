@@ -57,13 +57,13 @@ bool config::tvg2::windowed_mode_enabled() {
 class GameConfig : public GlobalConfig {
 private:
 	bool enable_windowed_mode = false;
-	int windowed_mode_width = 1280;
-	int windowed_mode_height = 720;
+	std::int64_t windowed_mode_width = 1280;
+	std::int64_t windowed_mode_height = 720;
 public:
 	auto read(const toml::table& tbl, std::vector<std::string_view>& errors) -> bool;
 	auto init(const std::filesystem::path& file_path, std::vector<std::string_view>& errors) -> bool;
 	auto windowed_mode_enabled() -> bool;
-	auto windowed_mode_dimensions() -> std::pair<int, int>;
+	auto windowed_mode_dimensions() -> std::pair<std::int64_t, std::int64_t>;
 };
 
 auto GameConfig::read(const toml::table& tbl, std::vector<std::string_view>& errors) -> bool {
@@ -129,7 +129,7 @@ auto GameConfig::windowed_mode_enabled() -> bool {
 	return enable_windowed_mode;
 }
 
-auto GameConfig::windowed_mode_dimensions() -> std::pair<int, int> {
+auto GameConfig::windowed_mode_dimensions() -> std::pair<std::int64_t, std::int64_t> {
 	return std::make_pair(windowed_mode_width, windowed_mode_height);
 }
 
@@ -138,7 +138,7 @@ bool config::tvg2::windowed_mode_enabled() {
 	return (*guard)->windowed_mode_enabled();
 }
 
-std::pair<int, int> config::tvg2::windowed_mode_dimensions() {
+std::pair<std::int64_t, std::int64_t> config::tvg2::windowed_mode_dimensions() {
 	const auto guard = CONFIG.lock();
 	return (*guard)->windowed_mode_dimensions();
 }

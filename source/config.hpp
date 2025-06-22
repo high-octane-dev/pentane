@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <vector>
 #include <utility>
+#include <cstdint>
 #include "localization.hpp"
 
 auto display_error(std::string_view error, std::string_view title) -> void;
@@ -26,7 +27,7 @@ namespace config {
 #elif defined(PENTANE_GAME_TARGET_2TVGA)
 	namespace tvg2 {
 		bool windowed_mode_enabled();
-		std::pair<int, int> windowed_mode_dimensions();
+		std::pair<std::int64_t, std::int64_t> windowed_mode_dimensions();
 	};
 #endif
 };

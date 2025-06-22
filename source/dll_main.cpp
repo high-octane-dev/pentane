@@ -8,6 +8,7 @@
 #endif
 
 #include "config.hpp"
+#include "crash.hpp"
 #include "games/mn/file_system.hpp"
 #include "games/tvg/file_system.hpp"
 #include "games/2tvg/file_system.hpp"
@@ -106,6 +107,8 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
 			logger::log(message);
 			display_error(message, localization::get_with_fallback(ERROR_POPUP_TITLE, config::language()));
 		}
+		// Once we've initialized the logger, it's now safe to set up the exception handler.
+		crash_handler::install();
 		plugin_loader::load_all(install_dir / "Pentane\\Plugins");
 #if defined(PENTANE_GAME_TARGET_MN)
 		// MN-Specific initialization.

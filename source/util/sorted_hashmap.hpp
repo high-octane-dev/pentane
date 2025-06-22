@@ -52,12 +52,14 @@ namespace util {
 
 		// Returns an optional copy of the value at the specified key.
 		std::optional<ValueType> operator[](const KeyType& key) const {
-			try {
-				return elements.at(key_to_element_index.at(key));
-			}
-			catch (std::out_of_range&) {
+			if (key_to_element_index.contains(key)) {
+				index_type index = key_to_element_index.at(key);
+				if (index < elements.size()) {
+					return elements.at(index);
+				}
 				return std::nullopt;
 			}
+			return std::nullopt;
 		}
 
 		// Returns a reference to the value at the specified index,
@@ -68,12 +70,10 @@ namespace util {
 
 		// Returns an optional copy of the value at the specified index.
 		std::optional<ValueType> operator[](index_type index) const {
-			try {
+			if (index < elements.size()) {
 				return elements.at(index);
 			}
-			catch (std::out_of_range&) {
-				return std::nullopt;
-			}
+			return std::nullopt;
 		}
 
 		// Returns the key at the specified index,
@@ -90,12 +90,10 @@ namespace util {
 
 		// Returns an optional index at the specified key.
 		std::optional<index_type> get_index(const KeyType& key) {
-			try {
+			if (key_to_element_index.contains(key)) {
 				return key_to_element_index.at(key);
 			}
-			catch (std::out_of_range&) {
-				return std::nullopt;
-			}
+			return std::nullopt;
 		}
 
 		// Returns the key for the specified value,
