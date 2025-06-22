@@ -17,7 +17,6 @@ auto GameConfig::read(const toml::table& tbl, std::vector<std::string_view>& err
 
 		if (!game_config_node.as_table()->contains("enable_save_redirection")) {
 			errors.push_back(localization::get_with_fallback(MATER_NATIONAL_CONFIG_MISSING_ENABLE_SAVE_REDIRECTION, get_language()));
-			display_error(localization::get_with_fallback(MATER_NATIONAL_CONFIG_MISSING_ENABLE_SAVE_REDIRECTION, get_language()), localization::get_with_fallback(ERROR_POPUP_TITLE, get_language()));
 		}
 		else {
 			enable_save_redirection = game_config_node["enable_save_redirection"].as_boolean()->get();
@@ -25,7 +24,6 @@ auto GameConfig::read(const toml::table& tbl, std::vector<std::string_view>& err
 
 		if (!game_config_node.as_table()->contains("data_directory_name")) {
 			errors.push_back(localization::get_with_fallback(MATER_NATIONAL_CONFIG_MISSING_DATA_DIRECTORY, get_language()));
-			display_error(localization::get_with_fallback(MATER_NATIONAL_CONFIG_MISSING_DATA_DIRECTORY, get_language()), localization::get_with_fallback(ERROR_POPUP_TITLE, get_language()));
 		}
 		else {
 			data_directory_name = game_config_node["data_directory_name"].as_string()->get();
@@ -33,7 +31,6 @@ auto GameConfig::read(const toml::table& tbl, std::vector<std::string_view>& err
 	}
 	else {
 		errors.push_back(localization::get_with_fallback(MATER_NATIONAL_CONFIG_MISSING, get_language()));
-		display_error(localization::get_with_fallback(MATER_NATIONAL_CONFIG_MISSING, get_language()), localization::get_with_fallback(ERROR_POPUP_TITLE, get_language()));
 		return false;
 	}
 	return true;
@@ -48,7 +45,6 @@ auto GameConfig::init(const std::filesystem::path& file_path, std::vector<std::s
 	catch (const toml::parse_error& err) {
 		// This is the only other place that we use the system language; this time to let the user know that we failed to parse `config.toml`.
 		errors.push_back(localization::get_with_fallback(MN_CONFIG_PARSE_FAIL, get_system_language()));
-		display_error(localization::get_with_fallback(MN_CONFIG_PARSE_FAIL, get_language()), localization::get_with_fallback(ERROR_POPUP_TITLE, get_language()));
 		return false;
 	}
 	return read(tbl, errors);

@@ -5,6 +5,8 @@
 #include <utility>
 #include "localization.hpp"
 
+auto display_error(std::string_view error, std::string_view title) -> void;
+
 namespace config {
 	bool init_global(const std::filesystem::path& file_path, std::vector<std::string_view>& errors);
 	PentaneLanguage language();
