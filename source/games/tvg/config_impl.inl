@@ -18,6 +18,7 @@ auto GameConfig::init(const std::filesystem::path& file_path, std::vector<std::s
 	catch (const toml::parse_error& err) {
 		// This is the only other place that we use the system language; this time to let the user know that we failed to parse `config.toml`.
 		errors.push_back(localization::get_with_fallback(TVG_CONFIG_PARSE_FAIL, get_system_language()));
+		display_error(localization::get_with_fallback(TVG_CONFIG_PARSE_FAIL, get_language()), localization::get_with_fallback(ERROR_POPUP_TITLE, get_language()));
 		return false;
 	}
 	return read(tbl, errors);

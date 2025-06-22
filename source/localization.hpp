@@ -112,6 +112,18 @@ inline LocalizedString INCOMPLETE_LOCALIZATION{
 	std::nullopt,
 };
 
+inline LocalizedString ERROR_POPUP_TITLE{
+	"Pentane Configuration Error!",
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+};
+
 inline LocalizedString TARGET_MISMATCH{
 	"[DllMain] Target mismatch detected! Running game is: {}, but this Pentane build targets: {}!",
 	std::nullopt,
@@ -436,18 +448,6 @@ inline LocalizedString TVG2_CONFIG_PARSE_FAIL{
 	std::nullopt,
 };
 
-inline LocalizedString TVG2A_CONFIG_PARSE_FAIL{
-	"[GameConfig::read] Failed to parse `config.toml`! No plugins will be loaded, all further information logged will be in English, and the game will run in exclusive fullscreen mode, and the target window dimensions will be 1280x720.",
-	std::nullopt,
-	std::nullopt,
-	std::nullopt,
-	std::nullopt,
-	std::nullopt,
-	std::nullopt,
-	std::nullopt,
-	std::nullopt,
-};
-
 inline LocalizedString GLOBAL_CONFIG_MISSING_CONFIG{
 	"[GlobalConfig::read] `config.toml` is missing the `config` section! No plugins or mods will be loaded, and the log will be in English.",
 	std::nullopt,
@@ -473,11 +473,11 @@ inline LocalizedString GLOBAL_CONFIG_MISSING_MODS{
 };
 
 inline LocalizedString GLOBAL_CONFIG_MISSING_PLUGINS{
-	"[GlobalConfig::read] `config.toml` is missing the `plugins` section! No mods will be loaded.",
+	"[GlobalConfig::read] `config.toml` is missing the `plugins` section! No plugins will be loaded.",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	"[GlobalConfig::read] Plik `config.toml` nie zawiera sekcji `plugins` ! Żadne mody nie zostaną załadowane.",
+	"[GlobalConfig::read] Plik `config.toml` nie zawiera sekcji `plugins` ! Żadne wtyczki nie zostaną załadowane.",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -545,11 +545,11 @@ inline LocalizedString GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_CONSOLE_LOGGING{
 };
 
 inline LocalizedString GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_FILE_LOGGING{
-	"[GlobalConfig::read] `config` in `config.toml` is missing `enable_console_window`! Pentane will create a console window.",
+	"[GlobalConfig::read] `config` in `config.toml` is missing `enable_file_logging`! Pentane will write its log to `pentane.log`.",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	"[GlobalConfig::read] Sekcja `config` w pliku `config.toml` nie zawiera `enable_console_window`! Pentane utworzy okno konsoli.",
+	std::nullopt,
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -654,8 +654,12 @@ inline LocalizedString TVG2A_CONFIG_MISSING_WINDOW_HEIGHT{
 
 inline LocalizedString TVG2_CONFIG_MISSING{
 	"[GameConfig::read] `config.toml` is missing the `game-config` section! The game will run in exclusive fullscreen mode.",
-};
-
-inline LocalizedString TVG2A_CONFIG_MISSING{
-	"[GameConfig::read] `config.toml` is missing the `game-config` section! The game will run in exclusive fullscreen mode, and the target window dimensions will be 1280x720",
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
+	std::nullopt,
 };

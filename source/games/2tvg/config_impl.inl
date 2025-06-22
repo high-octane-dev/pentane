@@ -17,6 +17,7 @@ auto GameConfig::read(const toml::table& tbl, std::vector<std::string_view>& err
 
 		if (!game_config_node.as_table()->contains("enable_windowed_mode")) {
 			errors.push_back(localization::get_with_fallback(TVG2_CONFIG_MISSING_ENABLE_WINDOWED_MODE, get_language()));
+			display_error(localization::get_with_fallback(TVG2_CONFIG_MISSING_ENABLE_WINDOWED_MODE, get_language()), localization::get_with_fallback(ERROR_POPUP_TITLE, get_language()));
 		}
 		else {
 			enable_windowed_mode = game_config_node["enable_windowed_mode"].as_boolean()->get();
@@ -24,6 +25,7 @@ auto GameConfig::read(const toml::table& tbl, std::vector<std::string_view>& err
 	}
 	else {
 		errors.push_back(localization::get_with_fallback(TVG2_CONFIG_MISSING, get_language()));
+		display_error(localization::get_with_fallback(TVG2_CONFIG_MISSING, get_language()), localization::get_with_fallback(ERROR_POPUP_TITLE, get_language()));
 		return false;
 	}
 	return true;
@@ -38,6 +40,7 @@ auto GameConfig::init(const std::filesystem::path& file_path, std::vector<std::s
 	catch (const toml::parse_error& err) {
 		// This is the only other place that we use the system language; this time to let the user know that we failed to parse `config.toml`.
 		errors.push_back(localization::get_with_fallback(TVG2_CONFIG_PARSE_FAIL, get_system_language()));
+		display_error(localization::get_with_fallback(TVG2_CONFIG_PARSE_FAIL, get_language()), localization::get_with_fallback(ERROR_POPUP_TITLE, get_language()));
 		return false;
 	}
 	return read(tbl, errors);
@@ -73,37 +76,43 @@ auto GameConfig::read(const toml::table& tbl, std::vector<std::string_view>& err
 
 		if (!game_config_node.as_table()->contains("enable_windowed_mode")) {
 			errors.push_back(localization::get_with_fallback(TVG2_CONFIG_MISSING_ENABLE_WINDOWED_MODE, get_language()));
+			display_error(localization::get_with_fallback(TVG2_CONFIG_MISSING_ENABLE_WINDOWED_MODE, get_language()), localization::get_with_fallback(ERROR_POPUP_TITLE, get_language()));
 		}
 		else {
 			enable_windowed_mode = game_config_node["enable_windowed_mode"].as_boolean()->get();
 		}
 
-		bool found_width = false, found_height = false;
+		if (enable_windowed_mode) {
+			bool found_width = false, found_height = false;
 
-		if (!game_config_node.as_table()->contains("windowed_mode_width")) {
-			errors.push_back(localization::get_with_fallback(TVG2A_CONFIG_MISSING_WINDOW_WIDTH, get_language()));
-		}
-		else {
-			found_width = true;
-			windowed_mode_width = game_config_node["windowed_mode_width"].as_integer()->get();
-		}
+			if (!game_config_node.as_table()->contains("windowed_mode_width")) {
+				errors.push_back(localization::get_with_fallback(TVG2A_CONFIG_MISSING_WINDOW_WIDTH, get_language()));
+				display_error(localization::get_with_fallback(TVG2A_CONFIG_MISSING_WINDOW_WIDTH, get_language()), localization::get_with_fallback(ERROR_POPUP_TITLE, get_language()));
+			}
+			else {
+				found_width = true;
+				windowed_mode_width = game_config_node["windowed_mode_width"].as_integer()->get();
+			}
 
-		if (!game_config_node.as_table()->contains("windowed_mode_height")) {
-			errors.push_back(localization::get_with_fallback(TVG2A_CONFIG_MISSING_WINDOW_HEIGHT, get_language()));
-		}
-		else {
-			found_height = true;
-			windowed_mode_height = game_config_node["windowed_mode_height"].as_integer()->get();
-		}
+			if (!game_config_node.as_table()->contains("windowed_mode_height")) {
+				errors.push_back(localization::get_with_fallback(TVG2A_CONFIG_MISSING_WINDOW_HEIGHT, get_language()));
+				display_error(localization::get_with_fallback(TVG2A_CONFIG_MISSING_WINDOW_HEIGHT, get_language()), localization::get_with_fallback(ERROR_POPUP_TITLE, get_language()));
+			}
+			else {
+				found_height = true;
+				windowed_mode_height = game_config_node["windowed_mode_height"].as_integer()->get();
+			}
 
-		// If we found a width but not a height, or vice versa, or if the user selected a negative resolution then fall back to 720p.
-		if ((found_width && !found_height) || (found_height && !found_width) || windowed_mode_height < 0 || windowed_mode_height < 0) {
-			windowed_mode_width = 1280;
-			windowed_mode_height = 720;
+			// If we found a width but not a height, or vice versa, or if the user selected a negative resolution then fall back to 720p.
+			if ((found_width && !found_height) || (found_height && !found_width) || windowed_mode_width < 0 || windowed_mode_height < 0) {
+				windowed_mode_width = 1280;
+				windowed_mode_height = 720;
+			}
 		}
 	}
 	else {
-		errors.push_back(localization::get_with_fallback(TVG2A_CONFIG_MISSING, get_language()));
+		errors.push_back(localization::get_with_fallback(TVG2_CONFIG_MISSING, get_language()));
+		display_error(localization::get_with_fallback(TVG2_CONFIG_MISSING, get_language()), localization::get_with_fallback(ERROR_POPUP_TITLE, get_language()));
 		return false;
 	}
 	return true;
@@ -117,7 +126,8 @@ auto GameConfig::init(const std::filesystem::path& file_path, std::vector<std::s
 	}
 	catch (const toml::parse_error& err) {
 		// This is the only other place that we use the system language; this time to let the user know that we failed to parse `config.toml`.
-		errors.push_back(localization::get_with_fallback(TVG2A_CONFIG_PARSE_FAIL, get_system_language()));
+		errors.push_back(localization::get_with_fallback(TVG2_CONFIG_PARSE_FAIL, get_system_language()));
+		display_error(localization::get_with_fallback(TVG2_CONFIG_PARSE_FAIL, get_language()), localization::get_with_fallback(ERROR_POPUP_TITLE, get_language()));
 		return false;
 	}
 	return read(tbl, errors);

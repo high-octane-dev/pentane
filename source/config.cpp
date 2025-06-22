@@ -18,7 +18,7 @@ bool iequals(std::string_view lhs, std::string_view rhs) {
 }
 
 PentaneLanguage get_system_language() {
-	char language_iso639_1[1024];
+	char language_iso639_1[1024]{};
 	GetLocaleInfoA(GetUserDefaultUILanguage(), LOCALE_SISO639LANGNAME, language_iso639_1, 1024);
 	for (std::size_t i = 0; i < PentaneLanguage::Max; i++) {
 		if (LANGUAGE_CODE[i] == language_iso639_1) {
@@ -26,6 +26,10 @@ PentaneLanguage get_system_language() {
 		}
 	}
 	return PentaneLanguage::English;
+}
+
+auto display_error(std::string_view error, std::string_view title) {
+	MessageBoxA(nullptr, error.data(), title.data(), MB_ICONERROR);
 }
 
 class GlobalConfig {
@@ -81,6 +85,7 @@ auto GlobalConfig::read(const toml::table& tbl, std::vector<std::string_view>& e
 
 		if (!config_node.as_table()->contains("language")) {
 			errors.push_back(localization::get_with_fallback(GLOBAL_CONFIG_CONFIG_MISSING_LANG, system_language));
+			display_error(localization::get_with_fallback(GLOBAL_CONFIG_CONFIG_MISSING_LANG, system_language), localization::get_with_fallback(ERROR_POPUP_TITLE, system_language));
 		}
 		else {
 			language_string = config_node["language"].as_string()->get();
@@ -117,12 +122,18 @@ auto GlobalConfig::read(const toml::table& tbl, std::vector<std::string_view>& e
 
 		if (!found_language) {
 			errors.push_back(localization::get_with_fallback(GLOBAL_CONFIG_CONFIG_UNRECOGNIZED_LANG, system_language));
+			display_error(localization::get_with_fallback(GLOBAL_CONFIG_CONFIG_UNRECOGNIZED_LANG, system_language), localization::get_with_fallback(ERROR_POPUP_TITLE, system_language));
+		}
+		else if (!localization::support_status(language)) {
+			errors.push_back(localization::get_with_fallback(INCOMPLETE_LOCALIZATION, language));
+			display_error(localization::get_with_fallback(INCOMPLETE_LOCALIZATION, language), localization::get_with_fallback(ERROR_POPUP_TITLE, language));
 		}
 		
 		// Pentane's OE mod loader is not yet implemented.
 		if constexpr (!util::octane()) {
 			if (!config_node.as_table()->contains("enable_mods")) {
 				errors.push_back(localization::get_with_fallback(GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_MODS, language));
+				display_error(localization::get_with_fallback(GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_MODS, language), localization::get_with_fallback(ERROR_POPUP_TITLE, language));
 			}
 			else {
 				should_load_mods = config_node["enable_mods"].as_boolean()->get();
@@ -131,6 +142,7 @@ auto GlobalConfig::read(const toml::table& tbl, std::vector<std::string_view>& e
 		
 		if (!config_node.as_table()->contains("enable_plugins")) {
 			errors.push_back(localization::get_with_fallback(GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_PLUGINS, language));
+			display_error(localization::get_with_fallback(GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_PLUGINS, language), localization::get_with_fallback(ERROR_POPUP_TITLE, language));
 		}
 		else {
 			should_load_plugins = config_node["enable_plugins"].as_boolean()->get();
@@ -138,6 +150,7 @@ auto GlobalConfig::read(const toml::table& tbl, std::vector<std::string_view>& e
 
 		if (!config_node.as_table()->contains("enable_console_logging")) {
 			errors.push_back(localization::get_with_fallback(GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_CONSOLE_LOGGING, language));
+			display_error(localization::get_with_fallback(GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_CONSOLE_LOGGING, language), localization::get_with_fallback(ERROR_POPUP_TITLE, language));
 		}
 		else {
 			enable_console_logging = config_node["enable_console_logging"].as_boolean()->get();
@@ -145,6 +158,7 @@ auto GlobalConfig::read(const toml::table& tbl, std::vector<std::string_view>& e
 
 		if (!config_node.as_table()->contains("enable_file_logging")) {
 			errors.push_back(localization::get_with_fallback(GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_FILE_LOGGING, language));
+			display_error(localization::get_with_fallback(GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_FILE_LOGGING, language), localization::get_with_fallback(ERROR_POPUP_TITLE, language));
 		}
 		else {
 			enable_file_logging = config_node["enable_file_logging"].as_boolean()->get();
@@ -160,10 +174,12 @@ auto GlobalConfig::read(const toml::table& tbl, std::vector<std::string_view>& e
 				}
 				else {
 					errors.push_back(localization::get_with_fallback(GLOBAL_CONFIG_MODS_MISSING_ENABLED_MODS, language));
+					display_error(localization::get_with_fallback(GLOBAL_CONFIG_MODS_MISSING_ENABLED_MODS, language), localization::get_with_fallback(ERROR_POPUP_TITLE, language));
 				}
 			}
 			else {
 				errors.push_back(localization::get_with_fallback(GLOBAL_CONFIG_MISSING_MODS, language));
+				display_error(localization::get_with_fallback(GLOBAL_CONFIG_MISSING_MODS, language), localization::get_with_fallback(ERROR_POPUP_TITLE, language));
 			}
 		}
 		if (should_load_plugins) {
@@ -176,15 +192,18 @@ auto GlobalConfig::read(const toml::table& tbl, std::vector<std::string_view>& e
 				}
 				else {
 					errors.push_back(localization::get_with_fallback(GLOBAL_CONFIG_PLUGINS_MISSING_ENABLED_PLUGINS, language));
+					display_error(localization::get_with_fallback(GLOBAL_CONFIG_PLUGINS_MISSING_ENABLED_PLUGINS, language), localization::get_with_fallback(ERROR_POPUP_TITLE, language));
 				}
 			}
 			else {
 				errors.push_back(localization::get_with_fallback(GLOBAL_CONFIG_MISSING_PLUGINS, language));
+				display_error(localization::get_with_fallback(GLOBAL_CONFIG_MISSING_PLUGINS, language), localization::get_with_fallback(ERROR_POPUP_TITLE, language));
 			}
 		}
 	}
 	else {
 		errors.push_back(localization::get_with_fallback(GLOBAL_CONFIG_MISSING_CONFIG, system_language));
+		display_error(localization::get_with_fallback(GLOBAL_CONFIG_MISSING_CONFIG, system_language), localization::get_with_fallback(ERROR_POPUP_TITLE, system_language));
 		return false;
 	}
 	return true;
