@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <optional>
 #include <array>
 
 enum PentaneLanguage {
@@ -628,7 +629,7 @@ inline LocalizedString TVG2_CONFIG_MISSING_ENABLE_WINDOWED_MODE{
 };
 
 inline LocalizedString TVG2A_CONFIG_MISSING_WINDOW_WIDTH{
-	"[GameConfig::read] `game-config` in `config.toml` is missing `desired_window_width`! The game window will try to match 1280x720.",
+	"[GameConfig::read] `game-config` in `config.toml` is missing `windowed_mode_width`! The game window will try to match 1280x720.",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -640,7 +641,7 @@ inline LocalizedString TVG2A_CONFIG_MISSING_WINDOW_WIDTH{
 };
 
 inline LocalizedString TVG2A_CONFIG_MISSING_WINDOW_HEIGHT{
-	"[GameConfig::read] `game-config` in `config.toml` is missing `desired_window_height`! The game window will try to match 1280x720.",
+	"[GameConfig::read] `game-config` in `config.toml` is missing `windowed_mode_height`! The game window will try to match 1280x720.",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,

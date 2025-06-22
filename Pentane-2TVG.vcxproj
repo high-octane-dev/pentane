@@ -64,7 +64,8 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <ModuleDefinitionFile>source\exports.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>Shlwapi.lib;Pathcch.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -86,7 +87,8 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <ModuleDefinitionFile>source\exports.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>

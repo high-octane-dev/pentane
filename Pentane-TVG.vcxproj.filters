@@ -108,9 +108,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="source\exports.def">
-      <Filter>Code</Filter>
-    </None>
     <None Include="source\games\tvg\config_impl.inl">
       <Filter>Code\Core\Games\Cars: The Video Game</Filter>
     </None>

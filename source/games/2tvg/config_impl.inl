@@ -57,13 +57,13 @@ bool config::tvg2::windowed_mode_enabled() {
 class GameConfig : public GlobalConfig {
 private:
 	bool enable_windowed_mode = false;
-	int desired_window_width = 1280;
-	int desired_window_height = 720;
+	int windowed_mode_width = 1280;
+	int windowed_mode_height = 720;
 public:
 	auto read(const toml::table& tbl, std::vector<std::string_view>& errors) -> bool;
 	auto init(const std::filesystem::path& file_path, std::vector<std::string_view>& errors) -> bool;
 	auto windowed_mode_enabled() -> bool;
-	auto window_dimensions() -> std::pair<int, int>;
+	auto windowed_mode_dimensions() -> std::pair<int, int>;
 };
 
 auto GameConfig::read(const toml::table& tbl, std::vector<std::string_view>& errors) -> bool {
@@ -80,26 +80,26 @@ auto GameConfig::read(const toml::table& tbl, std::vector<std::string_view>& err
 
 		bool found_width = false, found_height = false;
 
-		if (!game_config_node.as_table()->contains("desired_window_width")) {
+		if (!game_config_node.as_table()->contains("windowed_mode_width")) {
 			errors.push_back(localization::get_with_fallback(TVG2A_CONFIG_MISSING_WINDOW_WIDTH, get_language()));
 		}
 		else {
 			found_width = true;
-			desired_window_width = game_config_node["desired_window_width"].as_integer()->get();
+			windowed_mode_width = game_config_node["windowed_mode_width"].as_integer()->get();
 		}
 
-		if (!game_config_node.as_table()->contains("desired_window_height")) {
+		if (!game_config_node.as_table()->contains("windowed_mode_height")) {
 			errors.push_back(localization::get_with_fallback(TVG2A_CONFIG_MISSING_WINDOW_HEIGHT, get_language()));
 		}
 		else {
 			found_height = true;
-			desired_window_height = game_config_node["desired_window_height"].as_integer()->get();
+			windowed_mode_height = game_config_node["windowed_mode_height"].as_integer()->get();
 		}
 
 		// If we found a width but not a height, or vice versa, or if the user selected a negative resolution then fall back to 720p.
-		if ((found_width && !found_height) || (found_height && !found_width) || desired_window_height < 0 || desired_window_height < 0) {
-			desired_window_width = 1280;
-			desired_window_height = 720;
+		if ((found_width && !found_height) || (found_height && !found_width) || windowed_mode_height < 0 || windowed_mode_height < 0) {
+			windowed_mode_width = 1280;
+			windowed_mode_height = 720;
 		}
 	}
 	else {
@@ -127,8 +127,8 @@ auto GameConfig::windowed_mode_enabled() -> bool {
 	return enable_windowed_mode;
 }
 
-auto GameConfig::window_dimensions() -> std::pair<int, int> {
-	return std::make_pair(desired_window_width, desired_window_height);
+auto GameConfig::windowed_mode_dimensions() -> std::pair<int, int> {
+	return std::make_pair(windowed_mode_width, windowed_mode_height);
 }
 
 bool config::tvg2::windowed_mode_enabled() {
@@ -136,9 +136,9 @@ bool config::tvg2::windowed_mode_enabled() {
 	return (*guard)->windowed_mode_enabled();
 }
 
-std::pair<int, int> config::tvg2::window_dimensions() {
+std::pair<int, int> config::tvg2::windowed_mode_dimensions() {
 	const auto guard = CONFIG.lock();
-	return (*guard)->window_dimensions();
+	return (*guard)->windowed_mode_dimensions();
 }
 
 #endif

@@ -24,7 +24,7 @@ namespace config {
 #elif defined(PENTANE_GAME_TARGET_2TVGA)
 	namespace tvg2 {
 		bool windowed_mode_enabled();
-		std::pair<int, int> window_dimensions();
+		std::pair<int, int> windowed_mode_dimensions();
 	};
 #endif
 };

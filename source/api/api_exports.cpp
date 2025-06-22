@@ -40,3 +40,10 @@ extern "C" unsigned short Pentane_GetUserLanguage_ISO6391() {
 	const auto& code = LANGUAGE_CODE[config::language()];
 	return static_cast<unsigned short>(std::bit_cast<unsigned char>(code[0])) << 8 | static_cast<unsigned short>(std::bit_cast<unsigned char>(code[1]));
 }
+
+#if defined(PENTANE_GAME_TARGET_2TVG) || defined(PENTANE_GAME_TARGET_2TVGA)
+#pragma comment(linker, "/EXPORT:Pentane_IsWindowedModeEnabled=_Pentane_IsWindowedModeEnabled")
+extern "C" int Pentane_IsWindowedModeEnabled() {
+	return config::tvg2::windowed_mode_enabled() ? 1 : 0;
+}
+#endif
