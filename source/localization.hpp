@@ -41,7 +41,7 @@ namespace localization {
 		case Spanish: return false;
 		case French: return false;
 		case German: return false;
-		case Polish: return false;
+		case Polish: return true;
 		case Russian: return true;
 		case Japanese: return false;
 		case Korean: return false;
@@ -102,14 +102,14 @@ inline FullyLocalizedString PENTANE_CONSOLE{
 inline LocalizedString INCOMPLETE_LOCALIZATION{
 	// This one's kinda silly and should effectively go unused.
 	"English localization is not fully implemented! You may see some Pentane logger messages in English rather than your selected language.",
-	"¡La localización español no es finalizado!",
+	"Spanish localization is not fully implemented! You may see some Pentane logger messages in English rather than your selected language.", // FIXME
 	"La traduction française n’est pas entièrement implémentée! Il est possible que certaines messages de logging de Pentane apparaissent en anglais au lieu de la langue sélectionnée.",
-	std::nullopt,
+	"German localization is not fully implemented! You may see some Pentane logger messages in English rather than your selected language.", // FIXME
 	"Polska lokalizacja nie jest w pełni zaimplementowana! Możesz zobaczyć niektóre komunikaty loggera Pentane w języku angielskim zamiast wybranego języka.",
 	"Русская локализация не реализована полностью! Вы можете видеть некоторые сообщения логов на Английском, нежели на выбранном вами языке.",
-	std::nullopt,
-	std::nullopt,
-	std::nullopt,
+	"Japanese localization is NOT implemented! You will see Pentane logger messages in English rather than your selected language.", // Unsupported
+	"Korean localization is NOT implemented! You will see Pentane logger messages in English rather than your selected language.", // Unsupported
+	"Hindi localization is NOT implemented! You will see Pentane logger messages in English rather than your selected language.", // Unsupported
 };
 
 inline LocalizedString ERROR_POPUP_TITLE{
@@ -621,7 +621,7 @@ inline LocalizedString TVG2_CONFIG_MISSING_ENABLE_WINDOWED_MODE{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[GameConfig::read] W sekcji game-config w pliku config.toml brakuje opcji enable_windowed_mode! Gra uruchomi się w trybie pełnoekranowym.",
 	"[GameConfig::read] `game-config` в `config.toml` не хватает `enable_windowed_mode`! Игра создаст эксклюзивное полноэкранное окно.",
 	std::nullopt,
 	std::nullopt,
@@ -633,7 +633,7 @@ inline LocalizedString TVG2A_CONFIG_MISSING_WINDOW_WIDTH{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[GameConfig::read] W sekcji game-config w pliku config.toml brakuje opcji `windowed_mode_width`! Okno gry spróbuje dopasować się do rozdzielczości 1280x720.",
 	"[GameConfig::read] `game-config` в `config.toml` не хватает `windowed_mode_width`! Окно игры будет пытаться установить размер 1280x720.",
 	std::nullopt,
 	std::nullopt,
@@ -645,7 +645,7 @@ inline LocalizedString TVG2A_CONFIG_MISSING_WINDOW_HEIGHT{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[GameConfig::read] W sekcji game-config w pliku config.toml brakuje opcji `windowed_mode_height`! Okno gry spróbuje dopasować się do rozdzielczości 1280x720.",
 	"[GameConfig::read] `game-config` в `config.toml` не хватает `windowed_mode_height`! Окно игры будет пытаться установить размер 1280x720.",
 	std::nullopt,
 	std::nullopt,
@@ -657,7 +657,7 @@ inline LocalizedString TVG2_CONFIG_MISSING{
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"[GameConfig::read] W pliku config.toml brakuje sekcji game-config! Gra uruchomi się w trybie pełnoekranowym na wyłączność.,"
 	"[GameConfig::read] В файле `config.toml` отсутствует раздел `game-config`! Игра будет работать исключительно в полноэкранном режиме.",
 	std::nullopt,
 	std::nullopt,
