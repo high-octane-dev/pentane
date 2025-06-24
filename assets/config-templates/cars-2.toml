@@ -1,0 +1,20 @@
+# This is a template config.toml file, intended to be used with Cars 2: The Video Game.
+
+[config]
+language = "English"
+# Set this to true to enable plugin loading.
+enable_plugins = true
+# Set this to true if you want Pentane to dump its log to `pentane.log`.
+enable_file_logging = true
+# Set this to true if you want Pentane to log to a console window.
+enable_console_logging = true
+
+# This is where all game-specific configuration is. All Cars 2-specific configuration options will lay here.
+[game-config]
+# Set this to true if you want the game to not run in fullscreen.
+enable_windowed_mode = true
+
+[plugins]
+# List plugins by priority; plugins are processed *bottom-to-top*, so put the highest priority plugin first, and the lowest priority plugin last. Be sure to place dependencies below the mods that require them!
+# Note for developers: the order of this array determines the execution order for each plugins' `Pentane_Main` function. The lowest priority plugin's `Pentane_Main` function is called first, and the highest priority plugin is called last.
+enabled_plugins = []

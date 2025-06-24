@@ -1,0 +1,28 @@
+# This is a template config.toml file, intended to be used with Cars: Mater-National Championship.
+
+[config]
+language = "English"
+# Set this to true to enable the mod loader.
+enable_mods = true
+# Set this to true to enable plugin loading.
+enable_plugins = true
+# Set this to true if you want Pentane to dump its log to `pentane.log`.
+enable_file_logging = true
+# Set this to true if you want Pentane to log to a console window.
+enable_console_logging = true
+
+# This is where all game-specific configuration is. All Mater-National-specific configuration options will lay here.
+[game-config]
+# Set this to true if you want Mater-National to load and save its save files from `Pentane\SaveData` instead of the Documents folder.
+enable_save_redirection = true
+# Set this to the name of the folder with the base assets. For Vanilla, this is usually just "DataPC". For mods like Cars: High-Octane, this is usually "Hi-Octane".
+data_directory_name = "DataPC"
+
+[mods]
+# List mods by priority; mods are processed *bottom-to-top*, so put the highest priority mod first, and the lowest priority mod last. Be sure to place dependencies below the mods that require them!
+enabled_mods = []
+
+[plugins]
+# List plugins by priority; plugins are processed *bottom-to-top*, so put the highest priority plugin first, and the lowest priority plugin last. Be sure to place dependencies below the mods that require them!
+# Note for developers: the order of this array determines the execution order for each plugins' `Pentane_Main` function. The lowest priority plugin's `Pentane_Main` function is called first, and the highest priority plugin is called last.
+enabled_plugins = []
