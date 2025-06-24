@@ -13,13 +13,13 @@ struct PentaneCStringView {
 #ifdef _M_IX86
 #pragma comment(linker, "/EXPORT:Pentane_LogUTF8=_Pentane_LogUTF8")
 #endif
-extern "C" void Pentane_LogUTF8(PentaneCStringView* c_str) {
+extern "C" void Pentane_LogUTF8(const PentaneCStringView* c_str) {
 	if (c_str != nullptr) {
 		if (c_str->data == nullptr || c_str->data_len == 0) {
 			logger::log("");
 		}
 		else {
-			std::string str(c_str->data, c_str->data_len);
+			std::string_view str(c_str->data, c_str->data_len);
 			logger::log(str);
 		}
 	}
@@ -45,5 +45,12 @@ extern "C" unsigned short Pentane_GetUserLanguage_ISO6391() {
 #pragma comment(linker, "/EXPORT:Pentane_IsWindowedModeEnabled=_Pentane_IsWindowedModeEnabled")
 extern "C" int Pentane_IsWindowedModeEnabled() {
 	return config::tvg2::windowed_mode_enabled() ? 1 : 0;
+}
+#endif
+
+#if defined(PENTANE_GAME_TARGET_MN)
+#pragma comment(linker, "/EXPORT:Pentane_IsSaveRedirectionEnabled=_Pentane_IsSaveRedirectionEnabled")
+extern "C" int Pentane_IsSaveRedirectionEnabled() {
+	return config::mn::save_redirection_enabled() ? 1 : 0;
 }
 #endif
