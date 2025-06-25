@@ -38,7 +38,7 @@ namespace localization {
 	constexpr inline auto support_status(PentaneLanguage language) -> bool {
 		switch (language) {
 		case English: return true;
-		case Spanish: return false;
+		case Spanish: return true;
 		case French: return false;
 		case German: return false;
 		case Polish: return true;
@@ -102,19 +102,19 @@ inline FullyLocalizedString PENTANE_CONSOLE{
 inline FullyLocalizedString INCOMPLETE_LOCALIZATION{
 	// This one's kinda silly and should effectively go unused.
 	"English localization is not fully implemented! You may see some Pentane logger messages in English rather than your selected language.",
-	"Spanish localization is not fully implemented! You may see some Pentane logger messages in English rather than your selected language.", // FIXME
+	"¡La localización en español no está completamente implementada! Es posible que veas algunos mensajes del registrador de Pentane en inglés en lugar de tu idioma seleccionado.",
 	"La traduction française n’est pas entièrement implémentée! Il est possible que certaines messages de logging de Pentane apparaissent en anglais au lieu de la langue sélectionnée.",
 	"German localization is not fully implemented! You may see some Pentane logger messages in English rather than your selected language.", // FIXME
 	"Polska lokalizacja nie jest w pełni zaimplementowana! Możesz zobaczyć niektóre komunikaty loggera Pentane w języku angielskim zamiast wybranego języka.",
 	"Русская локализация не реализована полностью! Вы можете видеть некоторые сообщения логов на Английском, нежели на выбранном вами языке.",
-	"Japanese localization is NOT implemented! You will see Pentane logger messages in English rather than your selected language.", // Unsupported
-	"Korean localization is NOT implemented! You will see Pentane logger messages in English rather than your selected language.", // Unsupported
-	"Hindi localization is NOT implemented! You will see Pentane logger messages in English rather than your selected language.", // Unsupported
+	"Japanese localization is NOT implemented! You will see Pentane logger messages in English instead of your selected language.", // Unsupported
+	"Korean localization is NOT implemented! You will see Pentane logger messages in English instead of your selected language.", // Unsupported
+	"Hindi localization is NOT implemented! You will see Pentane logger messages in English instead of your selected language.", // Unsupported
 };
 
 inline LocalizedString ERROR_POPUP_TITLE{
 	"Pentane Configuration Error!",
-	std::nullopt,
+	"¡Error de configuración de Pentane!",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -126,7 +126,7 @@ inline LocalizedString ERROR_POPUP_TITLE{
 
 inline LocalizedString TARGET_MISMATCH{
 	"[DllMain] Target mismatch detected! Running game is: {}, but this Pentane build targets: {}!",
-	std::nullopt,
+	"[DllMain] ¡Incompatibilidad de objetivo detectada! El juego en ejecución es: {}, pero esta versión de Pentane está diseñada para: {}!",
 	std::nullopt,
 	std::nullopt,
 	"[DllMain] Wykryto niezgodność celu! Uruchomiona gra to: {}, ale ta wersja Pentane jest przeznaczona dla: {}!",
@@ -138,7 +138,7 @@ inline LocalizedString TARGET_MISMATCH{
 
 inline LocalizedString FAILED_READ_TIMESTAMP{
 	"[DllMain] Unable to detect the running game! Are you sure you're using a supported version of {}?",
-	std::nullopt,
+	"[DllMain] ¡No se pudo detectar el juego en ejecución! ¿Estás seguro de que estás usando una versión compatible de {}?",
 	std::nullopt,
 	std::nullopt,
 	"[DllMain] Nie można wykryć uruchomionej gry! Czy na pewno używasz obsługiwanej wersji {}?",
@@ -270,7 +270,7 @@ inline LocalizedString MODULE_REJECTED_MISSING_DEPENDENCY{
 
 inline LocalizedString FILE_IN_MOD_OVERWRITES_EXISTING{
 	"[fs::collect_files] File: {} in mod: {} overwrites existing mod file in: {}",
-	std::nullopt,
+	"[fs::collect_files] El archivo: {} en el mod: {} sobrescribe un archivo de mod existente en: {}",
 	std::nullopt,
 	std::nullopt,
 	"[fs::collect_files] Plik: {} w modzie: {} nadpisuje istniejący plik moda w: {}",
@@ -282,7 +282,7 @@ inline LocalizedString FILE_IN_MOD_OVERWRITES_EXISTING{
 
 inline LocalizedString COLLECTED_FILE{
 	"[fs::collect_files] Found file: {} in mod: {}",
-	std::nullopt,
+	"[fs::collect_files] Archivo encontrado: {} en el mod: {}",
 	std::nullopt,
 	std::nullopt,
 	"[fs::collect_files] Znaleziono plik: {} w modzie: {}",
@@ -294,7 +294,7 @@ inline LocalizedString COLLECTED_FILE{
 
 inline LocalizedString MOD_REJECTED_DOES_NOT_EXIST{
 	"[fs::collect_files] Mod: {} was rejected as it does not exist!",
-	std::nullopt,
+	"[fs::collect_files] ¡El mod: {} fue rechazado porque no existe!",
 	std::nullopt,
 	std::nullopt,
 	"[fs::collect_files] Mod: {} został odrzucony, ponieważ nie istnieje!",
@@ -306,7 +306,7 @@ inline LocalizedString MOD_REJECTED_DOES_NOT_EXIST{
 
 inline LocalizedString MN_FOPEN_LOADING_MODDED_FILE{
 	"[fs::fopen] Loading file: {} from mod: {}",
-	std::nullopt,
+	"[fs::fopen] Cargando archivo: {} desde el mod: {}",
 	std::nullopt,
 	std::nullopt,
 	"[fs::fopen] Wczytywanie pliku: {} z moda: {}",
@@ -318,7 +318,7 @@ inline LocalizedString MN_FOPEN_LOADING_MODDED_FILE{
 
 inline LocalizedString BINK_LOADING_MODDED_FILE{
 	"[fs::BinkOpen] Loading .BIK file: {} from mod: {}",
-	std::nullopt,
+	"[fs::BinkOpen] Cargando archivo .BIK: {} desde el mod: {}",
 	std::nullopt,
 	std::nullopt,
 	"[fs::BinkOpen] Wczytywanie pliku .BIK: {} z moda: {}",
@@ -330,7 +330,7 @@ inline LocalizedString BINK_LOADING_MODDED_FILE{
 
 inline LocalizedString MN_STREAM_LOADING_FILE{
 	"[fs::BASS_StreamCreateFile] Loading stream file: {} from mod: {}",
-	std::nullopt,
+	"[fs::BASS_StreamCreateFile] Cargando archivo de stream: {} desde el mod: {}",
 	std::nullopt,
 	std::nullopt,
 	"[fs::BASS_StreamCreateFile] Wczytywanie pliku strumieniowego: {} z moda: {}",
@@ -342,7 +342,7 @@ inline LocalizedString MN_STREAM_LOADING_FILE{
 
 inline LocalizedString MN_SAMPLE_LOADING_FILE{
 	"[fs::BASS_SampleLoad] Loading stream file: {} from mod: {}",
-	std::nullopt,
+	"[fs::BASS_SampleLoad] Cargando archivo de muestra: {} desde el mod: {}",
 	std::nullopt,
 	std::nullopt,
 	"[fs::BASS_SampleLoad] Wczytywanie pliku stream: {} z moda: {}",
@@ -354,7 +354,7 @@ inline LocalizedString MN_SAMPLE_LOADING_FILE{
 
 inline LocalizedString MN_FS_FAILED_INIT{
 	"[fs::init] Failed to initialize filesystem as either BASS or BinkW32 was not loaded.",
-	std::nullopt,
+	"[fs::init] Error al inicializar el sistema de archivos porque no se cargó BASS ni BinkW32.",
 	std::nullopt,
 	std::nullopt,
 	"[fs::init] Nie udało się zainicjować systemu plików, ponieważ BASS lub BinkW32 nie został załadowany.",
@@ -366,7 +366,7 @@ inline LocalizedString MN_FS_FAILED_INIT{
 
 inline LocalizedString MN_DATA_DIR_TOO_LARGE{
 	"[fs::init] Data directory path: {} is too large, reverting to `DataPC`!",
-	std::nullopt,
+	"[fs::init] La ruta del directorio de datos: {} es demasiado larga, se volverá a `DataPC`!",
 	std::nullopt,
 	std::nullopt,
 	"[fs::init] Ścieżka do katalogu danych: {} jest zbyt duża, powrót do `DataPC`!",
@@ -378,7 +378,7 @@ inline LocalizedString MN_DATA_DIR_TOO_LARGE{
 
 inline LocalizedString MN_SAVE_DIR_TOO_LARGE{
 	"[fs::init] Save redirection path: {} is too large, reverting to standard save data location!",
-	std::nullopt,
+	"[fs::init] La ruta de redirección de guardado: {} es demasiado larga, se revertirá a la ubicación estándar de datos guardados!",
 	std::nullopt,
 	std::nullopt,
 	"[fs::init] Ścieżka przekierowania zapisu: {} jest zbyt duża, powrót do standardowej lokalizacji zapisu danych!",
@@ -390,7 +390,7 @@ inline LocalizedString MN_SAVE_DIR_TOO_LARGE{
 
 inline LocalizedString TVG_PAK_LOADING_MODDED_FILE{
 	"[fs::PAK::OpenFile] Loading file: {} from mod: {}",
-	std::nullopt,
+	"[fs::PAK::OpenFile] Cargando archivo: {} desde el mod: {}",
 	std::nullopt,
 	std::nullopt,
 	"[fs::PAK::OpenFile] Wczytywanie pliku: {} z moda: {}",
@@ -402,7 +402,7 @@ inline LocalizedString TVG_PAK_LOADING_MODDED_FILE{
 
 inline LocalizedString TVG_PAK_LOADING_BASE_FILE{
 	"[fs::PAK::OpenFile] Loading file: {}",
-	std::nullopt,
+	"[fs::PAK::OpenFile] Cargando archivo: {}",
 	std::nullopt,
 	std::nullopt,
 	"[fs::PAK::OpenFile] Wczytywanie pliku: {}",
@@ -414,7 +414,7 @@ inline LocalizedString TVG_PAK_LOADING_BASE_FILE{
 
 inline LocalizedString TVG_CONFIG_PARSE_FAIL{
 	"[GameConfig::read] Failed to parse `config.toml`! No plugins or mods will be loaded, all further information logged will be in English, and saves will be loaded from the `Documents` folder.",
-	std::nullopt,
+	"[GameConfig::read] ¡Error al analizar `config.toml`! No se cargarán plugins ni mods, toda la información registrada a partir de ahora estará en inglés y las partidas guardadas se cargarán desde la carpeta `Documentos`.",
 	std::nullopt,
 	std::nullopt,
 	"[GameConfig::read] Nie udało się przeanalizować pliku `config.toml`! Nie zostaną załadowane żadne wtyczki ani mody, wszystkie dalsze informacje będą rejestrowane w języku angielskim, a zapisy zostaną załadowane z folderu `Dokumenty`.",
@@ -426,7 +426,7 @@ inline LocalizedString TVG_CONFIG_PARSE_FAIL{
 
 inline LocalizedString MN_CONFIG_PARSE_FAIL{
 	"[GameConfig::read] Failed to parse `config.toml`! No plugins or mods will be loaded, all further information logged will be in English, saves will be loaded from the `Documents` folder, and game assets will be read from `DataPC`.",
-	std::nullopt,
+	"[GameConfig::read] ¡Error al analizar `config.toml`! No se cargarán plugins ni mods, toda la información registrada a partir de ahora estará en inglés, las partidas guardadas se cargarán desde la carpeta `Documentos` y los recursos del juego se leerán desde `DataPC`.",
 	std::nullopt,
 	std::nullopt,
 	"[GameConfig::read] Nie udało się przeanalizować pliku `config.toml`! Nie zostaną załadowane żadne wtyczki ani mody, wszystkie dalsze informacje będą rejestrowane w języku angielskim, zapisy zostaną załadowane z folderu `Dokumenty`, a zasoby gry zostaną odczytane z `DataPC`.",
@@ -438,7 +438,7 @@ inline LocalizedString MN_CONFIG_PARSE_FAIL{
 
 inline LocalizedString TVG2_CONFIG_PARSE_FAIL{
 	"[GameConfig::read] Failed to parse `config.toml`! No plugins will be loaded, all further information logged will be in English, and the game will run in exclusive fullscreen mode.",
-	std::nullopt,
+	"[GameConfig::read] ¡Error al analizar `config.toml`! No se cargarán plugins, toda la información registrada a partir de ahora estará en inglés y el juego se ejecutará en modo de pantalla completa exclusiva.",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -450,7 +450,7 @@ inline LocalizedString TVG2_CONFIG_PARSE_FAIL{
 
 inline LocalizedString GLOBAL_CONFIG_MISSING_CONFIG{
 	"[GlobalConfig::read] `config.toml` is missing the `config` section! No plugins or mods will be loaded, and the log will be in English.",
-	std::nullopt,
+	"[GlobalConfig::read] ¡Falta la sección `config` en `config.toml`! No se cargarán plugins ni mods, y el registro estará en inglés.",
 	std::nullopt,
 	std::nullopt,
 	"[GlobalConfig::read] W pliku `config.toml` brakuje sekcji `config`! Żadne wtyczki ani mody nie zostaną załadowane, a dziennik będzie w języku angielskim",
@@ -462,7 +462,7 @@ inline LocalizedString GLOBAL_CONFIG_MISSING_CONFIG{
 
 inline LocalizedString GLOBAL_CONFIG_MISSING_MODS{
 	"[GlobalConfig::read] `config.toml` is missing the `mods` section! No mods will be loaded.",
-	std::nullopt,
+	"[GlobalConfig::read] ¡Falta la sección `mods` en `config.toml`! No se cargarán mods.",
 	std::nullopt,
 	std::nullopt,
 	"[GlobalConfig::read] Plik `config.toml` nie zawiera sekcji `mods` ! Żadne mody nie zostaną załadowane.",
@@ -474,7 +474,7 @@ inline LocalizedString GLOBAL_CONFIG_MISSING_MODS{
 
 inline LocalizedString GLOBAL_CONFIG_MISSING_PLUGINS{
 	"[GlobalConfig::read] `config.toml` is missing the `plugins` section! No plugins will be loaded.",
-	std::nullopt,
+	"[GlobalConfig::read] ¡Falta la sección plugins en `config.toml`! No se cargarán `plugins`.",
 	std::nullopt,
 	std::nullopt,
 	"[GlobalConfig::read] Plik `config.toml` nie zawiera sekcji `plugins` ! Żadne wtyczki nie zostaną załadowane.",
@@ -486,7 +486,7 @@ inline LocalizedString GLOBAL_CONFIG_MISSING_PLUGINS{
 
 inline LocalizedString GLOBAL_CONFIG_CONFIG_MISSING_LANG{
 	"[GlobalConfig::read] `config` in `config.toml` is missing `language`! All further information logged will be in English.",
-	std::nullopt,
+	"[GlobalConfig::read] ¡Falta `language` en la sección `config` de `config.toml`! Toda la información registrada a partir de ahora estará en inglés.",
 	std::nullopt,
 	std::nullopt,
 	"[GlobalConfig::read] W `config.toml` brakuje `language`! Wszystkie dalsze rejestrowane informacje będą w języku angielskim.",
@@ -498,7 +498,7 @@ inline LocalizedString GLOBAL_CONFIG_CONFIG_MISSING_LANG{
 
 inline LocalizedString GLOBAL_CONFIG_CONFIG_UNRECOGNIZED_LANG{
 	"[GlobalConfig::read] Failed to recognize language set in `config`! All further information logged will be in English.",
-	std::nullopt,
+	"[GlobalConfig::read] ¡No se pudo reconocer el idioma establecido en la sección `config`! Toda la información registrada a partir de ahora estará en inglés.",
 	std::nullopt,
 	std::nullopt,
 	"[GlobalConfig::read] W `config.toml` brakuje `config`! Wszystkie dalsze rejestrowane informacje będą w języku angielskim.",
@@ -510,7 +510,7 @@ inline LocalizedString GLOBAL_CONFIG_CONFIG_UNRECOGNIZED_LANG{
 
 inline LocalizedString GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_MODS{
 	"[GlobalConfig::read] `config` in `config.toml` is missing `enable_mods`! No mods will be loaded.",
-	std::nullopt,
+	"[GlobalConfig::read] ¡Falta `enable_mods` en la sección `config` de `config.toml`! No se cargarán mods.",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -522,7 +522,7 @@ inline LocalizedString GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_MODS{
 
 inline LocalizedString GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_PLUGINS{
 	"[GlobalConfig::read] `config` in `config.toml` is missing `enable_plugins`! No plugins will be loaded.",
-	std::nullopt,
+	"[GlobalConfig::read] ¡Falta `enable_plugins` en la sección `config` de `config.toml`! No se cargarán plugins.",
 	std::nullopt,
 	std::nullopt,
 	"[GlobalConfig::read] Sekcja `config` w pliku `config.toml` nie zawiera `enable_mods` ! Żadne mody nie zostaną załadowane.",
@@ -534,7 +534,7 @@ inline LocalizedString GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_PLUGINS{
 
 inline LocalizedString GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_CONSOLE_LOGGING{
 	"[GlobalConfig::read] `config` in `config.toml` is missing `enable_console_logging`! Pentane will create a console window.",
-	std::nullopt,
+	"[GlobalConfig::read] ¡Falta `enable_console_logging` en la sección `config` de `config.toml`! Pentane creará una ventana de consola.",
 	std::nullopt,
 	std::nullopt,
 	"[GlobalConfig::read] Sekcja `config` w pliku `config.toml` nie zawiera `enable_console_logging`! Pentane utworzy okno konsoli.",
@@ -546,7 +546,7 @@ inline LocalizedString GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_CONSOLE_LOGGING{
 
 inline LocalizedString GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_FILE_LOGGING{
 	"[GlobalConfig::read] `config` in `config.toml` is missing `enable_file_logging`! Pentane will write its log to `pentane.log`.",
-	std::nullopt,
+	"[GlobalConfig::read] ¡Falta `enable_file_logging` en la sección `config` de `config.toml`! Pentane escribirá su registro en pentane.log.",
 	std::nullopt,
 	std::nullopt,
 	std::nullopt,
@@ -558,7 +558,7 @@ inline LocalizedString GLOBAL_CONFIG_CONFIG_MISSING_ENABLE_FILE_LOGGING{
 
 inline LocalizedString GLOBAL_CONFIG_MODS_MISSING_ENABLED_MODS{
 	"[GlobalConfig::read] `mods` in `config.toml` is missing `enabled_mods`! No mods will be loaded.",
-	std::nullopt,
+	"[GlobalConfig::read] ¡Falta `enabled_mods` en la sección `mods` de `config.toml`! No se cargarán mods.",
 	std::nullopt,
 	std::nullopt,
 	"[GlobalConfig::read] Sekcja mods w pliku config.toml nie zawiera enabled_mods! Żadne mody nie zostaną załadowane.",
@@ -570,7 +570,7 @@ inline LocalizedString GLOBAL_CONFIG_MODS_MISSING_ENABLED_MODS{
 
 inline LocalizedString GLOBAL_CONFIG_PLUGINS_MISSING_ENABLED_PLUGINS{
 	"[GlobalConfig::read] `plugins` in `config.toml` is missing `enabled_plugins`! No plugins will be loaded.",
-	std::nullopt,
+	"[GlobalConfig::read] ¡Falta `enabled_plugins` en la sección `plugins` de `config.toml`! No se cargarán plugins.",
 	std::nullopt,
 	std::nullopt,
 	"[GlobalConfig::read] Sekcja `plugins` w pliku `config.toml` nie zawiera `enabled_plugins`! Żadne wtyczki nie zostaną załadowane.",
@@ -582,7 +582,7 @@ inline LocalizedString GLOBAL_CONFIG_PLUGINS_MISSING_ENABLED_PLUGINS{
 
 inline LocalizedString MATER_NATIONAL_CONFIG_MISSING_ENABLE_SAVE_REDIRECTION{
 	"[GameConfig::read] `game-config` in `config.toml` is missing `enable_save_redirection`! Saves will be loaded from the Documents folder.",
-	std::nullopt,
+	"[GameConfig::read] ¡Falta `enable_save_redirection` en la sección game-config de `config.toml`! Las partidas guardadas se cargarán desde la carpeta Documentos.",
 	std::nullopt,
 	std::nullopt,
 	"[GameConfig::read] sekcja `game-config` w pliku `config.toml` nie zawiera `enable_save_redirection`! Zapisy będą ładowane z folderu Dokumenty.",
@@ -594,7 +594,7 @@ inline LocalizedString MATER_NATIONAL_CONFIG_MISSING_ENABLE_SAVE_REDIRECTION{
 
 inline LocalizedString MATER_NATIONAL_CONFIG_MISSING_DATA_DIRECTORY{
 	"[GameConfig::read] `game-config` in `config.toml` is missing `data_directory_name`! All game assets will be read from `DataPC`.",
-	std::nullopt,
+	"[GameConfig::read] ¡Falta `data_directory_name` en la sección game-config de `config.toml`! Todos los recursos del juego se leerán desde `DataPC`.",
 	std::nullopt,
 	std::nullopt,
 	"[GameConfig::read] sekcja `game-config` w pliku `config.toml` nie zawiera `data_directory_name`! Wszystkie zasoby gry będą odczytywane z `DataPC`.",
@@ -606,7 +606,7 @@ inline LocalizedString MATER_NATIONAL_CONFIG_MISSING_DATA_DIRECTORY{
 
 inline LocalizedString MATER_NATIONAL_CONFIG_MISSING{
 	"[GameConfig::read] `config.toml` is missing the `game-config` section! Saves will be loaded from the `Documents` folder, and game assets will be read from `DataPC`.",
-	std::nullopt,
+	"[GameConfig::read] ¡Falta la sección game-config en config.toml! Las partidas guardadas se cargarán desde la carpeta `Documentos` y los recursos del juego se leerán desde `DataPC`.",
 	std::nullopt,
 	std::nullopt,
 	"[GameConfig::read] plik `config.toml` nie zawiera sekcji `game-config`! Zapisy będą ładowane z folderu `Documents`, a zasoby gry będą odczytywane z `DataPC`.",
@@ -618,7 +618,7 @@ inline LocalizedString MATER_NATIONAL_CONFIG_MISSING{
 
 inline LocalizedString TVG2_CONFIG_MISSING_ENABLE_WINDOWED_MODE{
 	"[GameConfig::read] `game-config` in `config.toml` is missing `enable_windowed_mode`! The game will create an exclusive fullscreen window.",
-	std::nullopt,
+	"[GameConfig::read] ¡Falta `enable_windowed_mode` en la sección `game-config` de `config.toml`! El juego creará una ventana en modo pantalla completa exclusiva.",
 	std::nullopt,
 	std::nullopt,
 	"[GameConfig::read] W sekcji game-config w pliku config.toml brakuje opcji enable_windowed_mode! Gra uruchomi się w trybie pełnoekranowym.",
@@ -630,7 +630,7 @@ inline LocalizedString TVG2_CONFIG_MISSING_ENABLE_WINDOWED_MODE{
 
 inline LocalizedString TVG2A_CONFIG_MISSING_WINDOW_WIDTH{
 	"[GameConfig::read] `game-config` in `config.toml` is missing `windowed_mode_width`! The game window will try to match 1280x720.",
-	std::nullopt,
+	"[GameConfig::read] ¡Falta `windowed_mode_width` en la sección game-config de `config.toml`! La ventana del juego intentará ajustarse a 1280x720.",
 	std::nullopt,
 	std::nullopt,
 	"[GameConfig::read] W sekcji game-config w pliku config.toml brakuje opcji `windowed_mode_width`! Okno gry spróbuje dopasować się do rozdzielczości 1280x720.",
@@ -642,7 +642,7 @@ inline LocalizedString TVG2A_CONFIG_MISSING_WINDOW_WIDTH{
 
 inline LocalizedString TVG2A_CONFIG_MISSING_WINDOW_HEIGHT{
 	"[GameConfig::read] `game-config` in `config.toml` is missing `windowed_mode_height`! The game window will try to match 1280x720.",
-	std::nullopt,
+	"[GameConfig::read] ¡Falta `windowed_mode_height` en la sección `game-config` de `config.toml`! La ventana del juego intentará ajustarse a 1280x720.",
 	std::nullopt,
 	std::nullopt,
 	"[GameConfig::read] W sekcji game-config w pliku config.toml brakuje opcji `windowed_mode_height`! Okno gry spróbuje dopasować się do rozdzielczości 1280x720.",
@@ -654,7 +654,7 @@ inline LocalizedString TVG2A_CONFIG_MISSING_WINDOW_HEIGHT{
 
 inline LocalizedString TVG2_CONFIG_MISSING{
 	"[GameConfig::read] `config.toml` is missing the `game-config` section! The game will run in exclusive fullscreen mode.",
-	std::nullopt,
+	"[GameConfig::read] ¡Falta la sección `game-config` en `config.toml`! El juego se ejecutará en modo pantalla completa exclusiva.",
 	std::nullopt,
 	std::nullopt,
 	"[GameConfig::read] W pliku config.toml brakuje sekcji game-config! Gra uruchomi się w trybie pełnoekranowym na wyłączność.,"
