@@ -124,7 +124,7 @@ auto GlobalConfig::read(const toml::table& tbl, std::vector<std::string_view>& e
 			errors.push_back(localization::get_with_fallback(GLOBAL_CONFIG_CONFIG_UNRECOGNIZED_LANG, system_language));
 		}
 		else if (!localization::support_status(language)) {
-			errors.push_back(localization::get_with_fallback(INCOMPLETE_LOCALIZATION, language));
+			errors.push_back(INCOMPLETE_LOCALIZATION[language]);
 		}
 		
 		// Pentane's OE mod loader is not yet implemented.

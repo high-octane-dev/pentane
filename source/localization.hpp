@@ -99,7 +99,7 @@ inline FullyLocalizedString PENTANE_CONSOLE{
 
 
 // This desperately needs to be fully localized, ironically enough.
-inline LocalizedString INCOMPLETE_LOCALIZATION{
+inline FullyLocalizedString INCOMPLETE_LOCALIZATION{
 	// This one's kinda silly and should effectively go unused.
 	"English localization is not fully implemented! You may see some Pentane logger messages in English rather than your selected language.",
 	"Spanish localization is not fully implemented! You may see some Pentane logger messages in English rather than your selected language.", // FIXME
