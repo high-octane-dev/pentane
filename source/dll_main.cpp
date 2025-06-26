@@ -95,12 +95,12 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
 		auto running_game = get_running_game_from_module_timestamp();
 		if (running_game == PentaneTarget::Invalid) {
 			logger::log_localized(FAILED_READ_TIMESTAMP, GAME_TARGET);
-			display_error(localization::get_with_fallback(FAILED_READ_TIMESTAMP, config::language()), localization::get_with_fallback(ERROR_POPUP_TITLE, config::language()));
+			display_error_formatted(FAILED_READ_TIMESTAMP, ERROR_POPUP_TITLE, GAME_TARGET);
 			std::abort();
 		}
 		else if (running_game != GAME_TARGET) {
 			logger::log_localized(TARGET_MISMATCH, running_game, GAME_TARGET);
-			display_error(localization::get_with_fallback(TARGET_MISMATCH, config::language()), localization::get_with_fallback(ERROR_POPUP_TITLE, config::language()));
+			display_error_formatted(TARGET_MISMATCH, ERROR_POPUP_TITLE, running_game, GAME_TARGET);
 			std::abort();
 		}
 		for (const auto& message : config_initialization_errors) {

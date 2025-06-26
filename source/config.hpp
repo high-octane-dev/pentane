@@ -6,8 +6,6 @@
 #include <cstdint>
 #include "localization.hpp"
 
-auto display_error(std::string_view error, std::string_view title) -> void;
-
 namespace config {
 	bool init_global(const std::filesystem::path& file_path, std::vector<std::string_view>& errors);
 	PentaneLanguage language();
@@ -31,3 +29,12 @@ namespace config {
 	};
 #endif
 };
+
+auto display_error(std::string_view error, std::string_view title) -> void;
+
+template <typename... Args> void display_error_formatted(const LocalizedString& label, const LocalizedString& title, Args&&... args) {
+	std::string_view format_str = localization::get_with_fallback(label, config::language());
+	std::string_view title_str = localization::get_with_fallback(title, config::language());
+	std::string formatted = std::vformat(format_str, std::make_format_args(std::forward<Args>(args)...));
+	display_error(formatted, title_str);
+}
