@@ -103,8 +103,8 @@ inline FullyLocalizedString INCOMPLETE_LOCALIZATION{
 	// This one's kinda silly and should effectively go unused.
 	"English localization is not fully implemented! You may see some Pentane logger messages in English rather than your selected language.",
 	"¡La localización en español no está completamente implementada! Es posible que veas algunos mensajes del registrador de Pentane en inglés en lugar de tu idioma seleccionado.",
-	"La traduction française n’est pas entièrement implémentée! Il est possible que certaines messages de logging de Pentane apparaissent en anglais au lieu de la langue sélectionnée.",
-	"German localization is not fully implemented! You may see some Pentane logger messages in English rather than your selected language.", // FIXME
+	"French localization is NOT implemented! You will see Pentane logger messages in English instead of your selected language.", // Unsupported (Replace with "La traduction française n’est pas entièrement implémentée! Il est possible que certaines messages de logging de Pentane apparaissent en anglais au lieu de la langue sélectionnée.")
+	"German localization is NOT implemented! You will see Pentane logger messages in English instead of your selected language.", // Unsupported
 	"Polska lokalizacja nie jest w pełni zaimplementowana! Możesz zobaczyć niektóre komunikaty loggera Pentane w języku angielskim zamiast wybranego języka.",
 	"Русская локализация не реализована полностью! Вы можете видеть некоторые сообщения логов на Английском, нежели на выбранном вами языке.",
 	"Japanese localization is NOT implemented! You will see Pentane logger messages in English instead of your selected language.", // Unsupported
@@ -117,7 +117,7 @@ inline LocalizedString ERROR_POPUP_TITLE{
 	"¡Error de configuración de Pentane!",
 	std::nullopt,
 	std::nullopt,
-	std::nullopt,
+	"Błąd konfiguracji Pentane’u!",
 	"Ошибка конфигурации Pentane!",
 	std::nullopt,
 	std::nullopt,
