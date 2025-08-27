@@ -7,6 +7,7 @@ A (work-in-progress) user-configurable plugin loader and modding framework for t
 - Octane Engine
 	- Cars 2: The Video Game (PC) ✅ *Production-Ready!*
 	- Cars 2: Arcade (PC) ✅ *Production-Ready!*
+	- Toy Story 3: The Video Game (PC) 🟨 *Experimental!*
 	- Cars 3: Driven to Win (Xbox One) ❌ *Non-Functional!*
 
 For documentation and usage information, head on over to [our website](https://high-octane-dev.github.io/)!
