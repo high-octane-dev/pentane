@@ -27,6 +27,10 @@ namespace config {
 		bool windowed_mode_enabled();
 		std::pair<std::int64_t, std::int64_t> windowed_mode_dimensions();
 	};
+#elif defined(PENTANE_GAME_TARGET_TS3)
+	namespace ts3 {
+		bool windowed_mode_enabled();
+	};
 #endif
 };
 

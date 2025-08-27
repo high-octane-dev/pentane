@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Code">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Code\Core">
+      <UniqueIdentifier>{1b1e2cae-513d-4bb7-94d7-fa58ad880f8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Core\Util">
+      <UniqueIdentifier>{20b519a0-8ff6-4c91-afc2-c2369940cc75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Core\Bink">
+      <UniqueIdentifier>{f114e696-5c6d-4215-b041-ae1ec4367875}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Core\Localization">
+      <UniqueIdentifier>{cd58ae77-f640-4f56-be26-6fd34cb3a714}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Sunset">
+      <UniqueIdentifier>{034af92f-4a24-46b4-b463-bd8f6e9d3b41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Core\Games">
+      <UniqueIdentifier>{eaf6cbf8-5f9d-4c76-824b-262866225972}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Core\API">
+      <UniqueIdentifier>{934fae74-9343-4271-a3b3-aaeeac4c0933}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Core\Games\Toy Story 3">
+      <UniqueIdentifier>{ec84b244-ce5c-4708-97c4-c26ddb05e181}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\api\api_exports.cpp">
+      <Filter>Code\Core\API</Filter>
+    </ClCompile>
+    <ClCompile Include="source\sunset\sunset.cpp">
+      <Filter>Code\Sunset</Filter>
+    </ClCompile>
+    <ClCompile Include="source\config.cpp">
+      <Filter>Code\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\logger.cpp">
+      <Filter>Code\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\plugin_loader.cpp">
+      <Filter>Code\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dll_main.cpp">
+      <Filter>Code\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\bink\bink.cpp">
+      <Filter>Code\Core\Bink</Filter>
+    </ClCompile>
+    <ClCompile Include="source\crash.cpp">
+      <Filter>Code\Core</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\api\api_macros.hpp">
+      <Filter>Code\Core\API</Filter>
+    </ClInclude>
+    <ClInclude Include="source\localization.hpp">
+      <Filter>Code\Core\Localization</Filter>
+    </ClInclude>
+    <ClInclude Include="source\sunset\err.hpp">
+      <Filter>Code\Sunset</Filter>
+    </ClInclude>
+    <ClInclude Include="source\sunset\relocate_code.hpp">
+      <Filter>Code\Sunset</Filter>
+    </ClInclude>
+    <ClInclude Include="source\sunset\sunset.hpp">
+      <Filter>Code\Sunset</Filter>
+    </ClInclude>
+    <ClInclude Include="source\config.hpp">
+      <Filter>Code\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\logger.hpp">
+      <Filter>Code\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\util\sorted_hashmap.hpp">
+      <Filter>Code\Core\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="source\plugin_loader.hpp">
+      <Filter>Code\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\plugin.hpp">
+      <Filter>Code\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\target.hpp">
+      <Filter>Code\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\bink\bink.hpp">
+      <Filter>Code\Core\Bink</Filter>
+    </ClInclude>
+    <ClInclude Include="source\version.hpp">
+      <Filter>Code\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\util\mutex.hpp">
+      <Filter>Code\Core\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="source\crash.hpp">
+      <Filter>Code\Core</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="source\exports.def">
+      <Filter>Code</Filter>
+    </None>
+    <None Include="source\games\ts3\config_impl.inl">
+      <Filter>Code\Core\Games\Toy Story 3</Filter>
+    </None>
+  </ItemGroup>
+</Project>

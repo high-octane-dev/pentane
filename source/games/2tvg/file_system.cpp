@@ -91,6 +91,9 @@ auto tvg2::fs::init() -> bool {
         // OpenVirtualFile::install_at_ptr(0x00071c1b0);
         InitDownloadManager::install_at_ptr(0x0080d08b);
         UpdateDownloadManager::install_at_ptr(0x004bcf40);
+
+        // Raises the maximum size allocated for the global character database in `CarManager` to allow for 1024 entries in `carsinfo.lua`.
+        sunset::inst::push_u32(reinterpret_cast<void*>(0x004d58f7), 0x22000);
     }
     else {
         // OpenFileHook::install_at_ptr(0x0071ebd0);
@@ -98,6 +101,9 @@ auto tvg2::fs::init() -> bool {
         // OpenVirtualFile::install_at_ptr(0x006d98b0);
         InitDownloadManager::install_at_ptr(0x007a44f5);
         UpdateDownloadManager::install_at_ptr(0x004877b0);
+
+        // Raises the maximum size allocated for the global character database in `CarManager` to allow for 1024 entries in `carsinfo.lua`.
+        sunset::inst::push_u32(reinterpret_cast<void*>(0x004a8bd4), 0x22000);
     }
     return false;
 }

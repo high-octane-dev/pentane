@@ -10,12 +10,15 @@
 constexpr std::uint32_t MS_VC_EXCEPTION = 0x406d1388;
 
 LONG CALLBACK vectored_handler(PEXCEPTION_POINTERS ExceptionInfo) {
+    if (ExceptionInfo->ExceptionRecord->ExceptionCode < 0x80000000) {
+        return EXCEPTION_CONTINUE_SEARCH;
+    }
 #if defined(PENTANE_GAME_TARGET_2TVGA)
-    if (ExceptionInfo->ExceptionRecord->ExceptionCode == MS_VC_EXCEPTION || reinterpret_cast<std::uintptr_t>(ExceptionInfo->ExceptionRecord->ExceptionAddress) == 0x7b5b37) {
+    if (reinterpret_cast<std::uintptr_t>(ExceptionInfo->ExceptionRecord->ExceptionAddress) == 0x7b5b37) {
         return EXCEPTION_CONTINUE_SEARCH;
     }
 #elif defined(PENTANE_GAME_TARGET_2TVG)
-    if (ExceptionInfo->ExceptionRecord->ExceptionCode == MS_VC_EXCEPTION || reinterpret_cast<std::uintptr_t>(ExceptionInfo->ExceptionRecord->ExceptionAddress) == 0x75d127) {
+    if (reinterpret_cast<std::uintptr_t>(ExceptionInfo->ExceptionRecord->ExceptionAddress) == 0x75d127) {
         return EXCEPTION_CONTINUE_SEARCH;
     }
 #endif

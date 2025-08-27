@@ -18,7 +18,7 @@
 #include "sunset/sunset.hpp"
 
 auto set_current_directory_to_module_location() -> std::filesystem::path {
-	wchar_t game_directory[1024];
+	wchar_t game_directory[1024]{};
 	GetModuleFileNameW(nullptr, game_directory, 1024);
 	PathCchRemoveFileSpec(game_directory, 1024);
 	CharLowerW(game_directory);
@@ -39,6 +39,8 @@ auto get_running_game_from_module_timestamp() -> PentaneTarget {
 		return PentaneTarget::Cars2TheVideoGameArcade;
 	case 0x58F94AF7:
 		return PentaneTarget::Cars3DrivenToWin;
+	case 0x61595FF7:
+		return PentaneTarget::ToyStory3;
 	default:
 		return PentaneTarget::Invalid;
 		break;
@@ -87,7 +89,7 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
 		bink::replace_funcs();
 #endif
 		std::filesystem::path install_dir = set_current_directory_to_module_location();
-
+		
 		std::vector<std::string_view> config_initialization_errors{};
 		config::init_global(install_dir / "Pentane\\config.toml", config_initialization_errors);
 		logger::init(install_dir / "pentane.log", config::console_logging_enabled(), config::file_logging_enabled());
@@ -183,6 +185,27 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
 
 		// Initialize the filesystem.
 		tvg2::fs::init();
+#elif defined(PENTANE_GAME_TARGET_TS3)
+		// TS3-Specific initialization.
+		if (config::console_logging_enabled()) {
+			// Removes a `FreeConsole` call from the original game, allowing the console logger to function correctly.
+			sunset::inst::nop(reinterpret_cast<void*>(0x007cf00f), 6);
+		}
+
+		if (config::ts3::windowed_mode_enabled()) {
+			// Enables windowed mode in Renderer::DriverImpl::DoCreateWindow.
+			sunset::utils::set_permission(reinterpret_cast<void*>(0x007dcb9b), 5, sunset::utils::Perm::ExecuteReadWrite);
+			*reinterpret_cast<std::uint32_t*>(0x007dcb9c) = 0x90909090;
+			*reinterpret_cast<std::uint16_t*>(0x007dcb9b) = 0x01B0;
+
+			// Prevents the game from calling `ClipCursor` as well as `SetCursorPos`.
+			sunset::inst::nop(reinterpret_cast<void*>(0x007cb138), 7);
+			sunset::inst::nop(reinterpret_cast<void*>(0x007cb390), 7);
+			sunset::inst::nop(reinterpret_cast<void*>(0x007cb5ab), 7);
+		}
+
+		// Redirects DoDbgPrint to the logger.
+		sunset::inst::jmp(reinterpret_cast<void*>(0x00ee6650), RedirectDbgPrint);
 #endif
 	}
 	return TRUE;

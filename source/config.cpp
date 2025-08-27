@@ -71,6 +71,8 @@ util::Mutex<std::unique_ptr<GameConfig>> CONFIG;
 #include "games/2tvg/config_impl.inl"
 #elif defined(PENTANE_GAME_TARGET_3DTW)
 #include "games/3dtw/config_impl.inl"
+#elif defined(PENTANE_GAME_TARGET_TS3)
+#include "games/ts3/config_impl.inl"
 #endif
 
 auto GlobalConfig::read(const toml::table& tbl, std::vector<std::string_view>& errors) -> bool {
