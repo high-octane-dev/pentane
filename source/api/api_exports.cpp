@@ -41,6 +41,13 @@ extern "C" unsigned short Pentane_GetUserLanguage_ISO6391() {
 	return static_cast<unsigned short>(std::bit_cast<unsigned char>(code[0])) << 8 | static_cast<unsigned short>(std::bit_cast<unsigned char>(code[1]));
 }
 
+#ifdef _M_IX86
+#pragma comment(linker, "/EXPORT:Pentane_GetVersion=_Pentane_GetVersion")
+#endif
+extern "C" SemVer Pentane_GetVersion() {
+	return PENTANE_FRAMEWORK_VERSION;
+}
+
 #if defined(PENTANE_GAME_TARGET_2TVG) || defined(PENTANE_GAME_TARGET_2TVGA)
 #pragma comment(linker, "/EXPORT:Pentane_IsWindowedModeEnabled=_Pentane_IsWindowedModeEnabled")
 extern "C" int Pentane_IsWindowedModeEnabled() {
