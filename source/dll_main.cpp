@@ -10,6 +10,7 @@
 #include "config.hpp"
 #include "crash.hpp"
 #include "games/mn/file_system.hpp"
+#include "games/mn/essential_patches.hpp"
 #include "games/tvg/file_system.hpp"
 #include "games/2tvg/file_system.hpp"
 #include "logger.hpp"
@@ -123,6 +124,7 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
 			install_dir / config::mn::data_directory_name(),
 			install_dir / "Pentane\\Mods",
 			config::mods_enabled());
+		essential::mn::install();
 #elif defined(PENTANE_GAME_TARGET_TVG)
 		// TVG-Specific initialization.
 		tvg::fs::init(install_dir,

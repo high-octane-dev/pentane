@@ -49,10 +49,10 @@ auto LoadedFilesystem::collect_files(const std::vector<std::string>& mods_enable
 					// Get the `DataPC`-relative file path, and force it to be lowercase.
 					std::string relative_file_path = data_relative_path(mods_directory / mod_name, entry.path());
 					if (file_path_to_index.contains(relative_file_path)) {
-						LOG_LOCALIZED_STRING(FILE_IN_MOD_OVERWRITES_EXISTING, relative_file_path, mod_name, mod_names[file_path_to_index.at(relative_file_path)]);
+						logger::log_localized(FILE_IN_MOD_OVERWRITES_EXISTING, relative_file_path, mod_name, mod_names[file_path_to_index.at(relative_file_path)]);
 					}
 					else {
-						LOG_LOCALIZED_STRING(COLLECTED_FILE, relative_file_path, mod_name);
+						logger::log_localized(COLLECTED_FILE, relative_file_path, mod_name);
 					}
 					file_path_to_index.insert_or_assign(relative_file_path, mod_names.size());
 				}
@@ -60,7 +60,7 @@ auto LoadedFilesystem::collect_files(const std::vector<std::string>& mods_enable
 			mod_names.push_back(mod_name);
 		}
 		else {
-			LOG_LOCALIZED_STRING(MOD_REJECTED_DOES_NOT_EXIST, mod_name);
+			logger::log_localized(MOD_REJECTED_DOES_NOT_EXIST, mod_name);
 		}
 	}
 	return true;
@@ -117,7 +117,7 @@ DefineReplacementHook(fopenHook) {
 				const std::filesystem::path& output_file = patch_file.value().first;
 				const std::string& mod_name = patch_file.value().second;
 				std::string output_file_path = patch_file.value().first.string();
-				LOG_LOCALIZED_STRING(MN_FOPEN_LOADING_MODDED_FILE, relative_path, mod_name);
+				logger::log_localized(MN_FOPEN_LOADING_MODDED_FILE, relative_path, mod_name);
 				return __fsopen(output_file_path.c_str(), _Mode, _SH_DENYNO);
 			}
 		}
@@ -135,7 +135,7 @@ struct BINK* __stdcall BinkOpenHook(char* file, std::uint32_t flags) {
 			const std::filesystem::path& output_file = patch_file.value().first;
 			const std::string& mod_name = patch_file.value().second;
 			std::string output_file_path = patch_file.value().first.string();
-			LOG_LOCALIZED_STRING(BINK_LOADING_MODDED_FILE, relative_path, mod_name);
+			logger::log_localized(BINK_LOADING_MODDED_FILE, relative_path, mod_name);
 			return BinkOpen(output_file_path.c_str(), flags);
 		}
 	}
@@ -152,7 +152,7 @@ std::uint32_t __stdcall BASS_StreamCreateFileHook(std::int32_t mem, char* file, 
 			const std::filesystem::path& output_file = patch_file.value().first;
 			const std::string& mod_name = patch_file.value().second;
 			std::string output_file_path = patch_file.value().first.string();
-			LOG_LOCALIZED_STRING(MN_STREAM_LOADING_FILE, relative_path, mod_name);
+			logger::log_localized(MN_STREAM_LOADING_FILE, relative_path, mod_name);
 			return BASS_StreamCreateFile(mem, output_file_path.c_str(), offset, length, flags);
 		}
 	}
@@ -169,7 +169,7 @@ std::uint32_t __stdcall BASS_SampleLoadHook(std::int32_t mem, char* file, std::u
 			const std::filesystem::path& output_file = patch_file.value().first;
 			const std::string& mod_name = patch_file.value().second;
 			std::string output_file_path = patch_file.value().first.string();
-			LOG_LOCALIZED_STRING(MN_SAMPLE_LOADING_FILE, relative_path, mod_name);
+			logger::log_localized(MN_SAMPLE_LOADING_FILE, relative_path, mod_name);
 			return BASS_SampleLoad(mem, output_file_path.c_str(), offset, length, max, flags);
 		}
 	}
@@ -185,7 +185,8 @@ DefineReplacementHook(TRCEngineGetSaveDir) {
 		}
 		std::string str = dir.string();
 		std::memcpy(_this, str.data(), str.size());
-		_this[str.size()] = 0;
+		_this[str.size()] = '\\';
+		_this[str.size() + 1] = 0;
 	}
 };
 
@@ -201,19 +202,20 @@ auto mn::fs::init(bool enable_save_redirection,
 	BASS_StreamCreateFile = reinterpret_cast<std::uint32_t(__stdcall*)(std::int32_t, const char*, std::uint32_t, std::uint32_t, std::uint32_t)>(GetProcAddress(GetModuleHandleA("bass.dll"), "BASS_StreamCreateFile"));
 
 	if (BinkOpen == nullptr || BASS_SampleLoad == nullptr || BASS_StreamCreateFile == nullptr) {
-		LOG_LOCALIZED_STRING(MN_FS_FAILED_INIT);
+		logger::log_localized(MN_FS_FAILED_INIT);
+		return false;
 	}
 	auto guard = LOADED_FS.lock_mut();
 
 	guard->base_data_directory = base_data_directory;
-	guard->save_file_redirection_enabled = enable_save_redirection && save_redirection_directory.string().length() < 256;
+	guard->save_file_redirection_enabled = enable_save_redirection && save_redirection_directory.string().length() < 254;
 	guard->mods_directory = mods_directory;
 
 	std::string base_data_directory_name = base_data_directory.lexically_relative(base_data_directory.parent_path()).string();
 	std::string base_data_directory_name_format = std::format("%s\\{}\\", base_data_directory_name);
 	if (base_data_directory_name_format.size() >= sizeof(BASE_DATA_DIRECTORY_NAME_C_FMT)) {
 		guard->base_data_directory = install_directory / L"DataPC";
-		LOG_LOCALIZED_STRING(MN_DATA_DIR_TOO_LARGE, base_data_directory_name);
+		logger::log_localized(MN_DATA_DIR_TOO_LARGE, base_data_directory_name);
 	}
 
 	// Update the data directory string format used by MN's WinMain.
@@ -222,7 +224,7 @@ auto mn::fs::init(bool enable_save_redirection,
 
 	if (save_redirection_directory.string().length() >= 256) {
 		std::string save_redirection_string = save_redirection_directory.string();
-		LOG_LOCALIZED_STRING(MN_SAVE_DIR_TOO_LARGE, save_redirection_string);
+		logger::log_localized(MN_SAVE_DIR_TOO_LARGE, save_redirection_string);
 	}
 
 	if (!mods_enabled.empty()) {

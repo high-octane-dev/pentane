@@ -62,6 +62,9 @@
     <ClCompile Include="source\crash.cpp">
       <Filter>Code\Core</Filter>
     </ClCompile>
+    <ClCompile Include="source\games\mn\essential_patches.cpp">
+      <Filter>Code\Core\Games\Cars: Mater-National Championship</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\api\api_macros.hpp">
