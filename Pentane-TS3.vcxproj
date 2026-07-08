@@ -107,6 +107,7 @@
     <ClCompile Include="source\logger.cpp" />
     <ClCompile Include="source\plugin_loader.cpp" />
     <ClCompile Include="source\sunset\sunset.cpp" />
+    <ClCompile Include="source\symbol_resolution.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\api\api_macros.hpp" />
@@ -115,6 +116,7 @@
     <ClInclude Include="source\crash.hpp" />
     <ClInclude Include="source\localization.hpp" />
     <ClInclude Include="source\logger.hpp" />
+    <ClInclude Include="source\symbol_resolution.hpp" />
     <ClInclude Include="source\util\mutex.hpp" />
     <ClInclude Include="source\version.hpp" />
     <ClInclude Include="source\plugin.hpp" />

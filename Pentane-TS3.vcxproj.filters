@@ -59,6 +59,9 @@
     <ClCompile Include="source\crash.cpp">
       <Filter>Code\Core</Filter>
     </ClCompile>
+    <ClCompile Include="source\symbol_resolution.cpp">
+      <Filter>Code\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\api\api_macros.hpp">
@@ -104,6 +107,9 @@
       <Filter>Code\Core\Util</Filter>
     </ClInclude>
     <ClInclude Include="source\crash.hpp">
+      <Filter>Code\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\symbol_resolution.hpp">
       <Filter>Code\Core</Filter>
     </ClInclude>
   </ItemGroup>

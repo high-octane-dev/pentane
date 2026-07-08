@@ -65,6 +65,9 @@
     <ClCompile Include="source\games\mn\essential_patches.cpp">
       <Filter>Code\Core\Games\Cars: Mater-National Championship</Filter>
     </ClCompile>
+    <ClCompile Include="source\symbol_resolution.cpp">
+      <Filter>Code\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\api\api_macros.hpp">
@@ -113,6 +116,12 @@
       <Filter>Code\Core\Util</Filter>
     </ClInclude>
     <ClInclude Include="source\crash.hpp">
+      <Filter>Code\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\games\mn\essential_patches.hpp">
+      <Filter>Code\Core\Games\Cars: Mater-National Championship</Filter>
+    </ClInclude>
+    <ClInclude Include="source\symbol_resolution.hpp">
       <Filter>Code\Core</Filter>
     </ClInclude>
   </ItemGroup>

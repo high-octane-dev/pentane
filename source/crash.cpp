@@ -5,6 +5,7 @@
 #include <sstream>
 
 #include "crash.hpp"
+#include "symbol_resolution.hpp"
 #include "logger.hpp"
 
 constexpr std::uint32_t MS_VC_EXCEPTION = 0x406d1388;
@@ -13,7 +14,11 @@ LONG CALLBACK vectored_handler(PEXCEPTION_POINTERS ExceptionInfo) {
     if (ExceptionInfo->ExceptionRecord->ExceptionCode < 0x80000000) {
         return EXCEPTION_CONTINUE_SEARCH;
     }
-#if defined(PENTANE_GAME_TARGET_2TVGA)
+#if defined(PENTANE_GAME_TARGET_MN)
+    if (ExceptionInfo->ExceptionRecord->ExceptionCode == 0xe06d7363) {
+        return EXCEPTION_CONTINUE_SEARCH;
+    }
+#elif defined(PENTANE_GAME_TARGET_2TVGA)
     if (reinterpret_cast<std::uintptr_t>(ExceptionInfo->ExceptionRecord->ExceptionAddress) == 0x7b5b37) {
         return EXCEPTION_CONTINUE_SEARCH;
     }
@@ -72,7 +77,12 @@ LONG CALLBACK vectored_handler(PEXCEPTION_POINTERS ExceptionInfo) {
             logger::log_format("\tEntry: {}, Symbol: {} + 0x{:x}, Address: 0x{:x}", i, symbol->Name, displacement, stack.AddrPC.Offset);
         }
         else {
-            logger::log_format("\tEntry: {}, Address: 0x{:x}", i, stack.AddrPC.Offset);
+            if (auto resolved = crash_handler::resolve_symbol(stack.AddrPC.Offset); resolved.has_value()) {
+                logger::log_format("\tEntry: {}, {}", i, resolved.value());
+            }
+            else {
+                logger::log_format("\tEntry: {}, Address: 0x{:x}", i, stack.AddrPC.Offset);
+            }
         }
     }
 
