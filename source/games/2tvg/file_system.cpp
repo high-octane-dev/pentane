@@ -4,13 +4,13 @@
 #include "../../target.hpp"
 
 #if defined(PENTANE_GAME_TARGET_2TVGA)
-auto _DownloadManager_DownloadManager = (std::uint32_t(__thiscall*)(class DownloadManager*))(0x00791140);
-auto _DownloadManager_Destructor = (std::uint32_t(__thiscall*)(class DownloadManager*))(0x007911e0);
-auto _DownloadManager_Update = (void(__thiscall*)(class DownloadManager*))(0x00791280);
+inline auto _DownloadManager_DownloadManager = (std::uint32_t(__thiscall*)(class DownloadManager*))(0x00791140);
+inline auto _DownloadManager_Destructor = (std::uint32_t(__thiscall*)(class DownloadManager*))(0x007911e0);
+inline auto _DownloadManager_Update = (void(__thiscall*)(class DownloadManager*))(0x00791280);
 #elif defined(PENTANE_GAME_TARGET_2TVG)
-auto _DownloadManager_DownloadManager = (std::uint32_t(__thiscall*)(class DownloadManager*))(0x00747b70);
-auto _DownloadManager_Destructor = (std::uint32_t(__thiscall*)(class DownloadManager*))(0x00747c10);
-auto _DownloadManager_Update = (void(__thiscall*)(class DownloadManager*))(0x00747cb0);
+inline auto _DownloadManager_DownloadManager = (std::uint32_t(__thiscall*)(class DownloadManager*))(0x00747b70);
+inline auto _DownloadManager_Destructor = (std::uint32_t(__thiscall*)(class DownloadManager*))(0x00747c10);
+inline auto _DownloadManager_Update = (void(__thiscall*)(class DownloadManager*))(0x00747cb0);
 #endif
 
 namespace Genie {
@@ -22,9 +22,6 @@ namespace Genie {
 DefineReplacementHook(OpenFileHook) {
     static unsigned int _cdecl callback(const char* path, struct HALFileWin32** out_handle, unsigned int write_enable) {
         if ((write_enable & 1) == 0) {
-            if (std::string_view(path).contains("startup")) {
-                std::rand();
-            }
             logger::log_format("[MediaHAL::Open] Opening File (R): {}", std::string_view(path));
         }
         else if ((write_enable & 1) != 0) {
