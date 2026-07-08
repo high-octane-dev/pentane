@@ -33,8 +33,9 @@ DefineReplacementHook(OpenFileHook) {
 
 DefineReplacementHook(OpenVirtualDrive) {
     static Genie::VirtualDrive* _fastcall callback(Genie::VirtualDriveManager* _this, std::uintptr_t edx, const char** path, bool create, struct File* givenFile, bool lock) {
-        logger::log_format("[Genie::VirtualDriveManager::Open] Opening Virtual Drive: {}", std::string_view(*path));
-        return original(_this, edx, path, create, givenFile, lock);
+        Genie::VirtualDrive* drive = original(_this, edx, path, create, givenFile, lock);
+        logger::log_format("[Genie::VirtualDriveManager::Open] Opening Virtual Drive: {} -> {:X}", std::string_view(*path), reinterpret_cast<std::uintptr_t>(drive));
+        return drive;
     }
 };
 
@@ -42,7 +43,7 @@ DefineReplacementHook(OpenVirtualFile) {
     static bool _fastcall callback(Genie::VirtualDrive* _this, std::uintptr_t edx, const char* path, Genie::VirtualFileHandle* fileHandle) {
         bool result = original(_this, edx, path, fileHandle);
         if (result) {
-            logger::log_format("[Genie::VirtualDrive::FileOpen] Opened Virtual File: {}", std::string_view(path));
+            logger::log_format("[Genie::VirtualDrive::FileOpen] Opened Virtual File: {}, from Drive: {:X}", std::string_view(path), reinterpret_cast<std::uintptr_t>(_this));
         }
         else {
             logger::log_format("[Genie::VirtualDrive::FileOpen] Failed to open Virtual File: {}", std::string_view(path));
@@ -81,7 +82,7 @@ DefineInlineHook(UpdateDownloadManager) {
     }
 };
 
-auto tvg2::fs::init() -> bool {
+auto tvg2::fs::init(const std::filesystem::path& install_directory, const std::filesystem::path& mods_directory, const std::vector<std::string>& mods_enabled) -> bool {
     if constexpr (GAME_TARGET == PentaneTarget::Cars2TheVideoGameArcade) {
         // OpenFileHook::install_at_ptr(0x007680b0);
         // OpenVirtualDrive::install_at_ptr(0x00711570);

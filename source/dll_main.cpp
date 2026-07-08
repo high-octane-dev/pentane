@@ -149,7 +149,7 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
 		sunset::inst::jmp(reinterpret_cast<void*>(0x005ef280), RedirectDbgPrint);
 		
 		// Initialize the filesystem.
-		tvg2::fs::init();
+		tvg2::fs::init(install_dir, install_dir / "Pentane\\Mods", {});
 #elif defined(PENTANE_GAME_TARGET_2TVGA)
 		// 2TVGA-Specific initialization.
 		if (config::console_logging_enabled()) {
@@ -186,7 +186,7 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
 		*reinterpret_cast<std::uint32_t*>(0x0075fb28) = 0xFFFFFFFF;
 
 		// Initialize the filesystem.
-		tvg2::fs::init();
+		tvg2::fs::init(install_dir, install_dir / "Pentane\\Mods", {});
 #elif defined(PENTANE_GAME_TARGET_TS3)
 		// TS3-Specific initialization.
 		if (config::console_logging_enabled()) {
