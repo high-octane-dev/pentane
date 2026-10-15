@@ -11,7 +11,6 @@
 #include "relocate_code.hpp"
 #include "backup_registers.hpp"
 
-
 #define DefineReplacementHook(name) \
 struct name : public sunset::detail::ReplacementHook<name>
 
@@ -75,7 +74,7 @@ namespace sunset {
             return num & ~(align - 1);
         }
 
-        enum class Perm : DWORD {
+        enum class Access : DWORD {
             None = PAGE_NOACCESS,
             Read = PAGE_READONLY,
             ReadWrite = PAGE_READWRITE,
@@ -90,8 +89,8 @@ namespace sunset {
         };
         // Sets the desired permission on the memory block.
         template <typename T, typename std::enable_if_t<std::is_pointer_v<T>>* = nullptr>
-        inline Result<Perm, DWORD> set_permission(T ptr, size_t size, Perm perm) {
-            Perm old_perm = Perm::None;
+        inline Result<Access, DWORD> set_permission(T ptr, size_t size, Access perm) {
+            Access old_perm = Access::None;
             bool success = static_cast<bool>(VirtualProtect(reinterpret_cast<void*>(ptr), size, static_cast<DWORD>(perm), reinterpret_cast<DWORD*>(&old_perm)));
             if (success) {
                 return Ok(std::move(old_perm));
@@ -203,7 +202,7 @@ namespace sunset {
             if (relative_address < (std::numeric_limits<std::int32_t>::min)() || relative_address > (std::numeric_limits<std::int32_t>::max)()) {
                 return false;
             }
-            auto restore = utils::set_permission(src, 5, utils::Perm::ExecuteReadWrite).unwrap();
+            auto restore = utils::set_permission(src, 5, utils::Access::ExecuteReadWrite).unwrap();
             *reinterpret_cast<std::uint8_t*>(source_address) = 0xE9;
             *reinterpret_cast<std::int32_t*>(source_address + 1) = static_cast<std::int32_t>(relative_address);
             utils::set_permission(src, 5, restore);
@@ -217,7 +216,7 @@ namespace sunset {
             if (relative_address < (std::numeric_limits<std::int32_t>::min)() || relative_address > (std::numeric_limits<std::int32_t>::max)()) {
                 return false;
             }
-            auto restore = utils::set_permission(src, 5, utils::Perm::ExecuteReadWrite).unwrap();
+            auto restore = utils::set_permission(src, 5, utils::Access::ExecuteReadWrite).unwrap();
             *reinterpret_cast<std::uint8_t*>(source_address) = 0xE8;
             *reinterpret_cast<std::int32_t*>(source_address + 1) = static_cast<std::int32_t>(relative_address);
             utils::set_permission(src, 5, restore);
@@ -232,7 +231,7 @@ namespace sunset {
             if (relative_address < (std::numeric_limits<std::int32_t>::min)() || relative_address >(std::numeric_limits<std::int32_t>::max)()) {
                 return false;
             }
-            auto restore = utils::set_permission(src, 6, utils::Perm::ExecuteReadWrite).unwrap();
+            auto restore = utils::set_permission(src, 6, utils::Access::ExecuteReadWrite).unwrap();
             *reinterpret_cast<std::uint8_t*>(source_address) = 0xFF;
             *reinterpret_cast<std::uint8_t*>(source_address + 1) = 0x15;
             *reinterpret_cast<std::int32_t*>(source_address + 2) = static_cast<std::int32_t>(relative_address);
@@ -243,7 +242,7 @@ namespace sunset {
         inline bool call_indirect(void* src, void* dst) {
             std::uintptr_t destination_address = reinterpret_cast<std::uintptr_t>(dst);
             std::uintptr_t source_address = reinterpret_cast<std::uintptr_t>(src);
-            auto restore = utils::set_permission(src, 6, utils::Perm::ExecuteReadWrite).unwrap();
+            auto restore = utils::set_permission(src, 6, utils::Access::ExecuteReadWrite).unwrap();
             *reinterpret_cast<std::uint8_t*>(source_address) = 0xFF;
             *reinterpret_cast<std::uint8_t*>(source_address + 1) = 0x15;
             *reinterpret_cast<std::uint32_t*>(source_address + 2) = static_cast<std::uint32_t>(destination_address);
@@ -252,22 +251,62 @@ namespace sunset {
         }
 #endif
 
+#if defined(_M_X64)
+        /*
+        enum class RegisterIndex : std::uint8_t {
+            Rax = 0,
+            Rcx = 1,
+            Rdx = 2,
+            Rbx = 3,
+            Rsp = 4,
+            Rbp = 5,
+            Rsi = 6,
+            Rdi = 7,
+            R8 = 8,
+            R9 = 9,
+            R10 = 10,
+            R11 = 11,
+            R12 = 12,
+            R13 = 13,
+            R14 = 14,
+            R15 = 15
+        };
+        */
+#elif defined(_M_IX86)
+        enum class RegisterIndex : std::uint8_t {
+            Eax = 0,
+            Ecx = 1,
+            Edx = 2,
+            Ebx = 3,
+            Esp = 4,
+            Ebp = 5,
+            Esi = 6,
+            Edi = 7,
+        };
+
+        inline void mov_u32(void* src, RegisterIndex reg, std::uint32_t imm32) {
+            auto restore = utils::set_permission(src, 5, utils::Access::ExecuteReadWrite).unwrap();
+            *reinterpret_cast<std::uint8_t*>(src) = 0xB8 + std::to_underlying(reg);
+            *reinterpret_cast<std::uint32_t*>(reinterpret_cast<std::uintptr_t>(src) + 1) = imm32;
+            utils::set_permission(src, 5, restore).unwrap();
+        }
+#endif
         inline void push_u32(void* src, std::uint32_t dst) {
-            auto restore = utils::set_permission(src, 5, utils::Perm::ExecuteReadWrite).unwrap();
+            auto restore = utils::set_permission(src, 5, utils::Access::ExecuteReadWrite).unwrap();
             *reinterpret_cast<std::uint8_t*>(src) = 0x68;
             *reinterpret_cast<std::uint32_t*>(reinterpret_cast<std::uintptr_t>(src) + 1) = dst;
             utils::set_permission(src, 5, restore).unwrap();
         }
 
         inline void push_u8(void* src, std::uint8_t dst) {
-            auto restore = utils::set_permission(src, 2, utils::Perm::ExecuteReadWrite).unwrap();
+            auto restore = utils::set_permission(src, 2, utils::Access::ExecuteReadWrite).unwrap();
             *reinterpret_cast<std::uint8_t*>(src) = 0x6A;
             *reinterpret_cast<std::uint8_t*>(reinterpret_cast<std::uintptr_t>(src) + 1) = dst;
             utils::set_permission(src, 2, restore).unwrap();
         }
 
         inline void nop(void* addr, std::size_t code_size) {
-            auto original_protection = utils::set_permission(addr, code_size, utils::Perm::ExecuteReadWrite).unwrap();
+            auto original_protection = utils::set_permission(addr, code_size, utils::Access::ExecuteReadWrite).unwrap();
             std::memset(reinterpret_cast<void*>(addr), 0x90, code_size);
             utils::set_permission(addr, code_size, original_protection).unwrap();
         }

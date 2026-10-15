@@ -225,7 +225,7 @@ auto tvg::fs::init(const std::filesystem::path& install_directory,
     FreeLoadedFile::install_at_ptr(0x00687ef0);
     PakOpenFile::install_at_ptr(0x00687d90);
 
-    sunset::utils::set_permission(reinterpret_cast<void*>(0x007112c4), 4, sunset::utils::Perm::ReadWrite);
+    sunset::utils::set_permission(reinterpret_cast<void*>(0x007112c4), 4, sunset::utils::Access::ReadWrite);
     *reinterpret_cast<void**>(0x007112c4) = BinkOpenHook;
     return true;
 }

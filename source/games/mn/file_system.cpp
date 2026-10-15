@@ -220,6 +220,7 @@ auto mn::fs::init(bool enable_save_redirection,
 
 	// Update the data directory string format used by MN's WinMain.
 	std::memcpy(BASE_DATA_DIRECTORY_NAME_C_FMT, base_data_directory_name_format.data(), base_data_directory_name_format.size());
+	BASE_DATA_DIRECTORY_NAME_C_FMT[base_data_directory_name_format.size()] = 0;
 	sunset::inst::push_u32(reinterpret_cast<void*>(0x00619929), reinterpret_cast<uintptr_t>(&BASE_DATA_DIRECTORY_NAME_C_FMT));
 
 	if (save_redirection_directory.string().length() >= 256) {
@@ -243,13 +244,13 @@ auto mn::fs::init(bool enable_save_redirection,
 
 	fopenHook::install_at_ptr(0x0063FCBF);
 
-	sunset::utils::set_permission(reinterpret_cast<void*>(0x006742E8), 4, sunset::utils::Perm::ReadWrite);
+	sunset::utils::set_permission(reinterpret_cast<void*>(0x006742E8), 4, sunset::utils::Access::ReadWrite);
 	*reinterpret_cast<void**>(0x006742E8) = BinkOpenHook;
 
-	sunset::utils::set_permission(reinterpret_cast<void*>(0x00674084), 4, sunset::utils::Perm::ReadWrite);
+	sunset::utils::set_permission(reinterpret_cast<void*>(0x00674084), 4, sunset::utils::Access::ReadWrite);
 	*reinterpret_cast<void**>(0x00674084) = BASS_SampleLoadHook;
 
-	sunset::utils::set_permission(reinterpret_cast<void*>(0x00674040), 4, sunset::utils::Perm::ReadWrite);
+	sunset::utils::set_permission(reinterpret_cast<void*>(0x00674040), 4, sunset::utils::Access::ReadWrite);
 	*reinterpret_cast<void**>(0x00674040) = BASS_StreamCreateFileHook;
 
 	return true;

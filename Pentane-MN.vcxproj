@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -108,7 +108,7 @@
       <AdditionalDependencies>Dbghelp.lib;Pathcch.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)\$(Configuration)\$(TargetName).dll" "C:\Projects\Cars2\PC\PentaneTesting\Pentane.dll" /Y</Command>
+      <Command>xcopy "$(SolutionDir)\$(Configuration)\$(TargetName).dll" "C:\Projects\RRE\Cars2\PC\Development-Upstream\Pentane.dll" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -133,7 +133,7 @@
       <AdditionalDependencies>Dbghelp.lib;Pathcch.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)\$(Configuration)\$(TargetName).dll" "C:\Projects\Cars2\PC\PentaneTesting\Pentane.dll" /Y</Command>
+      <Command>xcopy "$(SolutionDir)\$(Configuration)\$(TargetName).dll" "C:\Projects\RRE\Cars2\PC\Development-Upstream\Pentane.dll" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

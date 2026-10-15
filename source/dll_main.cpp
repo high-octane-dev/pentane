@@ -141,7 +141,7 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
 
 		if (config::tvg2::windowed_mode_enabled()) {
 			// Enables windowed mode in Renderer::DriverImpl::DoCreateWindow.
-			sunset::utils::set_permission(reinterpret_cast<void*>(0x007C56A4), 1, sunset::utils::Perm::ExecuteReadWrite);
+			sunset::utils::set_permission(reinterpret_cast<void*>(0x007C56A4), 1, sunset::utils::Access::ExecuteReadWrite);
 			*reinterpret_cast<std::uint8_t*>(0x007C56A4) = 0;
 		}
 
@@ -159,18 +159,18 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
 
 		if (config::tvg2::windowed_mode_enabled()) {
 			// Enables windowed mode in Renderer::DriverConfiguration::DriverConfiguration.
-			sunset::utils::set_permission(reinterpret_cast<void*>(0x0088B77C), 1, sunset::utils::Perm::ExecuteReadWrite);
+			sunset::utils::set_permission(reinterpret_cast<void*>(0x0088B77C), 1, sunset::utils::Access::ExecuteReadWrite);
 			*reinterpret_cast<std::uint8_t*>(0x0088B77C) = 0;
 			// Sets the window dimensions. The game will automatically search for a valid display mode if the supplied resolution is invalid.
 			auto [w, h] = config::tvg2::windowed_mode_dimensions();
-			sunset::utils::set_permission(reinterpret_cast<void*>(0x00d70b51), 4, sunset::utils::Perm::ExecuteReadWrite);
+			sunset::utils::set_permission(reinterpret_cast<void*>(0x00d70b51), 4, sunset::utils::Access::ExecuteReadWrite);
 			*reinterpret_cast<std::uint32_t*>(0x00d70b51) = static_cast<std::uint32_t>(w);
-			sunset::utils::set_permission(reinterpret_cast<void*>(0x00d70b58), 4, sunset::utils::Perm::ExecuteReadWrite);
+			sunset::utils::set_permission(reinterpret_cast<void*>(0x00d70b58), 4, sunset::utils::Access::ExecuteReadWrite);
 			*reinterpret_cast<std::uint32_t*>(0x00d70b58) = static_cast<std::uint32_t>(h);
 		}
 
 		// Redirects OutputDebugStringA to the logger.
-		sunset::utils::set_permission(reinterpret_cast<void*>(0x0159113c), sizeof(void*), sunset::utils::Perm::ReadWrite);
+		sunset::utils::set_permission(reinterpret_cast<void*>(0x0159113c), sizeof(void*), sunset::utils::Access::ReadWrite);
 		*reinterpret_cast<void**>(0x0159113c) = RedirectToLogger;
 
 		// Redirects the CommandConsole to the logger.
@@ -181,7 +181,7 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
 
 		// Prevents the game from generating HTML log files.
 		sunset::inst::nop(reinterpret_cast<void*>(0x0075fb27), 0x1C);
-		sunset::utils::set_permission(reinterpret_cast<void*>(0x0075fb27), 5, sunset::utils::Perm::ExecuteReadWrite);
+		sunset::utils::set_permission(reinterpret_cast<void*>(0x0075fb27), 5, sunset::utils::Access::ExecuteReadWrite);
 		*reinterpret_cast<std::uint8_t*>(0x0075fb27) = 0xB8;
 		*reinterpret_cast<std::uint32_t*>(0x0075fb28) = 0xFFFFFFFF;
 
@@ -196,7 +196,7 @@ BOOL WINAPI DllMain(HINSTANCE instance_handle, DWORD reason, LPVOID reserved) {
 
 		if (config::ts3::windowed_mode_enabled()) {
 			// Enables windowed mode in Renderer::DriverImpl::DoCreateWindow.
-			sunset::utils::set_permission(reinterpret_cast<void*>(0x007dcb9b), 5, sunset::utils::Perm::ExecuteReadWrite);
+			sunset::utils::set_permission(reinterpret_cast<void*>(0x007dcb9b), 5, sunset::utils::Access::ExecuteReadWrite);
 			*reinterpret_cast<std::uint32_t*>(0x007dcb9c) = 0x90909090;
 			*reinterpret_cast<std::uint16_t*>(0x007dcb9b) = 0x01B0;
 

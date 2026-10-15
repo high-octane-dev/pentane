@@ -107,7 +107,7 @@ auto essential::mn::install() -> void {
 	FixLoadingScreenPath::install_at_ptr(0x004053a7);
 
 	// Fixes an issue where fog colors would be erroneously divided by 4.
-	sunset::utils::Perm restore = sunset::utils::set_permission(reinterpret_cast<double*>(0x00679198), sizeof(double), sunset::utils::Perm::ReadWrite).unwrap();
+	sunset::utils::Access restore = sunset::utils::set_permission(reinterpret_cast<double*>(0x00679198), sizeof(double), sunset::utils::Access::ReadWrite).unwrap();
 	*reinterpret_cast<double*>(0x00679198) = 255.0f;
 	sunset::utils::set_permission(reinterpret_cast<double*>(0x00679198), sizeof(double), restore).unwrap();
 }

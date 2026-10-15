@@ -70,7 +70,7 @@ namespace sunset {
 			std::ptrdiff_t source_offset = 0;
 			std::ptrdiff_t dest_offset = 0;
 			std::vector<std::uint8_t> output;
-			
+
 			while (ZYAN_SUCCESS(ZydisDecoderDecodeFull(&decoder, reinterpret_cast<const void*>(source + source_offset), source_size - source_offset, &instruction, operands))) {
 				// Iterate over all operands, checking if each one is EIP-relative and patching the address accordingly.
 				for (std::size_t index = 0; index < instruction.operand_count; index++) {
@@ -103,11 +103,11 @@ namespace sunset {
 							}
 							std::size_t estimated_instruction_size = static_cast<std::ptrdiff_t>(absolute_address) - absolute_address_minus_instruction_size;
 							// Here, we calculate a new relative address from the absolute address Zydis gives us, and the absolute estimated original instruction size.
-							std::intptr_t relative_address = static_cast<std::ptrdiff_t>(absolute_address) - (dest + dest_offset) - 5;
+							std::intptr_t relative_address = static_cast<std::ptrdiff_t>(absolute_address) - (dest + dest_offset) - estimated_instruction_size;
 							elem.mem.disp.value = relative_address;
 						}
+						}
 					}
-				}
 
 				std::size_t old_size = output.size();
 
@@ -131,10 +131,10 @@ namespace sunset {
 				// Increment the offset.
 				source_offset += instruction.length;
 				dest_offset += encoded_size;
-			}
+				}
 			return Ok(std::move(output));
-		}
-		
+			}
+
 		inline std::size_t get_instruction_len(std::uintptr_t ptr) {
 			ZydisDecoder decoder{};
 #ifdef _M_X64
@@ -172,5 +172,5 @@ namespace sunset {
 			}
 			return { offset, padded };
 		}
+		};
 	};
-};
